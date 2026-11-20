@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Дело №404-Б: Сердце Севера — Дневник №3</title>
+  <style>
+    /* =====================================================================
+       БАЗОВЫЕ СТИЛИ (СОВМЕСТИМОСТЬ СО СТАРЫМИ БРАУЗЕРАМИ SAMSUNG SMART TV)
+       Без CSS-переменных и без CSS Grid.
+       ===================================================================== */
+    * {
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #101b2d;
+      color: #f4e7c5;
+      font-family: Georgia, "Times New Roman", serif;
+      min-height: 100%;
+    }
+    button, input {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Обёртка и верхняя панель */
+    .app-wrap {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    .phone-wrap {
+      max-width: 560px;
+    }
+
+    .top-bar {
+      background-color: #0a1220;
+      border: 3px solid #1e140c;
+      border-bottom: 4px solid #d49b35;
+      padding: 12px 18px;
+      margin-bottom: 16px;
+      border-radius: 10px;
+      display: table;
+      width: 100%;
+    }
+    .top-bar-left {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .top-bar-right {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: right;
+    }
+    .brand-sub {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: #f5b942;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    .brand-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ffffff;
+      margin: 2px 0 0 0;
+    }
+    .stat-pill {
+      display: inline-block;
+      background-color: #182a42;
+      border: 2px solid #d49b35;
+      border-radius: 8px;
+      padding: 6px 12px;
+      margin-left: 8px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 15px;
+      font-weight: bold;
+      color: #fde08d;
+    }
+    .stat-pill-danger {
+      border-color: #d32f2f;
+      color: #ff8a80;
+    }
+
+    /* Навигация для ТВ и телефона */
+    .nav-bar {
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .nav-btn {
+      display: inline-block;
+      background-color: #1b2d47;
+      color: #f4e7c5;
+      border: 3px solid #1e140c;
+      border-radius: 10px;
+      padding: 12px 18px;
+      margin: 4px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .nav-btn:hover, .nav-btn:focus {
+      background-color: #284266;
+      outline: 3px solid #f5b942;
+    }
+    .nav-btn-active {
+      background-color: #f5b942;
+      color: #1e140c;
+    }
+    .nav-btn-active:hover, .nav-btn-active:focus {
+      background-color: #fde08d;
+      color: #1e140c;
+    }
+
+    /* Страница Дневника №3 (Пергамент) */
+    .journal-card {
+      background-color: #f4e7c5;
+      color: #1e140c;
+      border: 4px solid #1e140c;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 18px;
+      box-shadow: 6px 6px 0px #060b14;
+    }
+    .journal-title {
+      font-size: 30px;
+      font-weight: bold;
+      color: #1e140c;
+      margin: 0 0 10px 0;
+      border-bottom: 3px solid #1e140c;
+      padding-bottom: 8px;
+    }
+    .journal-sub {
+      font-family: "Comic Sans MS", "Marker Felt", Georgia, serif;
+      font-size: 20px;
+      color: #b71c1c;
+      font-weight: bold;
+      margin: 0 0 14px 0;
+    }
+    .journal-text {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      line-height: 1.55;
+      color: #261a10;
+      margin: 0 0 14px 0;
+    }
+
+    /* Красная печать и жёлтый стикер */
+    .stamp-red {
+      display: inline-block;
+      border: 3px solid #b71c1c;
+      color: #b71c1c;
+      font-family: "Courier New", Courier, monospace;
+      font-weight: bold;
+      font-size: 14px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .sticky-note {
+      background-color: #fff176;
+      color: #1e140c;
+      border: 3px solid #1e140c;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 14px 0;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 17px;
+      line-height: 1.45;
+      box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Двухколоночная раскладка через table (100% поддержка Tizen/Orsay) */
+    .two-col {
+      display: table;
+      width: 100%;
+      border-spacing: 0;
+    }
+    .col-left {
+      display: table-cell;
+      width: 58%;
+      vertical-align: top;
+      padding-right: 16px;
+    }
+    .col-right {
+      display: table-cell;
+      width: 42%;
+      vertical-align: top;
+    }
+    .col-half-left {
+      display: table-cell;
+      width: 50%;
+      vertical-align: top;
+      padding-right: 10px;
+    }
+    .col-half-right {
+      display: table-cell;
+      width: 50%;
+      vertical-align: top;
+      padding-left: 10px;
+    }
+
+    /* Крупные кнопки действий */
+    .btn {
+      display: inline-block;
+      background-color: #f5b942;
+      color: #1e140c;
+      border: 3px solid #1e140c;
+      border-radius: 10px;
+      padding: 14px 22px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      margin: 4px 4px 4px 0;
+    }
+    .btn:hover, .btn:focus {
+      background-color: #fde08d;
+      outline: 3px solid #b71c1c;
+    }
+    .btn-dark {
+      background-color: #1b2d47;
+      color: #ffffff;
+    }
+    .btn-dark:hover, .btn-dark:focus {
+      background-color: #294369;
+      color: #ffffff;
+    }
+    .btn-green {
+      background-color: #2e7d32;
+      color: #ffffff;
+    }
+    .btn-green:hover, .btn-green:focus {
+      background-color: #388e3c;
+    }
+    .btn-red {
+      background-color: #c62828;
+      color: #ffffff;
+    }
+    .btn-disabled {
+      background-color: #b0a38b;
+      color: #5c5040;
+      cursor: not-allowed;
+    }
+    .btn-block {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin: 8px 0;
+    }
+
+    /* Поля ввода кодов */
+    .code-input {
+      width: 100%;
+      max-width: 300px;
+      padding: 12px 14px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 22px;
+      font-weight: bold;
+      text-transform: uppercase;
+      border: 3px solid #1e140c;
+      border-radius: 8px;
+      background-color: #ffffff;
+      color: #1e140c;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    /* Пробковая доска и Полароиды */
+    .cork-board {
+      background-color: #6b4728;
+      border: 4px solid #1e140c;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    .polaroid-grid {
+      text-align: center;
+    }
+    .polaroid-card {
+      display: inline-block;
+      width: 23%;
+      min-width: 200px;
+      vertical-align: top;
+      background-color: #fdfbf5;
+      color: #1e140c;
+      border: 3px solid #1e140c;
+      border-radius: 6px;
+      padding: 10px 10px 16px 10px;
+      margin: 6px;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 4px 5px 0px rgba(0, 0, 0, 0.45);
+    }
+    .polaroid-card:hover, .polaroid-card:focus {
+      outline: 4px solid #f5b942;
+    }
+    .polaroid-img {
+      width: 100%;
+      border: 2px solid #1e140c;
+      margin-bottom: 8px;
+      background-color: #1e2d3d;
+    }
+    .polaroid-name {
+      font-size: 19px;
+      font-weight: bold;
+      color: #1e140c;
+    }
+    .polaroid-role {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      color: #5c4028;
+      margin-top: 2px;
+    }
+
+    /* Блоки улик, чека, монитора */
+    .clue-item {
+      background-color: #fdf7e7;
+      border: 2px solid #1e140c;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+    .clue-unlocked {
+      background-color: #dcedc8;
+      border-color: #2e7d32;
+      color: #1b5e20;
+    }
+    .receipt-box {
+      background-color: #ffffff;
+      border: 3px dashed #1e140c;
+      padding: 18px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 17px;
+      color: #1e140c;
+    }
+    .receipt-row {
+      display: table;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    .receipt-l { display: table-cell; text-align: left; }
+    .receipt-r { display: table-cell; text-align: right; font-weight: bold; }
+
+    .crt-box {
+      background-color: #091e1a;
+      color: #69f0ae;
+      border: 4px solid #1e140c;
+      border-radius: 12px;
+      padding: 20px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    /* Кнопки комнат под картой (для пульта ТВ) */
+    .room-btn-bar {
+      margin-top: 12px;
+      text-align: center;
+    }
+    .room-btn {
+      display: inline-block;
+      background-color: #fdf7e7;
+      color: #1e140c;
+      border: 2px solid #1e140c;
+      border-radius: 8px;
+      padding: 9px 12px;
+      margin: 4px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .room-btn-active {
+      background-color: #f5b942;
+      border-width: 3px;
+    }
+
+    /* Модальное окно (вместо alert/confirm) */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.78);
+      z-index: 999;
+      display: none;
+      padding: 24px;
+    }
+    .modal-box {
+      max-width: 520px;
+      margin: 80px auto 0 auto;
+      background-color: #f4e7c5;
+      color: #1e140c;
+      border: 4px solid #1e140c;
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    /* Адаптация под узкие экраны (телефон) */
+    @media screen and (max-width: 820px) {
+      .two-col, .col-left, .col-right, .col-half-left, .col-half-right {
+        display: block;
+        width: 100%;
+        padding: 0;
+      }
+      .col-right, .col-half-right {
+        margin-top: 14px;
+      }
+      .top-bar, .top-bar-left, .top-bar-right {
+        display: block;
+        width: 100%;
+        text-align: left;
+      }
+      .top-bar-right {
+        margin-top: 10px;
+      }
+      .stat-pill {
+        margin: 4px 6px 0 0;
+      }
+      .polaroid-card {
+        width: 45%;
+        min-width: 140px;
+      }
+      .journal-title {
+        font-size: 24px;
+      }
+      .code-input {
+        max-width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app" class="app-wrap"></div>
+
+  <!-- Модальное окно уведомлений -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-box">
+      <div id="modal-title" style="font-size:24px;font-weight:bold;margin-bottom:10px;"></div>
+      <div id="modal-body" style="font-family:Arial,sans-serif;font-size:17px;line-height:1.5;margin-bottom:18px;"></div>
+      <div style="text-align:right;">
+        <button id="modal-cancel" class="btn btn-dark" style="display:none;">Отмена</button>
+        <button id="modal-ok" class="btn">Понятно</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =====================================================================
+       СТРОГИЙ ES5 JAVASCRIPT — 100% СОВМЕСТИМОСТЬ С SAMSUNG SMART TV
+       Только var, function() {}, конкатенация +, циклы for.
+       ===================================================================== */
+
+    // --- 1. ВСТРОЕННЫЕ SVG-ИЛЛЮСТРАЦИИ В СТИЛЕ «ГРАВИТИ ФОЛЗ» ---
+
+    var SVG_HERO =
+      '<svg viewBox="0 0 800 260" style="width:100%;height:auto;display:block;border:3px solid #1e140c;border-radius:10px;">' +
+        '<rect width="800" height="260" fill="#0d2238"/>' +
+        '<circle cx="650" cy="60" r="32" fill="#fef3c7" stroke="#1e140c" stroke-width="3"/>' +
+        '<circle cx="90" cy="40" r="2" fill="#fff"/><circle cx="180" cy="65" r="2" fill="#fff"/>' +
+        '<circle cx="310" cy="35" r="2.5" fill="#fff"/><circle cx="480" cy="50" r="2" fill="#fff"/>' +
+        '<circle cx="740" cy="45" r="2" fill="#fff"/>' +
+        '<polygon points="0,200 130,115 260,180 400,95 560,175 680,115 800,190 800,260 0,260" fill="#132e42" stroke="#081520" stroke-width="3"/>' +
+        '<polygon points="0,215 800,215 800,260 0,260" fill="#dcebf2" stroke="#1e140c" stroke-width="3"/>' +
+        // Шале
+        '<rect x="270" y="135" width="260" height="85" fill="#7c4a2d" stroke="#1e140c" stroke-width="3"/>' +
+        '<line x1="270" y1="155" x2="530" y2="155" stroke="#4d2c19" stroke-width="2"/>' +
+        '<line x1="270" y1="175" x2="530" y2="175" stroke="#4d2c19" stroke-width="2"/>' +
+        '<line x1="270" y1="195" x2="530" y2="195" stroke="#4d2c19" stroke-width="2"/>' +
+        '<rect x="475" y="78" width="26" height="45" fill="#6e473b" stroke="#1e140c" stroke-width="3"/>' +
+        '<polygon points="240,140 400,58 560,140" fill="#5e3721" stroke="#1e140c" stroke-width="3"/>' +
+        '<polygon points="232,142 400,50 568,142 554,150 400,66 246,150" fill="#edf6fa" stroke="#1e140c" stroke-width="3"/>' +
+        '<polygon points="376,125 400,94 424,125" fill="#fbbf24" stroke="#1e140c" stroke-width="3"/>' +
+        '<rect x="292" y="155" width="46" height="38" fill="#fbbf24" stroke="#1e140c" stroke-width="3"/>' +
+        '<rect x="462" y="155" width="46" height="38" fill="#fbbf24" stroke="#1e140c" stroke-width="3"/>' +
+        '<rect x="378" y="164" width="44" height="56" fill="#472817" stroke="#1e140c" stroke-width="3"/>' +
+        '<rect x="352" y="140" width="96" height="18" fill="#f4e7c5" stroke="#1e140c" stroke-width="2"/>' +
+        '<text x="400" y="153" text-anchor="middle" font-family="Georgia,serif" font-size="10" font-weight="bold" fill="#1e140c">СЕРДЦЕ СЕВЕРА</text>' +
+        // Ёлки Гравити Фолз
+        '<polygon points="25,245 70,130 115,245" fill="#173b36" stroke="#1e140c" stroke-width="3"/>' +
+        '<polygon points="105,245 142,155 179,245" fill="#1e4d45" stroke="#1e140c" stroke-width="3"/>' +
+        '<polygon points="620,245 660,145 700,245" fill="#1e4d45" stroke="#1e140c" stroke-width="3"/>' +
+        '<polygon points="685,245 735,125 785,245" fill="#173b36" stroke="#1e140c" stroke-width="3"/>' +
+      '</svg>';
+
+    var PORTRAITS = {
+      elena:
+        '<svg viewBox="0 0 160 160" style="width:100%;height:auto;display:block;">' +
+          '<rect width="160" height="160" fill="#2b3a4a"/>' +
+          '<path d="M22,160 C26,122 50,112 80,112 C110,112 134,122 138,160 Z" fill="#166534" stroke="#1e140c" stroke-width="3"/>' +
+          '<ellipse cx="80" cy="120" rx="34" ry="12" fill="#f5e6cc" stroke="#1e140c" stroke-width="3"/>' +
+          '<rect x="70" y="96" width="20" height="20" fill="#fbd7b5" stroke="#1e140c" stroke-width="3"/>' +
+          '<ellipse cx="80" cy="66" rx="42" ry="44" fill="#8b3222" stroke="#1e140c" stroke-width="3"/>' +
+          '<ellipse cx="80" cy="70" rx="30" ry="34" fill="#fbd7b5" stroke="#1e140c" stroke-width="3"/>' +
+          '<path d="M48,60 Q80,32 112,60 Q95,46 80,46 Q65,46 48,60 Z" fill="#a33c29" stroke="#1e140c" stroke-width="3"/>' +
+          '<circle cx="67" cy="70" r="8" fill="#fff" stroke="#1e140c" stroke-width="2.5"/>' +
+          '<circle cx="93" cy="70" r="8" fill="#fff" stroke="#1e140c" stroke-width="2.5"/>' +
+          '<circle cx="68" cy="71" r="3.5" fill="#1e140c"/><circle cx="92" cy="71" r="3.5" fill="#1e140c"/>' +
+          '<path d="M72,90 Q80,87 88,91" fill="none" stroke="#b91c1c" stroke-width="3"/>' +
+        '</svg>',
+
+      mark:
+        '<svg viewBox="0 0 160 160" style="width:100%;height:auto;display:block;">' +
+          '<rect width="160" height="160" fill="#1e2f38"/>' +
+          '<path d="M16,160 C20,120 46,110 80,110 C114,110 140,120 144,160 Z" fill="#334155" stroke="#1e140c" stroke-width="3"/>' +
+          '<rect x="66" y="98" width="28" height="18" fill="#e8b892" stroke="#1e140c" stroke-width="3"/>' +
+          '<rect x="46" y="38" width="68" height="66" rx="16" fill="#f0c39d" stroke="#1e140c" stroke-width="3"/>' +
+          '<path d="M44,54 C46,24 64,18 80,18 C96,18 114,24 116,54 Z" fill="#1e3a5f" stroke="#1e140c" stroke-width="3"/>' +
+          '<rect x="42" y="46" width="76" height="12" rx="4" fill="#254d7a" stroke="#1e140c" stroke-width="3"/>' +
+          '<line x1="56" y1="62" x2="74" y2="66" stroke="#1e140c" stroke-width="4"/>' +
+          '<line x1="104" y1="62" x2="86" y2="66" stroke="#1e140c" stroke-width="4"/>' +
+          '<circle cx="66" cy="73" r="7" fill="#fff" stroke="#1e140c" stroke-width="2.5"/>' +
+          '<circle cx="94" cy="73" r="7" fill="#fff" stroke="#1e140c" stroke-width="2.5"/>' +
+          '<circle cx="67" cy="74" r="3" fill="#1e140c"/><circle cx="93" cy="74" r="3" fill="#1e140c"/>' +
+          '<ellipse cx="80" cy="83" rx="8" ry="6" fill="#e3a882" stroke="#1e140c" stroke-width="2.5"/>' +
+          '<line x1="68" y1="95" x2="92" y2="95" stroke="#1e140c" stroke-width="3"/>' +
+        '</svg>',
+
+      viktor:
+        '<svg viewBox="0 0 160 160" style="width:100%;height:auto;display:block;">' +
+          '<rect width="160" height="160" fill="#2e233b"/>' +
+          '<path d="M22,160 C26,124 52,114 80,114 C108,114 134,124 138,160 Z" fill="#5c4738" stroke="#1e140c" stroke-width="3"/>' +
+          '<polygon points="66,114 80,144 94,114" fill="#ffffff" stroke="#1e140c" stroke-width="2.5"/>' +
+          '<polygon points="68,118 80,124 68,130" fill="#b91c1c" stroke="#1e140c" stroke-width="2"/>' +
+          '<polygon points="92,118 80,124 92,130" fill="#b91c1c" stroke="#1e140c" stroke-width="2"/>' +
+          '<rect x="70" y="96" width="20" height="20" fill="#f5cca8" stroke="#1e140c" stroke-width="3"/>' +
+          '<ellipse cx="80" cy="68" rx="28" ry="36" fill="#fad4b4" stroke="#1e140c" stroke-width="3"/>' +
+          '<path d="M50,60 C48,32 64,22 82,24 C102,26 112,36 110,60 Q95,44 80,44 Q65,44 50,60 Z" fill="#1e1b24" stroke="#1e140c" stroke-width="3"/>' +
+          '<circle cx="67" cy="70" r="11" fill="#e0f2fe" stroke="#1e140c" stroke-width="2.5"/>' +
+          '<circle cx="93" cy="70" r="11" fill="#e0f2fe" stroke="#1e140c" stroke-width="2.5"/>' +
+          '<line x1="78" y1="70" x2="82" y2="70" stroke="#1e140c" stroke-width="2.5"/>' +
+          '<circle cx="68" cy="70" r="3" fill="#1e140c"/><circle cx="92" cy="70" r="3" fill="#1e140c"/>' +
+          '<polygon points="74,98 86,98 80,108" fill="#1e1b24" stroke="#1e140c" stroke-width="2"/>' +
+        '</svg>',
+
+      alina:
+        '<svg viewBox="0 0 160 160" style="width:100%;height:auto;display:block;">' +
+          '<rect width="160" height="160" fill="#17332e"/>' +
+          '<circle cx="80" cy="24" r="14" fill="#1e242b" stroke="#1e140c" stroke-width="3"/>' +
+          '<path d="M22,160 C26,122 50,112 80,112 C110,112 134,122 138,160 Z" fill="#1e293b" stroke="#1e140c" stroke-width="3"/>' +
+          '<rect x="60" y="108" width="40" height="22" fill="#7f1d1d" stroke="#1e140c" stroke-width="3"/>' +
+          '<ellipse cx="80" cy="68" rx="34" ry="38" fill="#1e242b" stroke="#1e140c" stroke-width="3"/>' +
+          '<ellipse cx="80" cy="70" rx="27" ry="32" fill="#fce1cb" stroke="#1e140c" stroke-width="3"/>' +
+          '<path d="M52,62 Q80,44 108,62 Q98,42 80,42 Q62,42 52,62 Z" fill="#1e242b" stroke="#1e140c" stroke-width="2.5"/>' +
+          '<circle cx="67" cy="70" r="8" fill="#fff" stroke="#1e140c" stroke-width="2.5"/>' +
+          '<circle cx="93" cy="70" r="8" fill="#fff" stroke="#1e140c" stroke-width="2.5"/>' +
+          '<circle cx="68" cy="70" r="3.5" fill="#0f766e"/><circle cx="92" cy="70" r="3.5" fill="#0f766e"/>' +
+          '<path d="M72,90 Q80,93 88,90" fill="none" stroke="#1e140c" stroke-width="2.5"/>' +
+        '</svg>'
+    };
+
+    var PUZZLE_SVGS = {
+      tablet:
+        '<svg viewBox="0 0 200 130" style="width:200px;height:auto;display:block;margin:0 auto 12px auto;">' +
+          '<rect x="16" y="10" width="168" height="110" rx="12" fill="#2c353d" stroke="#1e140c" stroke-width="3"/>' +
+          '<rect x="28" y="20" width="144" height="90" rx="5" fill="#0d262b" stroke="#1e140c" stroke-width="2"/>' +
+          '<circle cx="100" cy="60" r="22" fill="#153c42" stroke="#f5b942" stroke-width="3"/>' +
+          '<rect x="88" y="58" width="24" height="18" rx="3" fill="#f5b942" stroke="#1e140c" stroke-width="2"/>' +
+          '<text x="100" y="100" text-anchor="middle" font-family="Courier New,monospace" font-size="11" fill="#7dd3fc">ПАРОЛЬ (6 БУКВ)</text>' +
+        '</svg>',
+      safe:
+        '<svg viewBox="0 0 200 140" style="width:200px;height:auto;display:block;margin:0 auto 12px auto;">' +
+          '<rect x="22" y="12" width="156" height="116" rx="10" fill="#3b4a54" stroke="#1e140c" stroke-width="3"/>' +
+          '<rect x="34" y="24" width="132" height="92" rx="4" fill="#516470" stroke="#1e140c" stroke-width="2"/>' +
+          '<circle cx="94" cy="70" r="26" fill="#e5b855" stroke="#1e140c" stroke-width="3"/>' +
+          '<circle cx="94" cy="70" r="14" fill="#27323a" stroke="#1e140c" stroke-width="2"/>' +
+          '<rect x="138" y="52" width="12" height="36" rx="4" fill="#d4a030" stroke="#1e140c" stroke-width="2"/>' +
+        '</svg>',
+      locker:
+        '<svg viewBox="0 0 200 130" style="width:200px;height:auto;display:block;margin:0 auto 12px auto;">' +
+          '<rect x="34" y="22" width="44" height="92" rx="8" fill="#94a3b8" stroke="#1e140c" stroke-width="3"/>' +
+          '<rect x="38" y="12" width="36" height="14" rx="3" fill="#334155" stroke="#1e140c" stroke-width="3"/>' +
+          '<rect x="106" y="56" width="52" height="56" rx="6" fill="#d97706" stroke="#1e140c" stroke-width="3"/>' +
+          '<rect x="114" y="72" width="36" height="22" rx="3" fill="#1e293b" stroke="#1e140c" stroke-width="2"/>' +
+          '<text x="132" y="88" text-anchor="middle" font-family="Courier New,monospace" font-size="13" fill="#fde08d">_ _ _</text>' +
+        '</svg>',
+      cctv:
+        '<svg viewBox="0 0 200 120" style="width:200px;height:auto;display:block;margin:0 auto 12px auto;">' +
+          '<rect x="20" y="20" width="28" height="22" fill="#475569" stroke="#1e140c" stroke-width="3"/>' +
+          '<line x1="48" y1="31" x2="76" y2="48" stroke="#1e140c" stroke-width="5"/>' +
+          '<rect x="70" y="34" width="90" height="42" rx="5" fill="#cbd5e1" stroke="#1e140c" stroke-width="3"/>' +
+          '<rect x="160" y="42" width="16" height="26" rx="2" fill="#1e293b" stroke="#1e140c" stroke-width="3"/>' +
+          '<circle cx="88" cy="48" r="5" fill="#ef4444"/>' +
+          '<rect x="120" y="88" width="60" height="22" rx="4" fill="#991b1b" stroke="#1e140c" stroke-width="2"/>' +
+          '<text x="150" y="103" text-anchor="middle" font-family="Courier New,monospace" font-size="12" font-weight="bold" fill="#fff">REC</text>' +
+        '</svg>'
+    };
+
+    // --- 2. ДАННЫЕ ИГРЫ (БЕЗ СПОЙЛЕРОВ В ИНТЕРФЕЙСЕ) ---
+
+    var MAP_ROOMS = {
+      study: {
+        id: 'study',
+        name: 'Кабинет с сейфом',
+        floor: '2-й этаж • Место убийства',
+        isCrime: true,
+        summary: 'Дверь была заперта изнутри на засов. Тело владельца шале Аркадия Соколова нашли у стола с остывшим стальным термосом. На столе — заблокированный планшет, за картиной — потайной сейф Елены.',
+        inspectFlag: 'flag_study_inspected',
+        inspectText: 'Вы осмотрели порог кабинета и нашли тонкую влажную полоску и царапину от лески на засове! Дверь явно заперли снаружи с помощью лески и кусочка льда.',
+        actionTab: 'puzzles',
+        actionLabel: 'Перейти к кодам (Планшет и Сейф)'
+      },
+      hall: {
+        id: 'hall',
+        name: 'Главный каминный зал',
+        floor: '1-й этаж • Место кражи',
+        isCrime: false,
+        summary: 'Просторный зал с каменным камином и стеклянной витриной в центре. Во время блэкаута в 22:40 отсюда исчез голубой бриллиант «Сердце Севера» (страховка 4 млн €). Стекло цело.',
+        inspectFlag: 'flag_hall_inspected',
+        inspectText: 'Осмотр замка витрины показал: его не взламывали, а открыли родным ключом начальника охраны в темноте.',
+        actionTab: 'suspects',
+        actionLabel: 'Допросить подозреваемых'
+      },
+      cellar: {
+        id: 'cellar',
+        name: 'Винный погреб',
+        floor: 'Подвал • Тайник',
+        isCrime: false,
+        summary: 'Холодный каменный погреб с дубовыми бочками и трубами отопления. Ключ от погреба есть только у Елены Ветровой и начальника охраны Марка Волкова.',
+        inspectFlag: 'flag_cellar_inspected',
+        inspectText: 'За дальней отопительной трубой вы нашли свежие следы перчаток на пыли — кто-то недавно прятал здесь небольшой свёрток.',
+        actionTab: 'puzzles',
+        actionLabel: 'Проверить сейф и коды'
+      },
+      bar: {
+        id: 'bar',
+        name: 'Бар и кухня',
+        floor: '1-й этаж • Служебная зона',
+        isCrime: false,
+        summary: 'Барная стойка, где весь вечер сидел Виктор Громов, и подсобка куратора Алины Смирновой. В 22:15 здесь заваривали травяной чай в стальной термос для Аркадия.',
+        inspectFlag: 'flag_bar_inspected',
+        inspectText: 'На полке рядом со шкафчиком Алины валяется смятый кассовый чек из магазина «Полюс» с пометкой от руки (см. Головоломку №3).',
+        actionTab: 'puzzles',
+        actionLabel: 'Открыть Головоломку №3 (Чек)'
+      },
+      security: {
+        id: 'security',
+        name: 'Комната охраны',
+        floor: 'Подвал • Щитовая и камеры',
+        isCrime: false,
+        summary: 'Пост Марка Волкова с резервным генератором, электрощитком и мониторами видеонаблюдения. В 22:40 питание было отключено ровно на 3 минуты.',
+        inspectFlag: 'flag_security_inspected',
+        inspectText: 'Рубильник не выбило — его опустили вручную. Архив камеры коридора 2-го этажа ждёт ввода точного времени (см. Головоломку №4).',
+        actionTab: 'puzzles',
+        actionLabel: 'Открыть Головоломку №4 (Камеры)'
+      },
+      terrace: {
+        id: 'terrace',
+        name: 'Заснеженная терраса',
+        floor: 'Снаружи • −28°C, метель',
+        isCrime: false,
+        summary: 'Деревянная веранда, выходящая в тёмный хвойный лес. Сильная метель полностью отрезала шале от дороги.',
+        inspectFlag: 'flag_terrace_inspected',
+        inspectText: 'Снег на ступенях и под окном кабинета абсолютно чистый. Никто чужой не приходил и не уходил — преступник точно среди четверых подозреваемых.',
+        actionTab: 'suspects',
+        actionLabel: 'К доске подозреваемых'
+      }
+    };
+
+    var SUSPECTS = {
+      elena: {
+        id: 'elena',
+        name: 'Елена Ветрова',
+        role: 'Хозяйка шале, жена Аркадия',
+        loc: 'Главный каминный зал',
+        bio: 'Управляет шале «Сердце Севера». На грани банкротства из-за долгов, накануне оформила страховку на бриллиант на сумму 4 млн €.',
+        alibi: 'В 22:40 была в каминном зале рядом с гостями и сразу побежала зажигать свечи.',
+        questions: [
+          {
+            id: 'q_elena_1',
+            cost: 0,
+            reqFlag: null,
+            title: 'Зачем вы оформили страховку на 4 млн € прямо перед показом?',
+            answer: '«Это стандартная мера перед закрытым аукционом! В 22:40 я была в зале с гостями, я понятия не имею, кто отравил Аркадия...»'
+          },
+          {
+            id: 'q_elena_2',
+            cost: 1,
+            reqFlag: 'flag_safe_open',
+            reqHint: 'Вскройте Сейф (Головоломка №2)',
+            unlockFlag: 'flag_elena_confessed',
+            title: 'Мы нашли в вашем сейфе расписку Марка Волкова на 200 000 €. Признавайтесь!',
+            answer: 'Елена бледнеет: «Ладно! Я банкрот! Я наняла Марка вырубить свет в 22:40 и инсценировать кражу ради страховки в 4 миллиона! Но клянусь — я НЕ убивала Аркадия!»'
+          }
+        ]
+      },
+      mark: {
+        id: 'mark',
+        name: 'Марк Волков',
+        role: 'Начальник службы безопасности',
+        loc: 'Комната охраны',
+        bio: 'Бывший полярник, отвечает за охрану, камеры и генератор. Единственный, у кого есть доступ к электрощитовой и ключам от погреба.',
+        alibi: 'Говорит, что в 22:40 был в подвале у котла, когда погас свет, и 3 минуты запускал генератор.',
+        questions: [
+          {
+            id: 'q_mark_1',
+            cost: 0,
+            reqFlag: null,
+            title: 'Что вы слышали перед тем, как в 22:40 погас свет?',
+            answer: '«Перед спуском в подвал я проходил мимо лестницы на второй этаж. Ровно за 5 минут до отключения света я чётко слышал, как щёлкнул замок кабинета Аркадия.»'
+          },
+          {
+            id: 'q_mark_2',
+            cost: 1,
+            reqFlag: 'flag_safe_open',
+            reqHint: 'Вскройте Сейф (Головоломка №2)',
+            unlockFlag: 'flag_mark_confessed',
+            title: 'У нас ваша расписка из сейфа Елены. Куда вы дели камень?',
+            answer: 'Марк вздыхает: «Раскусили. Я дёрнул рубильник в 22:40, вынес камень из витрины и спрятал в винном погребе за трубой. Но я никого не убивал! И камень показался мне подозрительно лёгким, как стекло.»'
+          }
+        ]
+      },
+      viktor: {
+        id: 'viktor',
+        name: 'Виктор Громов',
+        role: 'Арт-дилер и оценщик, конкурент',
+        loc: 'Бар и каминный зал',
+        bio: 'Влиятельный оценщик драгоценностей и давний деловой соперник Аркадия. Приехал требовать старый долг.',
+        alibi: 'С 22:15 до 22:50 не отходил от барной стойки, что подтверждают бармен и гости.',
+        questions: [
+          {
+            id: 'q_viktor_1',
+            cost: 0,
+            reqFlag: null,
+            title: 'Зачем вы приехали к своему конкуренту и где были в 22:40?',
+            answer: '«Аркадий задолжал мне полмиллиона. Но я не убийца — весь вечер я пил виски у бара и ни разу не поднимался на второй этаж.»'
+          },
+          {
+            id: 'q_viktor_2',
+            cost: 1,
+            reqFlag: null,
+            unlockFlag: 'flag_fake_diamond',
+            title: 'Вас видели у витрины перед показом. Что вы скрываете о камне?',
+            answer: 'Виктор усмехается: «Я проверил бриллиант через стекло карманным тестером. В витрине лежала СИНТЕТИЧЕСКАЯ ПОДДЕЛКА! Кто бы ни украл его в темноте — он вынес дешёвый муассанит. Настоящее "Сердце Севера" Аркадий прятал в другом месте.»'
+          }
+        ]
+      },
+      alina: {
+        id: 'alina',
+        name: 'Алина Смирнова',
+        role: 'Куратор выставки',
+        loc: 'Бар и кухня',
+        bio: 'Спокойный и собранный специалист по ювелирным выставкам. Идеально знает расписание Аркадия и устройство шале.',
+        alibi: 'В 22:15 принесла Аркадию горячий чай в стальном термосе, после чего ушла в подсобку за баром.',
+        questions: [
+          {
+            id: 'q_alina_1',
+            cost: 0,
+            reqFlag: null,
+            title: 'Вы последней приносили Аркадию чай. Как он себя чувствовал?',
+            answer: '«Он выглядел уставшим, попросил заварить травяной чай в его стальной термос. Я отдала термос в 22:15, он сказал, что закроется изнутри. Больше я к нему не заходила.»'
+          },
+          {
+            id: 'q_alina_2',
+            cost: 1,
+            reqFlag: 'flag_locker_open',
+            reqHint: 'Откройте Шкафчик (Головоломка №3)',
+            unlockFlag: 'flag_alina_cornered',
+            title: 'В вашем шкафчике найден яд аконит и фото Андрея! Это ваш брат?',
+            answer: 'Взгляд Алины становится ледяным: «Андрей был лучшим геологом. 18 ноября 2018 года Аркадий бросил его замерзать в буране ради этого алмаза. Но старое фото ничего не доказывает без прямых улик.»'
+          },
+          {
+            id: 'q_alina_3',
+            cost: 1,
+            reqFlag: 'flag_cctv_open',
+            reqHint: 'Откройте Камеры (Головоломка №4)',
+            unlockFlag: 'flag_alina_cornered',
+            title: 'Камера в 22:35 сняла вас у кабинета с термосом и латунным компасом!',
+            answer: 'Алина холодно улыбается: «Вы копаете глубже, чем я думала. Аркадий получил по заслугам. Но если хотите закрыть дело — попробуйте доказать полиции, где сейчас настоящий бриллиант.»'
+          }
+        ]
+      }
+    };
+
+    var PUZZLES = {
+      tablet: {
+        id: 'tablet',
+        title: '1. Планшет Аркадия',
+        hint: 'Слово-пароль (6 букв)',
+        answer: 'КОМПАС',
+        flag: 'flag_tablet_open',
+        secretTitle: 'Дневник Аркадия (2018)',
+        secretText: 'Планшет разблокирован! Запись от 20 ноября 2018 года: «Я бросил напарника Андрея в пурге и забрал голубой алмаз. Чтобы никто не отследил камень, я выставил в витрину синтетическую подделку, а настоящий бриллиант "Сердце Севера" тайно вмонтировал под двойное дно своего старинного латунного компаса.»'
+      },
+      safe: {
+        id: 'safe',
+        title: '2. Сейф в кабинете',
+        hint: '4 цифры',
+        answer: '1848',
+        flag: 'flag_safe_open',
+        secretTitle: 'Расписка из сейфа Елены',
+        secretText: 'Сейф открыт! Внутри просроченные счета и расписка от Марка Волкова: «Елена, ровно в 22:40 вырубаю рубильник на 3 минуты, забираю камень из витрины и прячу в винном погребе за трубой. После получения страховки 4 млн € переводишь мне 200 000 €.»'
+      },
+      locker: {
+        id: 'locker',
+        title: '3. Шкафчик в подсобке',
+        hint: '3 цифры',
+        answer: '150',
+        flag: 'flag_locker_open',
+        secretTitle: 'Тайник Алины Смирновой',
+        secretText: 'Замок открыт! Внутри флакон с остатками яда АКОНИТ (растворяется в горячем чае без запаха) и фото 2018 года: молодая Алина с братом. На обороте подпись: «Брат Андрей. Экспедиция, ноябрь 2018. Я найду правду.»'
+      },
+      cctv: {
+        id: 'cctv',
+        title: '4. Архив камеры №04',
+        hint: 'Время ЧЧММ (4 цифры)',
+        answer: '2235',
+        flag: 'flag_cctv_open',
+        secretTitle: 'Кадр коридора 2-го этажа (22:35)',
+        secretText: 'ЗАПИСЬ 22:35:12 — На видео чётко видно, как Алина Смирнова выходит из кабинета Аркадия, приседает у порога (вытягивая тонкую леску из-под двери) и быстро уходит. В её руках — стальной термос и старинный ЛАТУННЫЙ КОМПАС Аркадия!'
+      }
+    };
+
+    var ENDINGS = {
+      perfect: {
+        title: 'Идеальное раскрытие (Концовка 1 из 4)',
+        subtitle: 'Легенды сыска!',
+        text: 'Полиция задерживает Алину Смирнову — в её пальто находят латунный компас Аркадия с настоящим бриллиантом «Сердце Севера». После вскрытия дневника 2018 года дело о гибели её брата Андрея пересматривают. Елена Ветрова и Марк Волков арестованы за страховую аферу, а подделку изымают из винного погреба.'
+      },
+      corrupt: {
+        title: 'Сделка с совестью (Концовка 2 из 4)',
+        subtitle: 'Богатые, но не безупречные',
+        text: 'Алина арестована, настоящий бриллиант найден в латунном компасе. Вы промолчали о расписке из сейфа — страховая афера Елены и Марка осталась в тайне. Через неделю на ваш счёт приходит 500 000 €. Дело закрыто, но часть правды осталась под снегом.'
+      },
+      partial: {
+        title: 'Неполная правда (Концовка 3 из 4)',
+        subtitle: 'Улик оказалось недостаточно',
+        text: 'Вы верно указали на Алину Смирнову, но без точного указания на латунный компас или веских улик (аконита / записи камеры 22:35) её адвокат разваливает дело в суде через месяц. Настоящий бриллиант бесследно исчезает.'
+      },
+      fail: {
+        title: 'Ошибка следствия (Концовка 4 из 4)',
+        subtitle: 'Убийца переиграла детективов',
+        text: 'Вы обвинили невиновного в убийстве. Пока полиция разбирается со страховой аферой и подделкой в винном погребе, Алина Смирнова спокойно покидает шале, как только расчищают дорогу. В её кармане тихо тикает латунный компас с настоящим «Сердцем Севера».'
+      }
+    };
+
+    // --- 3. СОСТОЯНИЕ ИГРЫ (STATE) ---
+
+    var state = {
+      mode: 'landing', // 'landing' | 'tv' | 'phone'
+      tab: 'intro',    // 'intro' | 'map' | 'suspects' | 'puzzles' | 'verdict'
+      selectedRoom: 'study',
+      selectedSuspect: 'elena',
+      selectedPuzzle: 'tablet',
+      timeLeft: 6,
+      flags: [],
+      askedQuestions: [],
+      lastAnswer: null,
+      codeFeedback: {},
+      verdictKiller: '',
+      verdictDiamond: '',
+      verdictStep: 1,
+      endingId: null
+    };
+
+    // --- 4. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ES5 ---
+
+    function hasFlag(flag) {
+      return state.flags.indexOf(flag) !== -1;
+    }
+
+    function addFlag(flag) {
+      if (flag && !hasFlag(flag)) {
+        state.flags.push(flag);
+      }
+    }
+
+    function hasAsked(qId) {
+      return state.askedQuestions.indexOf(qId) !== -1;
+    }
+
+    function countSolvedPuzzles() {
+      var c = 0;
+      if (hasFlag('flag_tablet_open')) c++;
+      if (hasFlag('flag_safe_open')) c++;
+      if (hasFlag('flag_locker_open')) c++;
+      if (hasFlag('flag_cctv_open')) c++;
+      return c;
+    }
+
+    function showModal(title, body, onOk, showCancel) {
+      var overlay = document.getElementById('modal-overlay');
+      document.getElementById('modal-title').innerHTML = title;
+      document.getElementById('modal-body').innerHTML = body;
+      var cancelBtn = document.getElementById('modal-cancel');
+      var okBtn = document.getElementById('modal-ok');
+
+      cancelBtn.style.display = showCancel ? 'inline-block' : 'none';
+      overlay.style.display = 'block';
+
+      okBtn.onclick = function() {
+        overlay.style.display = 'none';
+        if (onOk) onOk();
+      };
+      cancelBtn.onclick = function() {
+        overlay.style.display = 'none';
+      };
+    }
+
+    function findActionEl(el) {
+      while (el && el !== document) {
+        if (el.getAttribute && el.getAttribute('data-action')) {
+          return el;
+        }
+        el = el.parentNode;
+      }
+      return null;
+    }
+
+    // --- 5. ИГРОВЫЕ ДЕЙСТВИЯ ---
+
+    function spendHour() {
+      if (state.timeLeft <= 0) {
+        showModal('Время вышло!', 'Все 6 часов расследования истекли. Перейдите в раздел «Вердикт», чтобы вынести обвинение!');
+        return false;
+      }
+      state.timeLeft = state.timeLeft - 1;
+      return true;
+    }
+
+    function inspectRoom(roomId) {
+      var room = MAP_ROOMS[roomId];
+      if (!room) return;
+      if (hasFlag(room.inspectFlag)) return;
+      if (!spendHour()) return;
+      addFlag(room.inspectFlag);
+      render();
+    }
+
+    function askQuestion(suspectId, qId) {
+      var s = SUSPECTS[suspectId];
+      if (!s) return;
+      var q = null;
+      for (var i = 0; i < s.questions.length; i++) {
+        if (s.questions[i].id === qId) {
+          q = s.questions[i];
+          break;
+        }
+      }
+      if (!q) return;
+      if (q.reqFlag && !hasFlag(q.reqFlag)) return;
+
+      if (!hasAsked(q.id)) {
+        if (q.cost > 0) {
+          if (!spendHour()) return;
+        }
+        state.askedQuestions.push(q.id);
+        if (q.unlockFlag) addFlag(q.unlockFlag);
+      }
+
+      state.lastAnswer = {
+        name: s.name,
+        question: q.title,
+        answer: q.answer
+      };
+      render();
+    }
+
+    function checkCode(puzzleId) {
+      var p = PUZZLES[puzzleId];
+      var inputEl = document.getElementById('code-input-' + puzzleId);
+      if (!p || !inputEl) return;
+
+      var val = (inputEl.value || '').replace(/^\s+|\s+$/g, '').toUpperCase().replace(/[:\s\-]/g, '');
+      if (!val) return;
+
+      if (val === p.answer) {
+        addFlag(p.flag);
+        state.codeFeedback[puzzleId] = { ok: true, msg: 'Код принят! Секретная улика открыта.' };
+      } else {
+        state.codeFeedback[puzzleId] = { ok: false, msg: 'Неверный код (' + val + '). Перепроверьте улику!' };
+      }
+      render();
+    }
+
+    function submitVerdict(moral) {
+      if (!state.verdictKiller || !state.verdictDiamond) return;
+      var hasProof = hasFlag('flag_locker_open') || hasFlag('flag_cctv_open');
+
+      if (!moral && state.verdictKiller === 'alina' && state.verdictDiamond === 'compass' && hasProof && hasFlag('flag_safe_open')) {
+        state.verdictStep = 3;
+        render();
+        return;
+      }
+
+      if (state.verdictKiller !== 'alina') {
+        state.endingId = 'fail';
+      } else if (state.verdictDiamond !== 'compass' || !hasProof) {
+        state.endingId = 'partial';
+      } else if (moral === 'bribe') {
+        state.endingId = 'corrupt';
+      } else {
+        state.endingId = 'perfect';
+      }
+      render();
+    }
+
+    function resetGame() {
+      showModal('Начать расследование заново?', 'Все открытые улики, коды и счётчик времени будут сброшены.', function() {
+        state.tab = 'intro';
+        state.selectedRoom = 'study';
+        state.selectedSuspect = 'elena';
+        state.selectedPuzzle = 'tablet';
+        state.timeLeft = 6;
+        state.flags = [];
+        state.askedQuestions = [];
+        state.lastAnswer = null;
+        state.codeFeedback = {};
+        state.verdictKiller = '';
+        state.verdictDiamond = '';
+        state.verdictStep = 1;
+        state.endingId = null;
+        render();
+      }, true);
+    }
+
+    // --- 6. ИНТЕРАКТИВНАЯ SVG-КАРТА ШАЛЕ (6 КОМНАТ) ---
+
+    function renderMapSVG() {
+      var active = state.selectedRoom;
+      function st(id) { return active === id ? '#f5b942' : '#1e140c'; }
+      function sw(id) { return active === id ? '5' : '3'; }
+
+      return '' +
+        '<svg viewBox="0 0 700 460" style="width:100%;height:auto;display:block;border:3px solid #1e140c;border-radius:10px;background-color:#d8e9ef;">' +
+          // Ёлки по углам
+          '<polygon points="10,45 30,10 50,45" fill="#1e4d42" stroke="#1e140c" stroke-width="2"/>' +
+          '<polygon points="650,45 670,10 690,45" fill="#1e4d42" stroke="#1e140c" stroke-width="2"/>' +
+          '<polygon points="10,445 30,405 50,445" fill="#1e4d42" stroke="#1e140c" stroke-width="2"/>' +
+          '<polygon points="650,445 670,405 690,445" fill="#1e4d42" stroke="#1e140c" stroke-width="2"/>' +
+
+          // Контур стен шале
+          '<rect x="65" y="35" width="570" height="390" rx="10" fill="#4a2d18" stroke="#1e140c" stroke-width="4"/>' +
+
+          // 1. КАБИНЕТ С СЕЙФОМ
+          '<g data-action="select-room" data-room="study" style="cursor:pointer;">' +
+            '<rect x="75" y="45" width="265" height="180" fill="#d9ba86" stroke="' + st('study') + '" stroke-width="' + sw('study') + '"/>' +
+            '<rect x="115" y="88" width="120" height="75" fill="#991b1b" stroke="#1e140c" stroke-width="2"/>' +
+            '<rect x="92" y="58" width="70" height="26" fill="#6b3e23" stroke="#1e140c" stroke-width="2"/>' +
+            '<rect x="295" y="56" width="32" height="24" fill="#475569" stroke="#1e140c" stroke-width="2"/>' +
+            // Полицейская лента
+            '<line x1="75" y1="190" x2="155" y2="225" stroke="#facc15" stroke-width="10"/>' +
+            '<line x1="75" y1="190" x2="155" y2="225" stroke="#1e140c" stroke-width="3" stroke-dasharray="8,8"/>' +
+            '<rect x="95" y="192" width="185" height="24" rx="4" fill="#fdf7e7" stroke="#1e140c" stroke-width="2"/>' +
+            '<text x="187" y="209" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="bold" fill="#1e140c">КАБИНЕТ С СЕЙФОМ</text>' +
+          '</g>' +
+
+          // 2. ГЛАВНЫЙ КАМИННЫЙ ЗАЛ
+          '<g data-action="select-room" data-room="hall" style="cursor:pointer;">' +
+            '<rect x="348" y="45" width="277" height="180" fill="#d9ba86" stroke="' + st('hall') + '" stroke-width="' + sw('hall') + '"/>' +
+            '<rect x="448" y="48" width="76" height="22" fill="#64748b" stroke="#1e140c" stroke-width="2"/>' +
+            '<polygon points="472,68 486,52 500,68" fill="#f97316"/>' +
+            '<rect x="462" y="110" width="48" height="48" rx="4" fill="#bae6fd" stroke="#1e140c" stroke-width="2"/>' +
+            '<polygon points="486,120 498,134 486,148 474,134" fill="#0284c7" stroke="#1e140c" stroke-width="2"/>' +
+            '<rect x="386" y="192" width="200" height="24" rx="4" fill="#fdf7e7" stroke="#1e140c" stroke-width="2"/>' +
+            '<text x="486" y="209" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="bold" fill="#1e140c">ГЛАВНЫЙ КАМИННЫЙ ЗАЛ</text>' +
+          '</g>' +
+
+          // 3. ВИННЫЙ ПОГРЕБ
+          '<g data-action="select-room" data-room="cellar" style="cursor:pointer;">' +
+            '<rect x="75" y="233" width="175" height="182" fill="#b7c0c4" stroke="' + st('cellar') + '" stroke-width="' + sw('cellar') + '"/>' +
+            '<circle cx="112" cy="272" r="18" fill="#854d0e" stroke="#1e140c" stroke-width="2"/>' +
+            '<circle cx="112" cy="316" r="18" fill="#854d0e" stroke="#1e140c" stroke-width="2"/>' +
+            '<line x1="220" y1="245" x2="220" y2="375" stroke="#475569" stroke-width="8"/>' +
+            '<rect x="88" y="382" width="148" height="24" rx="4" fill="#fdf7e7" stroke="#1e140c" stroke-width="2"/>' +
+            '<text x="162" y="399" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="bold" fill="#1e140c">ВИННЫЙ ПОГРЕБ</text>' +
+          '</g>' +
+
+          // 4. БАР И КУХНЯ
+          '<g data-action="select-room" data-room="bar" style="cursor:pointer;">' +
+            '<rect x="258" y="233" width="175" height="182" fill="#e6cfa5" stroke="' + st('bar') + '" stroke-width="' + sw('bar') + '"/>' +
+            '<rect x="280" y="260" width="120" height="24" fill="#713f12" stroke="#1e140c" stroke-width="2"/>' +
+            '<rect x="378" y="325" width="40" height="36" fill="#475569" stroke="#1e140c" stroke-width="2"/>' +
+            '<rect x="278" y="382" width="135" height="24" rx="4" fill="#fdf7e7" stroke="#1e140c" stroke-width="2"/>' +
+            '<text x="345" y="399" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="bold" fill="#1e140c">БАР И КУХНЯ</text>' +
+          '</g>' +
+
+          // 5. КОМНАТА ОХРАНЫ
+          '<g data-action="select-room" data-room="security" style="cursor:pointer;">' +
+            '<rect x="441" y="233" width="184" height="102" fill="#9fb0b8" stroke="' + st('security') + '" stroke-width="' + sw('security') + '"/>' +
+            '<rect x="458" y="246" width="84" height="22" fill="#1e293b" stroke="#1e140c" stroke-width="2"/>' +
+            '<rect x="466" y="250" width="20" height="14" fill="#34d399"/>' +
+            '<rect x="492" y="250" width="20" height="14" fill="#34d399"/>' +
+            '<rect x="572" y="246" width="34" height="40" fill="#ca8a04" stroke="#1e140c" stroke-width="2"/>' +
+            '<rect x="458" y="304" width="150" height="22" rx="4" fill="#fdf7e7" stroke="#1e140c" stroke-width="2"/>' +
+            '<text x="533" y="319" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#1e140c">КОМНАТА ОХРАНЫ</text>' +
+          '</g>' +
+
+          // 6. ЗАСНЕЖЕННАЯ ТЕРРАСА
+          '<g data-action="select-room" data-room="terrace" style="cursor:pointer;">' +
+            '<rect x="441" y="343" width="184" height="72" fill="#e0f2fe" stroke="' + st('terrace') + '" stroke-width="' + sw('terrace') + '"/>' +
+            '<rect x="452" y="384" width="162" height="22" rx="4" fill="#fdf7e7" stroke="#1e140c" stroke-width="2"/>' +
+            '<text x="533" y="399" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#1e140c">ЗАСНЕЖЕННАЯ ТЕРРАСА</text>' +
+          '</g>' +
+        '</svg>';
+    }
+
+    // --- 7. РЕНДЕР ЭКРАНОВ ---
+
+    function renderLanding() {
+      return '' +
+        '<div class="journal-card">' +
+          '<div class="stamp-red">Дневник №3 • Дело №404-Б • Без спойлеров</div>' +
+          '<h1 class="journal-title">Тайна «Сердца Севера»</h1>' +
+          '<div class="journal-sub">«Никому не доверяй в этом заснеженном шале!»</div>' +
+          SVG_HERO +
+          '<p class="journal-text" style="margin-top:16px;">' +
+            '22:40. Метель отрезала горное шале от внешнего мира. Во время 3-минутного отключения света исчез голубой бриллиант на 4 млн €, а владелец Аркадий Соколов найден мёртвым в запертом изнутри кабинете. Выберите режим запуска:' +
+          '</p>' +
+          '<div class="two-col">' +
+            '<div class="col-half-left">' +
+              '<button class="btn btn-block" data-action="start-mode" data-mode="tv">' +
+                '📺 Открыть на телевизоре (Большой экран)' +
+              '</button>' +
+            '</div>' +
+            '<div class="col-half-right">' +
+              '<button class="btn btn-dark btn-block" data-action="start-mode" data-mode="phone">' +
+                '📱 Пульт детектива (Телефон)' +
+              '</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function renderIntroTab() {
+      return '' +
+        '<div class="journal-card">' +
+          '<div class="stamp-red">Сводка происшествия • 22:40</div>' +
+          '<h2 class="journal-title">Двойное преступление в шале</h2>' +
+          '<div class="two-col">' +
+            '<div class="col-left">' +
+              SVG_HERO +
+              '<p class="journal-text" style="margin-top:14px;">' +
+                '<strong>1. Кража:</strong> Бронированная витрина в каминном зале пуста, стекло цело. Исчез бриллиант «Сердце Севера» (страховка 4 млн €).' +
+              '</p>' +
+              '<p class="journal-text">' +
+                '<strong>2. Убийство:</strong> Владелец шале Аркадий Соколов найден мёртвым в кабинете на 2-м этаже. Дверь была заперта изнутри на засов. Рядом остывший стальной термос.' +
+              '</p>' +
+            '</div>' +
+            '<div class="col-right">' +
+              '<div class="sticky-note">' +
+                '<strong>Правила расследования:</strong><br/><br/>' +
+                '• У вас есть <strong>6 часов</strong> до приезда полиции.<br/>' +
+                '• Глубокий осмотр комнаты или каверзный вопрос на допросе тратит <strong>1 час</strong>.<br/>' +
+                '• Ввод кодов в 4 головоломках <strong>НЕ тратит время (0 часов)</strong>!<br/>' +
+                '• Обсуждайте улики за столом, вскрывайте коды и выносите вердикт.' +
+              '</div>' +
+              '<button class="btn btn-block" data-action="set-tab" data-tab="map">🗺️ Открыть карту шале →</button>' +
+              '<button class="btn btn-dark btn-block" data-action="set-tab" data-tab="puzzles">🔑 К 4 головоломкам с кодами</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function renderMapTab() {
+      var r = MAP_ROOMS[state.selectedRoom] || MAP_ROOMS.study;
+      var inspected = hasFlag(r.inspectFlag);
+      var roomKeys = ['study', 'hall', 'cellar', 'bar', 'security', 'terrace'];
+      var btnsHtml = '';
+      for (var i = 0; i < roomKeys.length; i++) {
+        var rk = roomKeys[i];
+        var rm = MAP_ROOMS[rk];
+        btnsHtml += '<button class="room-btn' + (state.selectedRoom === rk ? ' room-btn-active' : '') + '" data-action="select-room" data-room="' + rk + '">' +
+          (hasFlag(rm.inspectFlag) ? '✓ ' : '') + rm.name + '</button>';
+      }
+
+      return '' +
+        '<div class="journal-card">' +
+          '<h2 class="journal-title">Карта шале «Сердце Севера»</h2>' +
+          '<div class="two-col">' +
+            '<div class="col-left">' +
+              renderMapSVG() +
+              '<div class="room-btn-bar">' + btnsHtml + '</div>' +
+            '</div>' +
+            '<div class="col-right">' +
+              '<div class="stamp-red">' + r.floor + '</div>' +
+              '<h3 style="font-size:26px;margin:0 0 10px 0;">' + r.name + '</h3>' +
+              '<p class="journal-text">' + r.summary + '</p>' +
+              (inspected
+                ? '<div class="clue-item clue-unlocked"><strong>🔓 Результат осмотра:</strong><br/>' + r.inspectText + '</div>'
+                : '<button class="btn btn-block" data-action="inspect-room" data-room="' + r.id + '">🔎 Осмотреть тщательно (−1 час)</button>'
+              ) +
+              '<button class="btn btn-dark btn-block" data-action="set-tab" data-tab="' + r.actionTab + '">' + r.actionLabel + ' →</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function renderSuspectsTab() {
+      var keys = ['elena', 'mark', 'viktor', 'alina'];
+      var cardsHtml = '';
+      for (var i = 0; i < keys.length; i++) {
+        var s = SUSPECTS[keys[i]];
+        cardsHtml += '' +
+          '<button class="polaroid-card" data-action="select-suspect" data-suspect="' + s.id + '">' +
+            '<div class="polaroid-img">' + PORTRAITS[s.id] + '</div>' +
+            '<div class="polaroid-name">' + s.name + '</div>' +
+            '<div class="polaroid-role">' + s.role + '</div>' +
+          '</button>';
+      }
+
+      var cur = SUSPECTS[state.selectedSuspect] || SUSPECTS.elena;
+      var qHtml = '';
+      for (var j = 0; j < cur.questions.length; j++) {
+        var q = cur.questions[j];
+        var locked = q.reqFlag && !hasFlag(q.reqFlag);
+        var asked = hasAsked(q.id);
+        qHtml += '<div class="clue-item' + (asked ? ' clue-unlocked' : '') + '">';
+        qHtml += '<div style="font-weight:bold;margin-bottom:6px;">' +
+          (q.cost === 0 ? '[Базовый • 0 ч.] ' : '[Глубокий • −1 ч.] ') + q.title + '</div>';
+        if (locked) {
+          qHtml += '<div style="color:#b71c1c;font-size:14px;">🔒 Закрыто: ' + q.reqHint + '</div>';
+        } else {
+          qHtml += '<button class="btn' + (asked ? ' btn-dark' : '') + '" style="padding:8px 14px;font-size:15px;" data-action="ask-q" data-suspect="' + cur.id + '" data-q="' + q.id + '">' +
+            (asked ? 'Повторить ответ' : '🎙️ Задать вопрос') + '</button>';
+          if (asked) {
+            qHtml += '<div style="margin-top:8px;font-style:italic;">' + q.answer + '</div>';
+          }
+        }
+        qHtml += '</div>';
+      }
+
+      return '' +
+        '<div class="cork-board">' +
+          '<div class="polaroid-grid">' + cardsHtml + '</div>' +
+        '</div>' +
+        '<div class="journal-card">' +
+          '<div class="two-col">' +
+            '<div class="col-left">' +
+              '<div class="stamp-red">Досье подозреваемого • ' + cur.loc + '</div>' +
+              '<h2 class="journal-title">' + cur.name + '</h2>' +
+              '<p class="journal-text"><strong>Роль:</strong> ' + cur.role + '</p>' +
+              '<p class="journal-text">' + cur.bio + '</p>' +
+              '<div class="sticky-note"><strong>Алиби на 22:40:</strong> ' + cur.alibi + '</div>' +
+            '</div>' +
+            '<div class="col-right">' +
+              '<h3 style="font-size:22px;margin:0 0 10px 0;">Вопросы на допросе:</h3>' +
+              qHtml +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function renderPuzzlesTab() {
+      var pKeys = ['tablet', 'safe', 'locker', 'cctv'];
+      var subNav = '<div style="margin-bottom:14px;text-align:center;">';
+      for (var i = 0; i < pKeys.length; i++) {
+        var pk = pKeys[i];
+        var po = PUZZLES[pk];
+        var isSolved = hasFlag(po.flag);
+        subNav += '<button class="room-btn' + (state.selectedPuzzle === pk ? ' room-btn-active' : '') + '" data-action="select-puzzle" data-puzzle="' + pk + '">' +
+          (isSolved ? '🔓 ' : '🔒 ') + po.title + '</button>';
+      }
+      subNav += '</div>';
+
+      var cur = PUZZLES[state.selectedPuzzle] || PUZZLES.tablet;
+      var solved = hasFlag(cur.flag);
+      var fb = state.codeFeedback[cur.id];
+      var puzzleVisual = '';
+
+      if (cur.id === 'tablet') {
+        puzzleVisual = '' +
+          '<div class="sticky-note" style="font-family:Georgia,serif;font-size:21px;line-height:1.6;font-style:italic;">' +
+            '<strong style="color:#b71c1c;">К</strong>огда метель накроет перевал,<br/>' +
+            '<strong style="color:#b71c1c;">О</strong>шибки прошлого вернутся в этот дом.<br/>' +
+            '<strong style="color:#b71c1c;">М</strong>ой главный камень я от всех скрывал,<br/>' +
+            '<strong style="color:#b71c1c;">П</strong>одделку выставил в витрине под стеклом.<br/>' +
+            '<strong style="color:#b71c1c;">А</strong>ндрей мне снится, но пути назад уж нет —<br/>' +
+            '<strong style="color:#b71c1c;">С</strong>екрет мой тикает, храня полярный свет.' +
+          '</div>';
+      } else if (cur.id === 'safe') {
+        puzzleVisual = '' +
+          '<div class="clue-item"><strong>Страховой полис:</strong> «Сердце Севера», выплата <strong>4 млн €</strong> (оформлен на Елену Ветрову).</div>' +
+          '<div class="clue-item"><strong>Табличка экспедиции «Север-4»:</strong> <strong>18 ноября 2018</strong> — день находки алмаза.</div>' +
+          '<div class="sticky-note"><strong>Напоминалка на дверце сейфа (4 цифры):</strong><br/>День экспедиции (2 цифры) + сумма страховки в млн € (1 цифра) + последняя цифра года экспедиции (1 цифра).</div>';
+      } else if (cur.id === 'locker') {
+        puzzleVisual = '' +
+          '<div class="receipt-box">' +
+            '<div style="text-align:center;font-weight:bold;border-bottom:2px dashed #1e140c;padding-bottom:8px;margin-bottom:10px;">МАГАЗИН «ПОЛЮС» • ЧЕК №409</div>' +
+            '<div class="receipt-row"><span class="receipt-l">Перчатки зимние</span><span class="receipt-r">400 ₽</span></div>' +
+            '<div class="receipt-row"><span class="receipt-l">Фонарь налобный</span><span class="receipt-r">300 ₽</span></div>' +
+            '<div class="receipt-row"><span class="receipt-l">Термос стальной</span><span class="receipt-r">300 ₽</span></div>' +
+            '<div class="receipt-row" style="color:#2e7d32;"><span class="receipt-l">Скидка клиента:</span><span class="receipt-r">− 10%</span></div>' +
+            '<div class="receipt-row" style="border-top:2px solid #1e140c;padding-top:8px;font-size:20px;"><span class="receipt-l">ИТОГО ОПЛАЧЕНО:</span><span class="receipt-r" style="color:#b71c1c;">1 050 ₽</span></div>' +
+          '</div>' +
+          '<div class="sticky-note"><strong>Надпись на чеке (3 цифры):</strong> Код от шкафчика = сколько я переплатила (разница между оплатой и честной суммой со скидкой 10%).</div>';
+      } else if (cur.id === 'cctv') {
+        puzzleVisual = '' +
+          '<div class="crt-box">' +
+            '&gt; ТЕРМИНАЛ ОХРАНЫ • КАМЕРА №04 (2-Й ЭТАЖ)<br/>' +
+            '&gt; [22:00:00] ПИТАНИЕ: НОРМА<br/>' +
+            '&gt; <span style="color:#ff8a80;font-weight:bold;">[22:40:00] ОТКЛЮЧЕНИЕ ПИТАНИЯ (РУБИЛЬНИК)</span><br/>' +
+            '&gt; [22:43:00] ЗАПУСК ГЕНЕРАТОРА (+3 МИН)<br/><br/>' +
+            'ПОКАЗАНИЯ МАРКА ВОЛКОВА: «Я чётко слышал, как щёлкнул замок кабинета ровно за 5 минут до того, как погас свет.»<br/><br/>' +
+            'ВВЕДИТЕ ВРЕМЯ В ФОРМАТЕ ЧЧММ (4 ЦИФРЫ):' +
+          '</div>';
+      }
+
+      var inputArea = '';
+      if (solved) {
+        inputArea = '' +
+          '<div class="clue-item clue-unlocked" style="margin-top:14px;">' +
+            '<div style="font-size:20px;font-weight:bold;margin-bottom:6px;">🔓 ' + cur.secretTitle + '</div>' +
+            '<div>' + cur.secretText + '</div>' +
+          '</div>';
+      } else {
+        inputArea = '' +
+          '<div style="margin-top:16px;">' +
+            '<input id="code-input-' + cur.id + '" class="code-input" type="text" placeholder="' + cur.hint + '" />' +
+            '<button class="btn" data-action="check-code" data-puzzle="' + cur.id + '">Проверить код</button>' +
+            (fb ? '<div style="margin-top:10px;font-weight:bold;font-family:Arial,sans-serif;color:' + (fb.ok ? '#2e7d32' : '#b71c1c') + ';">' + fb.msg + '</div>' : '') +
+          '</div>';
+      }
+
+      return '' +
+        '<div class="journal-card">' +
+          subNav +
+          '<h2 class="journal-title">' + cur.title + '</h2>' +
+          '<div class="two-col">' +
+            '<div class="col-left">' + puzzleVisual + '</div>' +
+            '<div class="col-right" style="text-align:center;">' +
+              PUZZLE_SVGS[cur.id] +
+              '<div style="text-align:left;">' + inputArea + '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function renderVerdictTab() {
+      if (state.endingId) {
+        var end = ENDINGS[state.endingId];
+        return '' +
+          '<div class="journal-card">' +
+            '<div class="stamp-red">Дело закрыто</div>' +
+            '<h2 class="journal-title">' + end.title + '</h2>' +
+            '<div class="journal-sub">' + end.subtitle + '</div>' +
+            '<p class="journal-text">' + end.text + '</p>' +
+            '<div class="sticky-note">' +
+              '<strong>Итоги партии:</strong> Разгадано кодов: ' + countSolvedPuzzles() + ' из 4 • Осталось часов: ' + state.timeLeft + ' из 6.' +
+            '</div>' +
+            '<button class="btn" data-action="reset-game">🔄 Начать расследование заново</button>' +
+          '</div>';
+      }
+
+      if (state.verdictStep === 3) {
+        return '' +
+          '<div class="journal-card">' +
+            '<div class="stamp-red">Шаг 3 из 3 • Моральный выбор</div>' +
+            '<h2 class="journal-title">Шёпот Елены Ветровой</h2>' +
+            '<p class="journal-text" style="font-style:italic;">' +
+              '«Детективы, вы поймали убийцу и нашли настоящий бриллиант! Полиция ещё не знает про мою с Марком страховую аферу. Промолчите о расписке из сейфа — и я переведу вашей команде 500 000 €.»' +
+            '</p>' +
+            '<button class="btn btn-green btn-block" data-action="submit-moral" data-moral="expose">⚖️ Сдать Елену и Марка полиции</button>' +
+            '<button class="btn btn-block" data-action="submit-moral" data-moral="bribe">💰 Взять 500 000 € и скрыть аферу</button>' +
+          '</div>';
+      }
+
+      var killers = [
+        { id: 'elena', label: 'Елена Ветрова' },
+        { id: 'mark', label: 'Марк Волков' },
+        { id: 'viktor', label: 'Виктор Громов' },
+        { id: 'alina', label: 'Алина Смирнова' }
+      ];
+      var places = [
+        { id: 'cellar', label: 'В винном погребе за трубой' },
+        { id: 'purse', label: 'В сумочке Елены Ветровой' },
+        { id: 'compass', label: 'В латунном компасе Аркадия' },
+        { id: 'viktor', label: 'У Виктора Громова' }
+      ];
+
+      var kHtml = '';
+      for (var i = 0; i < killers.length; i++) {
+        var k = killers[i];
+        kHtml += '<button class="btn btn-block' + (state.verdictKiller === k.id ? '' : ' btn-dark') + '" data-action="pick-killer" data-val="' + k.id + '">' +
+          (state.verdictKiller === k.id ? '● ' : '○ ') + k.label + '</button>';
+      }
+
+      var pHtml = '';
+      for (var j = 0; j < places.length; j++) {
+        var pl = places[j];
+        pHtml += '<button class="btn btn-block' + (state.verdictDiamond === pl.id ? '' : ' btn-dark') + '" data-action="pick-diamond" data-val="' + pl.id + '">' +
+          (state.verdictDiamond === pl.id ? '● ' : '○ ') + pl.label + '</button>';
+      }
+
+      var canGo = state.verdictKiller && state.verdictDiamond;
+
+      return '' +
+        '<div class="journal-card">' +
+          '<div class="stamp-red">Финальное обвинение</div>' +
+          '<h2 class="journal-title">Вынесите вердикт</h2>' +
+          '<div class="two-col">' +
+            '<div class="col-half-left">' +
+              '<h3 style="font-size:20px;margin:0 0 8px 0;">1. Кто убил Аркадия Соколова?</h3>' +
+              kHtml +
+            '</div>' +
+            '<div class="col-half-right">' +
+              '<h3 style="font-size:20px;margin:0 0 8px 0;">2. Где настоящий бриллиант «Сердце Севера»?</h3>' +
+              pHtml +
+            '</div>' +
+          '</div>' +
+          '<div style="margin-top:16px;">' +
+            '<button class="btn btn-block' + (canGo ? ' btn-green' : ' btn-disabled') + '" data-action="submit-verdict">' +
+              '⚖️ Огласить финальный вердикт' +
+            '</button>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function renderMain() {
+      var isPhone = state.mode === 'phone';
+      var appEl = document.getElementById('app');
+      appEl.className = isPhone ? 'app-wrap phone-wrap' : 'app-wrap';
+
+      if (state.mode === 'landing') {
+        appEl.innerHTML = renderLanding();
+        return;
+      }
+
+      var tabs = [
+        { id: 'intro', label: '📖 Дело' },
+        { id: 'map', label: '🗺️ Карта' },
+        { id: 'suspects', label: '📌 Допросы' },
+        { id: 'puzzles', label: '🔑 Коды (' + countSolvedPuzzles() + '/4)' },
+        { id: 'verdict', label: '⚖️ Вердикт' }
+      ];
+      var navHtml = '<div class="nav-bar">';
+      for (var i = 0; i < tabs.length; i++) {
+        var t = tabs[i];
+        navHtml += '<button class="nav-btn' + (state.tab === t.id ? ' nav-btn-active' : '') + '" data-action="set-tab" data-tab="' + t.id + '">' + t.label + '</button>';
+      }
+      navHtml += '</div>';
+
+      var contentHtml = '';
+      if (state.tab === 'intro') contentHtml = renderIntroTab();
+      else if (state.tab === 'map') contentHtml = renderMapTab();
+      else if (state.tab === 'suspects') contentHtml = renderSuspectsTab();
+      else if (state.tab === 'puzzles') contentHtml = renderPuzzlesTab();
+      else if (state.tab === 'verdict') contentHtml = renderVerdictTab();
+
+      var headerHtml = '' +
+        '<div class="top-bar">' +
+          '<div class="top-bar-left">' +
+            '<div class="brand-sub">ДНЕВНИК №3 • ДЕЛО №404-Б (' + (isPhone ? 'ТЕЛЕФОН' : 'ТВ') + ')</div>' +
+            '<div class="brand-title">СЕРДЦЕ СЕВЕРА</div>' +
+          '</div>' +
+          '<div class="top-bar-right">' +
+            '<span class="stat-pill">🔑 Коды: ' + countSolvedPuzzles() + '/4</span>' +
+            '<span class="stat-pill' + (state.timeLeft <= 1 ? ' stat-pill-danger' : '') + '">⏱ Часы: ' + state.timeLeft + '/6</span>' +
+            '<button class="nav-btn" style="padding:6px 12px;font-size:14px;" data-action="reset-game">🔄</button>' +
+          '</div>' +
+        '</div>';
+
+      appEl.innerHTML = headerHtml + navHtml + contentHtml;
+    }
+
+    function render() {
+      renderMain();
+    }
+
+    // --- 8. ЕДИНЫЙ ОБРАБОТЧИК КЛИКОВ (ES5) ---
+
+    document.onclick = function(e) {
+      e = e || window.event;
+      var target = e.target || e.srcElement;
+      var el = findActionEl(target);
+      if (!el) return;
+
+      var act = el.getAttribute('data-action');
+      if (act === 'start-mode') {
+        state.mode = el.getAttribute('data-mode');
+        state.tab = 'intro';
+        render();
+      } else if (act === 'set-tab') {
+        state.tab = el.getAttribute('data-tab');
+        render();
+      } else if (act === 'select-room') {
+        state.selectedRoom = el.getAttribute('data-room');
+        render();
+      } else if (act === 'inspect-room') {
+        inspectRoom(el.getAttribute('data-room'));
+      } else if (act === 'select-suspect') {
+        state.selectedSuspect = el.getAttribute('data-suspect');
+        render();
+      } else if (act === 'ask-q') {
+        askQuestion(el.getAttribute('data-suspect'), el.getAttribute('data-q'));
+      } else if (act === 'select-puzzle') {
+        state.selectedPuzzle = el.getAttribute('data-puzzle');
+        render();
+      } else if (act === 'check-code') {
+        checkCode(el.getAttribute('data-puzzle'));
+      } else if (act === 'pick-killer') {
+        state.verdictKiller = el.getAttribute('data-val');
+        render();
+      } else if (act === 'pick-diamond') {
+        state.verdictDiamond = el.getAttribute('data-val');
+        render();
+      } else if (act === 'submit-verdict') {
+        submitVerdict(null);
+      } else if (act === 'submit-moral') {
+        submitVerdict(el.getAttribute('data-moral'));
+      } else if (act === 'reset-game') {
+        resetGame();
+      }
+    };
+
+    window.onload = function() {
+      render();
+    };
+  </script>
+</body>
+</html>
