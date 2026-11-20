@@ -1,0 +1,2844 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Дело №404-Б: Сердце Севера — Дневник расследования</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts (Cyrillic): Playfair Display (Journal), Caveat (Handwritten notes), Inter (UI), JetBrains Mono (Codes) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Playfair+Display:ital,wght@0,700;0,800;1,600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            hand: ['Caveat', 'cursive'],
+            mono: ['JetBrains Mono', 'Courier New', 'monospace'],
+          },
+          colors: {
+            forest: {
+              950: '#071117',
+              900: '#0d1d24',
+              800: '#142b33',
+              700: '#1d3c45',
+            },
+            parchment: {
+              100: '#fbf5e4',
+              200: '#f3e5c3',
+              300: '#e5cfa0',
+              400: '#cfb278',
+            },
+            amberlamp: {
+              300: '#fde08d',
+              400: '#f5b942',
+              500: '#de9520',
+            },
+            marker: {
+              red: '#c62828',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Gravity Falls nocturnal pine forest backdrop */
+    body {
+      background-color: #071117;
+      background-image:
+        radial-gradient(ellipse at 20% 10%, rgba(45, 115, 110, 0.22) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 85%, rgba(222, 149, 32, 0.14) 0%, transparent 45%);
+      color: #f1ece1;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Journal #3 Parchment Page */
+    .journal-page {
+      background: linear-gradient(155deg, #f8eed4 0%, #eddcb4 55%, #e2cb98 100%);
+      color: #241a10;
+      border: 3px solid #1e160e;
+      box-shadow:
+        6px 6px 0px rgba(0, 0, 0, 0.55),
+        inset 0 0 42px rgba(128, 86, 36, 0.22);
+      position: relative;
+    }
+
+    /* Cartoon ink border utility */
+    .ink-card {
+      border: 3px solid #16110c;
+      box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.55);
+    }
+
+    /* Corkboard texture for suspect polaroids */
+    .corkboard {
+      background-color: #6b4728;
+      background-image:
+        radial-gradient(rgba(0,0,0,0.18) 1px, transparent 0),
+        radial-gradient(rgba(255,235,195,0.12) 1px, transparent 0);
+      background-size: 18px 18px;
+      background-position: 0 0, 9px 9px;
+      border: 4px solid #2b1a0c;
+      box-shadow: inset 0 0 36px rgba(0,0,0,0.5), 6px 6px 0 rgba(0,0,0,0.5);
+    }
+
+    /* Taped Polaroid Frame */
+    .polaroid {
+      background: #fdfbf5;
+      color: #1f1913;
+      border: 2.5px solid #1c1610;
+      box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.42);
+      position: relative;
+    }
+    .tape-strip {
+      position: absolute;
+      top: -11px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg);
+      width: 68px;
+      height: 20px;
+      background: rgba(247, 232, 185, 0.78);
+      border: 1.5px solid rgba(130, 105, 62, 0.45);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      z-index: 5;
+    }
+
+    /* Security CRT Terminal */
+    .crt-monitor {
+      background: radial-gradient(circle at center, #0c2924 0%, #051210 100%);
+      border: 4px solid #171411;
+      box-shadow: inset 0 0 38px rgba(52, 211, 153, 0.2), 6px 6px 0 rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .crt-monitor::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.16) 0px,
+        rgba(0,0,0,0.16) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    /* Falling Snow Canvas */
+    #snow-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.55;
+    }
+
+    /* Interactive SVG map rooms */
+    .map-room {
+      cursor: pointer;
+      transition: filter 0.2s ease, transform 0.2s ease;
+    }
+    .map-room:hover {
+      filter: brightness(1.08);
+    }
+    .map-room-active {
+      filter: drop-shadow(0 0 10px rgba(245, 185, 66, 0.85));
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in {
+      animation: fadeSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes pulseRing {
+      0%, 100% { opacity: 0.9; }
+      50% { opacity: 0.4; }
+    }
+    .pulse-marker {
+      animation: pulseRing 1.8s ease-in-out infinite;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(7, 17, 23, 0.7); }
+    ::-webkit-scrollbar-thumb { background: rgba(245, 185, 66, 0.35); border-radius: 999px; }
+  </style>
+</head>
+<body class="antialiased selection:bg-amberlamp-400/30 selection:text-amberlamp-300">
+
+  <!-- Gentle Falling Snow Layer -->
+  <canvas id="snow-canvas"></canvas>
+
+  <!-- Main App Shell -->
+  <div id="app" class="min-h-screen flex flex-col relative z-10"></div>
+
+  <!-- Custom Modal (No alert/confirm) -->
+  <div id="modal-root" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-sm p-4"></div>
+
+  <!-- TV Toast Notifications -->
+  <div id="toast-root" class="fixed bottom-5 right-5 z-40 flex flex-col gap-3 max-w-md w-[90vw] pointer-events-none"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    /* =========================================================================
+       1. GRAVITY FALLS STYLE SVG ILLUSTRATIONS
+       ========================================================================= */
+
+    // Panoramic Snowy Chalet in Pine Forest (Title & Intro Art)
+    const SVG_CHALET_HERO = `
+      <svg viewBox="0 0 820 300" class="w-full h-auto block rounded-2xl border-[3px] border-[#16110c] shadow-lg">
+        <defs>
+          <linearGradient id="gfSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0a1929"/>
+            <stop offset="55%" stop-color="#153243"/>
+            <stop offset="100%" stop-color="#214d57"/>
+          </linearGradient>
+          <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff3c4" stop-opacity="0.9"/>
+            <stop offset="50%" stop-color="#fde08d" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#fde08d" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="winGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffd56b" stop-opacity="0.65"/>
+            <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Night Sky -->
+        <rect width="820" height="300" fill="url(#gfSky)"/>
+
+        <!-- Stars -->
+        <g fill="#fff8dc" opacity="0.85">
+          <circle cx="80" cy="45" r="1.8"/><circle cx="150" cy="72" r="1.3"/><circle cx="230" cy="36" r="2"/>
+          <circle cx="310" cy="60" r="1.5"/><circle cx="420" cy="28" r="1.8"/><circle cx="510" cy="52" r="1.3"/>
+          <circle cx="720" cy="48" r="2"/><circle cx="775" cy="88" r="1.5"/><circle cx="55" cy="105" r="1.4"/>
+        </g>
+
+        <!-- Moon & Halo -->
+        <circle cx="660" cy="72" r="68" fill="url(#moonGlow)"/>
+        <circle cx="660" cy="72" r="28" fill="#fef3c7" stroke="#1b1510" stroke-width="2.5"/>
+        <circle cx="652" cy="66" r="4" fill="#e6cfa0" opacity="0.7"/>
+        <circle cx="670" cy="78" r="5.5" fill="#e6cfa0" opacity="0.6"/>
+
+        <!-- Distant Misty Mountain Ridge -->
+        <path d="M0 215 L120 135 L235 190 L370 115 L520 185 L650 130 L820 200 L820 300 L0 300 Z" fill="#102530" stroke="#09151c" stroke-width="2.5"/>
+
+        <!-- Back Pine Forest Silhouettes -->
+        <g fill="#0c2024" stroke="#071316" stroke-width="2" stroke-linejoin="round">
+          <polygon points="40,235 68,140 96,235"/>
+          <polygon points="88,240 122,125 156,240"/>
+          <polygon points="150,240 180,155 210,240"/>
+          <polygon points="605,240 638,145 671,240"/>
+          <polygon points="660,240 700,120 740,240"/>
+          <polygon points="730,245 768,145 806,245"/>
+        </g>
+
+        <!-- Snow Ground -->
+        <path d="M0 245 Q210 226 410 242 Q615 256 820 232 L820 300 L0 300 Z" fill="#dcebf2" stroke="#16110c" stroke-width="3"/>
+        <path d="M295 252 Q405 268 445 300 L355 300 Q340 272 295 252 Z" fill="#b7d2e0" opacity="0.7"/>
+
+        <!-- Warm light spilling onto snow -->
+        <ellipse cx="410" cy="248" rx="145" ry="22" fill="url(#winGlow)"/>
+
+        <!-- Wooden Chalet "Сердце Севера" -->
+        <g stroke="#16110c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+          <!-- Chimney & Smoke -->
+          <path d="M495 104 Q508 88 500 72 Q515 58 510 40" fill="none" stroke="#cbd5e1" stroke-width="5" opacity="0.55"/>
+          <rect x="480" y="106" width="28" height="44" fill="#6e473b"/>
+          <rect x="475" y="102" width="38" height="9" fill="#eef6fa"/>
+
+          <!-- Main Log Cabin Body -->
+          <rect x="275" y="162" width="270" height="90" fill="#7c4a2d"/>
+          <!-- Horizontal log lines -->
+          <line x1="275" y1="180" x2="545" y2="180" stroke="#4d2c19" stroke-width="2"/>
+          <line x1="275" y1="198" x2="545" y2="198" stroke="#4d2c19" stroke-width="2"/>
+          <line x1="275" y1="216" x2="545" y2="216" stroke="#4d2c19" stroke-width="2"/>
+          <line x1="275" y1="234" x2="545" y2="234" stroke="#4d2c19" stroke-width="2"/>
+
+          <!-- Second Floor Attic Gable -->
+          <polygon points="248,166 410,82 572,166" fill="#5e3721"/>
+          <!-- Heavy Snow Roof -->
+          <path d="M236 168 L410 74 L584 168 L568 176 L410 92 L252 176 Z" fill="#edf6fa"/>
+          <!-- Icicles on roof -->
+          <path d="M262 173 L266 184 L270 171 M302 152 L306 162 L310 148 M516 148 L520 160 L524 152 M554 171 L558 183 L562 173" fill="#bae6fd" stroke="#16110c" stroke-width="1.5"/>
+
+          <!-- Attic Mystery Window (Viktor's Study — glowing warm!) -->
+          <polygon points="384,148 410,115 436,148" fill="#fbbf24"/>
+          <line x1="410" y1="115" x2="410" y2="148"/>
+          <line x1="395" y1="135" x2="425" y2="135"/>
+
+          <!-- Left & Right Ground Floor Windows -->
+          <rect x="298" y="182" width="46" height="40" rx="3" fill="#fbbf24"/>
+          <line x1="321" y1="182" x2="321" y2="222"/>
+          <line x1="298" y1="202" x2="344" y2="202"/>
+
+          <rect x="476" y="182" width="46" height="40" rx="3" fill="#fbbf24"/>
+          <line x1="499" y1="182" x2="499" y2="222"/>
+          <line x1="476" y1="202" x2="522" y2="202"/>
+
+          <!-- Wooden Front Door & Porch -->
+          <rect x="387" y="192" width="46" height="60" rx="4" fill="#472817"/>
+          <circle cx="424" cy="224" r="3" fill="#f5b942"/>
+          <!-- Mystery Sign above door -->
+          <rect x="368" y="168" width="84" height="18" rx="3" fill="#e5cfa0"/>
+          <text x="410" y="181" text-anchor="middle" font-family="serif" font-size="10" font-weight="bold" fill="#241a10" stroke="none">СЕРДЦЕ СЕВЕРА</text>
+        </g>
+
+        <!-- Foreground Stylized Gravity Falls Pines with Snow -->
+        <g stroke="#101816" stroke-width="2.5" stroke-linejoin="round">
+          <!-- Left big pine -->
+          <polygon points="15,285 62,175 109,285" fill="#173b36"/>
+          <polygon points="28,240 62,155 96,240" fill="#1e4d45"/>
+          <path d="M48 188 L62 155 L76 188 Q62 180 48 188 Z" fill="#e2f1f8"/>
+          <!-- Right big pine -->
+          <polygon points="710,285 758,168 806,285" fill="#173b36"/>
+          <polygon points="724,238 758,148 792,238" fill="#1e4d45"/>
+          <path d="M744 182 L758 148 L772 182 Q758 175 744 182 Z" fill="#e2f1f8"/>
+        </g>
+
+        <!-- Mystery Emblem (Journal #3 Compass-Eye) -->
+        <g transform="translate(758, 42)" opacity="0.9">
+          <circle cx="0" cy="0" r="22" fill="#0d1d24" stroke="#f5b942" stroke-width="2"/>
+          <polygon points="0,-16 5,-4 16,0 5,4 0,16 -5,4 -16,0 -5,-4" fill="#f5b942"/>
+          <circle cx="0" cy="0" r="4" fill="#0d1d24"/>
+        </g>
+      </svg>
+    `;
+
+    // 4 Expressive Gravity Falls Style Suspect Portraits (Bold ink outlines, big eyes, distinct noses & outfits)
+    const SUSPECT_PORTRAITS = {
+      irina: `
+        <svg viewBox="0 0 180 180" class="w-full h-full block">
+          <rect width="180" height="180" fill="#2b3a4a"/>
+          <!-- Subtle wallpaper stripes -->
+          <g stroke="#22303e" stroke-width="8"><line x1="20" y1="0" x2="20" y2="180"/><line x1="60" y1="0" x2="60" y2="180"/><line x1="100" y1="0" x2="100" y2="180"/><line x1="140" y1="0" x2="140" y2="180"/></g>
+          <g stroke="#1a1410" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Fur-trimmed Emerald Coat -->
+            <path d="M26 180 C30 138 56 126 90 126 C124 126 150 138 154 180 Z" fill="#166534"/>
+            <!-- Fluffy Fur Collar -->
+            <path d="M52 132 Q65 118 90 124 Q115 118 128 132 Q122 148 90 146 Q58 148 52 132 Z" fill="#f5e6cc"/>
+            <!-- Pearl Necklace -->
+            <circle cx="76" cy="144" r="3.5" fill="#fff"/><circle cx="85" cy="147" r="3.5" fill="#fff"/><circle cx="95" cy="147" r="3.5" fill="#fff"/><circle cx="104" cy="144" r="3.5" fill="#fff"/>
+            <!-- Neck -->
+            <rect x="80" y="106" width="20" height="24" rx="6" fill="#f7cfa8"/>
+            <!-- Back Auburn Hair -->
+            <path d="M44 82 C40 40 62 24 90 24 C118 24 140 40 136 82 C138 106 132 118 122 120 L58 120 C48 118 42 106 44 82 Z" fill="#8b3222"/>
+            <!-- Ears & Pearl Earrings -->
+            <circle cx="54" cy="84" r="7" fill="#f7cfa8"/><circle cx="126" cy="84" r="7" fill="#f7cfa8"/>
+            <circle cx="53" cy="94" r="4" fill="#fef3c7"/><circle cx="127" cy="94" r="4" fill="#fef3c7"/>
+            <!-- Face (Gravity Falls oval) -->
+            <path d="M56 76 C56 46 124 46 124 76 C124 106 108 118 90 118 C72 118 56 106 56 76 Z" fill="#fbd7b5"/>
+            <!-- Swept Bangs -->
+            <path d="M52 68 Q68 38 105 42 Q125 46 128 70 Q112 54 90 54 Q68 54 52 68 Z" fill="#a33c29"/>
+            <!-- Big Expressive Eyes -->
+            <ellipse cx="75" cy="78" rx="10" ry="11" fill="#ffffff"/>
+            <ellipse cx="105" cy="78" rx="10" ry="11" fill="#ffffff"/>
+            <circle cx="77" cy="79" r="4" fill="#1a1410"/>
+            <circle cx="103" cy="79" r="4" fill="#1a1410"/>
+            <circle cx="78.5" cy="77" r="1.4" fill="#fff" stroke="none"/>
+            <circle cx="104.5" cy="77" r="1.4" fill="#fff" stroke="none"/>
+            <!-- Eyelashes & Nervous Eyebrows -->
+            <path d="M64 72 L60 69 M116 72 L120 69"/>
+            <path d="M64 62 Q75 56 84 61" fill="none"/>
+            <path d="M96 63 Q106 56 116 61" fill="none"/>
+            <!-- Distinct Cartoon Nose -->
+            <path d="M89 79 Q96 86 88 90" fill="none"/>
+            <!-- Tense Red Lips -->
+            <path d="M80 101 Q90 98 100 102" fill="none" stroke="#b91c1c" stroke-width="3.2"/>
+            <!-- Sweat drop (nervous detail) -->
+            <path d="M119 64 Q124 71 119 74 Q114 71 119 64 Z" fill="#7dd3fc" stroke-width="2"/>
+          </g>
+        </svg>
+      `,
+      oleg: `
+        <svg viewBox="0 0 180 180" class="w-full h-full block">
+          <rect width="180" height="180" fill="#1e2f38"/>
+          <g stroke="#17242b" stroke-width="6"><line x1="0" y1="30" x2="180" y2="30"/><line x1="0" y1="90" x2="180" y2="90"/><line x1="0" y1="150" x2="180" y2="150"/></g>
+          <g stroke="#16110c" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Heavy Polar Parka -->
+            <path d="M18 180 C22 136 50 124 90 124 C130 124 158 136 162 180 Z" fill="#334155"/>
+            <!-- Parka Fur Hood -->
+            <path d="M44 128 Q90 144 136 128 Q144 148 128 156 Q90 162 52 156 Q36 148 44 128 Z" fill="#d6c5a9"/>
+            <!-- Security Badge & Radio on Shoulder -->
+            <rect x="116" y="152" width="18" height="22" rx="3" fill="#1e293b"/>
+            <line x1="125" y1="152" x2="125" y2="134" stroke="#16110c" stroke-width="3"/>
+            <polygon points="56,154 64,154 66,164 60,170 54,164" fill="#f5b942"/>
+            <!-- Thick Neck -->
+            <rect x="75" y="108" width="30" height="22" fill="#e8b892"/>
+            <!-- Ears -->
+            <circle cx="50" cy="84" r="8" fill="#e8b892"/><circle cx="130" cy="84" r="8" fill="#e8b892"/>
+            <!-- Square Grunkle-Stan-like Head -->
+            <rect x="52" y="42" width="76" height="76" rx="20" fill="#f0c39d"/>
+            <!-- 5-o'clock Shadow Stubble -->
+            <path d="M54 90 C54 112 70 118 90 118 C110 118 126 112 126 90 C114 96 66 96 54 90 Z" fill="#b89174" stroke="none" opacity="0.55"/>
+            <path d="M52 88 C52 110 68 118 90 118 C112 118 128 110 128 88" fill="none"/>
+            <!-- Warm Knitted Beanie -->
+            <path d="M48 60 C50 28 70 20 90 20 C110 20 130 28 132 60 Z" fill="#1e3a5f"/>
+            <rect x="46" y="52" width="88" height="14" rx="5" fill="#254d7a"/>
+            <!-- Thick Stern Eyebrows -->
+            <path d="M62 69 L84 73" stroke-width="5"/>
+            <path d="M118 69 L96 73" stroke-width="5"/>
+            <!-- Eyes -->
+            <ellipse cx="73" cy="81" rx="8.5" ry="9" fill="#fff"/>
+            <ellipse cx="107" cy="81" rx="8.5" ry="9" fill="#fff"/>
+            <circle cx="74" cy="82" r="3.5" fill="#16110c"/>
+            <circle cx="106" cy="82" r="3.5" fill="#16110c"/>
+            <!-- Big Bulbous Cartoon Nose -->
+            <ellipse cx="90" cy="91" rx="9" ry="7" fill="#e3a882"/>
+            <!-- Small Cheek Scar -->
+            <path d="M111 94 L119 98 M114 93 L112 98" stroke="#9f4b3b" stroke-width="2"/>
+            <!-- Grumpy Mouth -->
+            <path d="M77 106 Q90 102 103 106" fill="none"/>
+          </g>
+        </svg>
+      `,
+      dmitry: `
+        <svg viewBox="0 0 180 180" class="w-full h-full block">
+          <rect width="180" height="180" fill="#2e233b"/>
+          <circle cx="90" cy="90" r="76" fill="#3a2c4a" opacity="0.5"/>
+          <g stroke="#16110c" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Tweed Jacket & Bowtie -->
+            <path d="M26 180 C30 140 58 128 90 128 C122 128 150 140 154 180 Z" fill="#5c4738"/>
+            <polygon points="74,128 90,164 106,128" fill="#f8fafc"/>
+            <!-- Red Bowtie -->
+            <polygon points="76,133 90,140 76,147" fill="#b91c1c"/>
+            <polygon points="104,133 90,140 104,147" fill="#b91c1c"/>
+            <circle cx="90" cy="140" r="4" fill="#991b1b"/>
+            <!-- Neck -->
+            <rect x="80" y="108" width="20" height="22" fill="#f5cca8"/>
+            <!-- Ears -->
+            <circle cx="55" cy="82" r="7" fill="#f5cca8"/><circle cx="125" cy="82" r="7" fill="#f5cca8"/>
+            <!-- Narrow Sharp Face -->
+            <path d="M58 64 C58 40 122 40 122 64 C122 96 105 118 90 120 C75 118 58 96 58 64 Z" fill="#fad4b4"/>
+            <!-- Slicked-back Dark Hair with Silver Streaks -->
+            <path d="M55 68 C52 38 70 24 92 26 C116 28 128 42 125 68 C118 52 106 46 90 46 C74 46 62 52 55 68 Z" fill="#1e1b24"/>
+            <path d="M68 38 Q86 33 108 38" fill="none" stroke="#94a3b8" stroke-width="2.5"/>
+            <!-- Round Tinted Glasses (Mysterious Gravity Falls look) -->
+            <circle cx="74" cy="79" r="13" fill="#e0f2fe" fill-opacity="0.85"/>
+            <circle cx="106" cy="79" r="13" fill="#e0f2fe" fill-opacity="0.85"/>
+            <line x1="87" y1="79" x2="93" y2="79"/>
+            <circle cx="75" cy="79" r="3.5" fill="#16110c"/>
+            <circle cx="105" cy="79" r="3.5" fill="#16110c"/>
+            <!-- Glare lines on glasses -->
+            <line x1="67" y1="74" x2="72" y2="70" stroke="#fff" stroke-width="2"/>
+            <line x1="99" y1="74" x2="104" y2="70" stroke="#fff" stroke-width="2"/>
+            <!-- Sharp Pointed Nose -->
+            <path d="M90 79 L97 92 L87 93" fill="none"/>
+            <!-- Smirk & Neat Goatee -->
+            <path d="M81 103 Q92 106 101 100" fill="none"/>
+            <polygon points="84,112 96,112 90,122" fill="#1e1b24"/>
+            <!-- Jeweler's Loupe on chain -->
+            <circle cx="128" cy="154" r="10" fill="#f5b942"/>
+            <circle cx="128" cy="154" r="6" fill="#bae6fd"/>
+          </g>
+        </svg>
+      `,
+      maria: `
+        <svg viewBox="0 0 180 180" class="w-full h-full block">
+          <rect width="180" height="180" fill="#17332e"/>
+          <!-- Subtle snowflake background motif -->
+          <g stroke="#214a42" stroke-width="3"><line x1="30" y1="30" x2="50" y2="50"/><line x1="50" y1="30" x2="30" y2="50"/><line x1="130" y1="35" x2="150" y2="55"/><line x1="150" y1="35" x2="130" y2="55"/></g>
+          <g stroke="#16110c" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- High Hair Bun + Snowflake Hairpin -->
+            <circle cx="90" cy="28" r="16" fill="#1e242b"/>
+            <line x1="72" y1="24" x2="112" y2="34" stroke="#93e2ff" stroke-width="3"/>
+            <circle cx="112" cy="34" r="4.5" fill="#bae6fd"/>
+            <!-- Cozy Burgundy Turtleneck & Coat -->
+            <path d="M26 180 C30 138 56 126 90 126 C124 126 150 138 154 180 Z" fill="#1e293b"/>
+            <path d="M68 122 L112 122 L116 144 Q90 152 64 144 Z" fill="#7f1d1d"/>
+            <!-- Snowflake Pendant -->
+            <polygon points="90,154 96,161 90,168 84,161" fill="#7dd3fc"/>
+            <!-- Hair Frame -->
+            <path d="M52 84 C50 44 68 34 90 34 C112 34 130 44 128 84 C128 102 120 112 114 114 L66 114 C60 112 52 102 52 84 Z" fill="#1e242b"/>
+            <!-- Face -->
+            <path d="M59 74 C59 48 121 48 121 74 C121 102 106 116 90 116 C74 116 59 102 59 74 Z" fill="#fce1cb"/>
+            <!-- Neat Side Bangs -->
+            <path d="M57 68 Q78 52 98 54 Q112 56 122 70 Q116 44 90 44 Q64 44 57 68 Z" fill="#1e242b"/>
+            <!-- Calm Sharp Eyes -->
+            <ellipse cx="75" cy="78" rx="9.5" ry="10" fill="#fff"/>
+            <ellipse cx="105" cy="78" rx="9.5" ry="10" fill="#fff"/>
+            <circle cx="76" cy="78" r="4" fill="#0f766e"/>
+            <circle cx="104" cy="78" r="4" fill="#0f766e"/>
+            <circle cx="76" cy="78" r="2" fill="#16110c" stroke="none"/>
+            <circle cx="104" cy="78" r="2" fill="#16110c" stroke="none"/>
+            <circle cx="78" cy="76" r="1.4" fill="#fff" stroke="none"/>
+            <circle cx="106" cy="76" r="1.4" fill="#fff" stroke="none"/>
+            <!-- Calm Straight Eyebrows -->
+            <path d="M64 64 L84 65"/>
+            <path d="M96 65 L116 64"/>
+            <!-- Delicate Nose -->
+            <path d="M90 80 Q94 87 89 90" fill="none"/>
+            <!-- Composed Slight Smile -->
+            <path d="M82 100 Q90 103 98 100" fill="none"/>
+          </g>
+        </svg>
+      `
+    };
+
+    // Custom Gravity Falls Puzzle SVGs
+    const PUZZLE_SVGS = {
+      tablet: `
+        <svg viewBox="0 0 220 150" class="w-full max-w-[240px] mx-auto block">
+          <g stroke="#16110c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+            <rect x="20" y="12" width="180" height="126" rx="14" fill="#2c353d"/>
+            <rect x="34" y="24" width="152" height="102" rx="6" fill="#0d262b"/>
+            <!-- Padlock + Compass Icon on Screen -->
+            <circle cx="110" cy="68" r="26" fill="#153c42" stroke="#f5b942" stroke-width="2.5"/>
+            <path d="M100 66 V58 A10 10 0 0 1 120 58 V66" fill="none" stroke="#f5b942" stroke-width="3"/>
+            <rect x="96" y="66" width="28" height="20" rx="4" fill="#f5b942"/>
+            <circle cx="110" cy="76" r="3" fill="#16110c"/>
+            <text x="110" y="114" text-anchor="middle" font-family="monospace" font-size="11" fill="#7dd3fc" stroke="none">ВВЕДИТЕ ПАРОЛЬ (6 БУКВ)</text>
+            <circle cx="190" cy="75" r="4" fill="#475569"/>
+          </g>
+        </svg>
+      `,
+      safe: `
+        <svg viewBox="0 0 220 170" class="w-full max-w-[230px] mx-auto block">
+          <g stroke="#16110c" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round">
+            <!-- Heavy Steel Wall Safe -->
+            <rect x="24" y="14" width="172" height="142" rx="12" fill="#3b4a54"/>
+            <rect x="38" y="28" width="144" height="114" rx="6" fill="#516470"/>
+            <!-- Hinges -->
+            <rect x="30" y="44" width="12" height="24" rx="3" fill="#27323a"/>
+            <rect x="30" y="102" width="12" height="24" rx="3" fill="#27323a"/>
+            <!-- Brass Combination Dial -->
+            <circle cx="104" cy="85" r="32" fill="#e5b855"/>
+            <circle cx="104" cy="85" r="22" fill="#27323a"/>
+            <line x1="104" y1="63" x2="104" y2="71" stroke="#fde08d" stroke-width="3"/>
+            <line x1="104" y1="99" x2="104" y2="107" stroke="#fde08d" stroke-width="3"/>
+            <line x1="82" y1="85" x2="90" y2="85" stroke="#fde08d" stroke-width="3"/>
+            <line x1="118" y1="85" x2="126" y2="85" stroke="#fde08d" stroke-width="3"/>
+            <circle cx="104" cy="85" r="7" fill="#f5b942"/>
+            <!-- Handle -->
+            <rect x="152" y="66" width="12" height="38" rx="5" fill="#d4a030"/>
+            <!-- Sticky Note with red ? -->
+            <g transform="translate(132, 108) rotate(-8)">
+              <rect x="0" y="0" width="44" height="40" fill="#fef08a" stroke-width="2.5"/>
+              <text x="22" y="27" text-anchor="middle" font-family="serif" font-size="22" font-weight="bold" fill="#c62828" stroke="none">????</text>
+            </g>
+          </g>
+        </svg>
+      `,
+      locker: `
+        <svg viewBox="0 0 200 150" class="w-full max-w-[210px] mx-auto block">
+          <g stroke="#16110c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+            <!-- Steel Thermos & Padlock -->
+            <rect x="34" y="24" width="48" height="106" rx="10" fill="#94a3b8"/>
+            <rect x="38" y="14" width="40" height="14" rx="4" fill="#334155"/>
+            <rect x="34" y="54" width="48" height="24" fill="#cbd5e1"/>
+            <!-- Padlock -->
+            <path d="M118 68 V52 A16 16 0 0 1 150 52 V68" fill="none" stroke="#cbd5e1" stroke-width="7"/>
+            <path d="M118 68 V52 A16 16 0 0 1 150 52 V68" fill="none" stroke="#16110c" stroke-width="2.5"/>
+            <rect x="108" y="68" width="52" height="58" rx="8" fill="#d97706"/>
+            <rect x="116" y="84" width="36" height="22" rx="4" fill="#1e293b"/>
+            <text x="134" y="99" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#fde08d" stroke="none">_ _ _</text>
+          </g>
+        </svg>
+      `,
+      cctv: `
+        <svg viewBox="0 0 220 140" class="w-full max-w-[230px] mx-auto block">
+          <g stroke="#16110c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+            <!-- Security Camera -->
+            <path d="M26 24 L56 24 L56 44 L26 44 Z" fill="#475569"/>
+            <line x1="56" y1="34" x2="88" y2="54" stroke-width="5"/>
+            <g transform="rotate(14 125 65)">
+              <rect x="76" y="42" width="100" height="46" rx="6" fill="#cbd5e1"/>
+              <rect x="176" y="50" width="18" height="30" rx="3" fill="#1e293b"/>
+              <circle cx="186" cy="65" r="7" fill="#38bdf8"/>
+              <circle cx="94" cy="56" r="5" fill="#ef4444"/>
+            </g>
+            <!-- Red REC badge -->
+            <rect x="136" y="106" width="66" height="22" rx="6" fill="#991b1b"/>
+            <circle cx="150" cy="117" r="4" fill="#fca5a5"/>
+            <text x="176" y="121" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#fff" stroke="none">REC</text>
+          </g>
+        </svg>
+      `
+    };
+
+    /* =========================================================================
+       2. INTERACTIVE CHALET MAP DATA (6 ROOMS WITH FURNITURE & CLUES)
+       ========================================================================= */
+    const MAP_ROOMS = {
+      hall: {
+        id: 'hall',
+        name: 'Главный каминный зал',
+        floor: '1-й этаж • Место кражи',
+        suspects: ['irina', 'dmitry'],
+        summary: 'Уютный зал с огромным каменным камином и разбитой сигнализацией на стеклянной витрине. В 22:40 именно отсюда исчез голубой бриллиант «Сердце Севера».',
+        clues: [
+          { label: 'Витрина пуста, стекло цело — замок открыли ключом во время блэкаута.', reqFlag: null },
+          { label: 'Дмитрий Савин проверил камень тестером до показа: в витрине лежала СИНТЕТИЧЕСКАЯ ПОДДЕЛКА.', reqFlag: 'flag_fake_diamond' },
+          { label: 'Ирина призналась, что наняла Олега инсценировать кражу ради страховки в 4 млн €.', reqFlag: 'flag_irina_confessed' }
+        ],
+        actionSlide: 'suspect_irina',
+        actionLabel: 'Досье Ирины Кравцовой'
+      },
+      study: {
+        id: 'study',
+        name: 'Кабинет с сейфом',
+        floor: '2-й этаж • Место убийства',
+        suspects: [],
+        isCrimeScene: true,
+        summary: 'Огорожен жёлтой полицейской лентой. Дверь была заперта изнутри на засов. Тело Виктора Кравцова нашли у письменного стола с остывшим стальным термосом. На стене — потайной сейф Ирины.',
+        clues: [
+          { label: 'На столе лежит заблокированный планшет Виктора и вырванная страница дневника (Улика №1).', reqFlag: null },
+          { label: 'За картиной скрыт настенный сейф Ирины (Улика №2).', reqFlag: null },
+          { label: 'Дневник 2018: настоящий бриллиант Виктор спрятал под двойным дном своего латунного компаса!', reqFlag: 'flag_compass_secret' },
+          { label: 'Расписка из сейфа: Олег обещал вырубить свет в 22:40 и спрятать камень в погребе.', reqFlag: 'flag_insurance_scam' }
+        ],
+        actionSlide: 'puzzle_tablet',
+        actionLabel: 'Открыть Улику №1 (Планшет)'
+      },
+      cellar: {
+        id: 'cellar',
+        name: 'Винный погреб / Кладовая',
+        floor: 'Подвал • Тайник',
+        suspects: [],
+        summary: 'Прохладный каменный погреб с дубовыми бочками, запасами вина и отопительными трубами шале. Вход сюда есть только у персонала и начальника охраны.',
+        clues: [
+          { label: 'В воздухе пахнет старым деревом и керосином от котла. Пыль у дальней бочки недавно потревожили.', reqFlag: null },
+          { label: 'Олег Воронов признался: он спрятал украденный из витрины камень здесь за трубой, но камень показался ему подозрительно лёгким.', reqFlag: 'flag_oleg_confessed' }
+        ],
+        actionSlide: 'puzzle_safe',
+        actionLabel: 'Открыть Улику №2 (Сейф)'
+      },
+      bar: {
+        id: 'bar',
+        name: 'Бар и кухня куратора',
+        floor: '1-й этаж • Служебная зона',
+        suspects: ['maria'],
+        summary: 'Деревянная барная стойка, где весь вечер пил виски Дмитрий Савин, и подсобка куратора Марии Лебедевой. Именно здесь в 22:10 заваривали травяной чай для Виктора.',
+        clues: [
+          { label: 'У шкафчика Марии валяется смятый чек из магазина «Полюс» с пометкой от руки (Улика №3).', reqFlag: null },
+          { label: 'В шкафчике найден флакон с ядом АКОНИТ и фото брата Андрея Лебедева, погибшего в экспедиции 2018 года!', reqFlag: 'flag_maria_motive' }
+        ],
+        actionSlide: 'puzzle_locker',
+        actionLabel: 'Открыть Улику №3 (Чек)'
+      },
+      security: {
+        id: 'security',
+        name: 'Комната охраны',
+        floor: 'Подвал • Пульт и генератор',
+        suspects: ['oleg'],
+        summary: 'Закуток с гудящим резервным генератором, главным электрощитком и мониторами видеонаблюдения. В 22:40 рубильник отключили вручную ровно на 3 минуты.',
+        clues: [
+          { label: 'Архив камеры №04 (коридор 2-го этажа) требует ввести точное время выхода убийцы (Улика №4).', reqFlag: null },
+          { label: 'Кадр 22:35: Мария выходит из кабинета с термосом и латунным компасом, вытягивая леску из-под двери!', reqFlag: 'flag_cctv_proof' }
+        ],
+        actionSlide: 'puzzle_cctv',
+        actionLabel: 'Открыть Улику №4 (Камеры)'
+      },
+      terrace: {
+        id: 'terrace',
+        name: 'Заснеженная терраса',
+        floor: 'Снаружи • −28°C, метель',
+        suspects: [],
+        summary: 'Деревянная веранда, выходящая прямо в тёмный хвойный лес. Вокруг сугробы по пояс — метель полностью отрезала шале от внешнего мира.',
+        clues: [
+          { label: 'Свежий снег на перилах и ступенях абсолютно нетронут — никто чужой не приходил в шале и не уходил из него.', reqFlag: null },
+          { label: 'Под окном кабинета нет следов — преступник точно находится внутри шале среди четверых подозреваемых.', reqFlag: null }
+        ],
+        actionSlide: 'suspect_dmitry',
+        actionLabel: 'Досье Дмитрия Савина'
+      }
+    };
+
+    /* =========================================================================
+       3. GAME DATA — SUSPECTS, PUZZLES, SLIDES, ENDINGS (NO SPOILERS)
+       ========================================================================= */
+    const EVIDENCE_LIST = [
+      { flag: 'flag_compass_secret',  label: 'Дневник Виктора (2018)' },
+      { flag: 'flag_insurance_scam',  label: 'Расписка Олега (Сейф)' },
+      { flag: 'flag_maria_motive',    label: 'Аконит и фото брата' },
+      { flag: 'flag_cctv_proof',      label: 'Камера коридора 22:35' },
+      { flag: 'flag_fake_diamond',    label: 'Синтетическая подделка' },
+      { flag: 'flag_irina_confessed', label: 'Признание Ирины' },
+      { flag: 'flag_oleg_confessed',  label: 'Тайник в погребе' },
+      { flag: 'flag_maria_cornered',  label: 'Связь с Андреем' }
+    ];
+
+    const SUSPECTS = {
+      irina: {
+        id: 'irina',
+        name: 'Ирина Кравцова',
+        role: 'Жена Виктора, хозяйка шале',
+        age: '39 лет',
+        location: 'Главный каминный зал',
+        bio: 'Управляет шале «Сердце Севера» и организует закрытые приёмы. В последнее время шале приносит огромные убытки, а кредиторы требуют возврата долгов. Накануне вечера оформила страховку на 4 млн €.',
+        alibi: 'Утверждает, что в 22:40 находилась в каминном зале рядом с гостями и сразу побежала зажигать свечи.',
+        questions: [
+          {
+            id: 'q_irina_base',
+            title: 'Где вы были в 22:40 и зачем оформили страховку на 4 млн €?',
+            cost: 0,
+            reqFlag: null,
+            answer: '«Я была в главном зале у камина, когда погас свет — это подтвердят гости! А страховка на «Сердце Севера» — обычная мера перед закрытым показом. Я понятия не имею, кто мог отравить Виктора...»'
+          },
+          {
+            id: 'q_irina_scam',
+            title: 'Мы вскрыли ваш сейф и нашли расписку Олега на 200 000 €. Признавайтесь!',
+            cost: 1,
+            reqFlag: 'flag_insurance_scam',
+            reqLabel: 'Нужно вскрыть: Потайной сейф Ирины',
+            unlockFlag: 'flag_irina_confessed',
+            answer: 'Ирина бледнеет: «Хватит! Да, я банкрот! Я наняла Олега отключить генератор в 22:40 и инсценировать кражу ради страховки в 4 миллиона! Но клянусь — я НЕ убивала Виктора! В 22:25 он был жив, но жутко напуган — твердил, что прошлое его настигло.»'
+          },
+          {
+            id: 'q_irina_compass',
+            title: 'Что вы знаете об экспедиции 2018 года и латунном компасе Виктора?',
+            cost: 1,
+            reqFlag: 'flag_compass_secret',
+            reqLabel: 'Нужно открыть: Планшет Виктора',
+            unlockFlag: null,
+            answer: '«Виктор не расставался с этим старым компасом с 2018 года! Я думала, это талисман после той полярной экспедиции, где погиб его напарник Андрей... Подождите — после смерти Виктора компаса на столе не было!»'
+          }
+        ]
+      },
+      oleg: {
+        id: 'oleg',
+        name: 'Олег Воронов',
+        role: 'Начальник службы безопасности',
+        age: '46 лет',
+        location: 'Комната охраны',
+        bio: 'Бывший полярник с суровым характером, отвечает за охрану шале и генератор. Единственный, у кого есть прямой доступ к электрощитовой и ключам от винного погреба.',
+        alibi: 'Говорит, что в 22:40 спустился в подвал проверить давление в котле, когда внезапно вырубило свет, и 3 минуты запускал генератор.',
+        questions: [
+          {
+            id: 'q_oleg_base',
+            title: 'Что вы видели и слышали перед отключением света в 22:40?',
+            cost: 0,
+            reqFlag: null,
+            answer: '«Свет вырубило ровно в 22:40 на три минуты — старая проводка не выдержала бури. Перед спуском в подвал я проходил мимо лестницы на второй этаж. Ровно за 5 минут до отключения света я чётко слышал, как щёлкнул замок кабинета Кравцова.»'
+          },
+          {
+            id: 'q_oleg_scam',
+            title: 'У нас ваша расписка из сейфа Ирины. Куда вы дели бриллиант?',
+            cost: 1,
+            reqFlag: 'flag_insurance_scam',
+            reqLabel: 'Нужно вскрыть: Потайной сейф Ирины',
+            unlockFlag: 'flag_oleg_confessed',
+            answer: 'Олег тяжело вздыхает: «Ладно, детективы, крыть нечем. Я дёрнул рубильник в 22:40, вынес камень из витрины и спрятал в винном погребе за трубой. Но я никого не убивал! И кстати — камень из витрины показался мне подозрительно лёгким, как стекляшка.»'
+          },
+          {
+            id: 'q_oleg_trick',
+            title: 'Кабинет был заперт изнутри, но камера сняла Марию в 22:35. Как она это сделала?',
+            cost: 1,
+            reqFlag: 'flag_cctv_proof',
+            reqLabel: 'Нужно открыть: Архив камер охраны',
+            unlockFlag: null,
+            answer: 'Олег хмурится: «Старый полярный фокус. На язычок засова ставится тонкая леска с ледяным клином под порогом. Закрываешь дверь снаружи, тянешь леску — засов защёлкивается, а лёд в тёплом кабинете бесследно тает за десять минут!»'
+          }
+        ]
+      },
+      dmitry: {
+        id: 'dmitry',
+        name: 'Дмитрий Савин',
+        role: 'Арт-дилер, конкурент Виктора',
+        age: '44 года',
+        location: 'Главный каминный зал / Бар',
+        bio: 'Влиятельный коллекционер и давний деловой соперник Кравцова. Приехал на вечер без особого приглашения — между ними тянется крупный финансовый конфликт.',
+        alibi: 'Настаивает, что с 22:15 до 22:50 не отходил от барной стойки. Бармен и двое гостей это подтверждают.',
+        questions: [
+          {
+            id: 'q_dmitry_base',
+            title: 'Зачем вы приехали к своему главному конкуренту и где были в 22:40?',
+            cost: 0,
+            reqFlag: null,
+            answer: '«Я приехал потребовать старый долг — Кравцов задолжал мне полмиллиона ещё с прошлого аукциона. Но я не убийца! Спросите бармена: я весь вечер пил виски у стойки и ни разу не поднимался на второй этаж.»'
+          },
+          {
+            id: 'q_dmitry_fake',
+            title: 'Охрана заметила, как вы пристально осматривали витрину. Что вы скрываете?',
+            cost: 1,
+            reqFlag: null,
+            unlockFlag: 'flag_fake_diamond',
+            answer: 'Дмитрий усмехается и понижает голос: «Хорошо, скажу правду. Перед началом вечера я проверил камень через стекло карманным тестером. В витрине лежала СИНТЕТИЧЕСКАЯ ПОДДЕЛКА! Кто бы ни украл камень из зала — он вынес дешёвый муассанит. Настоящее «Сердце Севера» Виктор прятал в другом месте.»'
+          }
+        ]
+      },
+      maria: {
+        id: 'maria',
+        name: 'Мария Лебедева',
+        role: 'Частный куратор выставки',
+        age: '32 года',
+        location: 'Бар и кухня куратора',
+        bio: 'Приглашённый специалист по организации закрытых ювелирных экспозиций. Спокойная, предельно собранная, идеально знает расписание Виктора и устройство шале.',
+        alibi: 'Заявляет, что в 22:15 принесла Виктору горячий чай в термосе, после чего спустилась в подсобку за баром заполнять каталог.',
+        questions: [
+          {
+            id: 'q_maria_base',
+            title: 'Вы последней приносили Виктору чай. Как он себя чувствовал?',
+            cost: 0,
+            reqFlag: null,
+            answer: '«Виктор выглядел очень уставшим. Он попросил заварить травяной чай в его стальной термос и принести в кабинет. Я отдала термос около 22:15, он сказал, что закроется изнутри, чтобы отдохнуть. Больше я к нему не заходила.»'
+          },
+          {
+            id: 'q_maria_motive',
+            title: 'В вашем шкафчике найден флакон с аконитом и фото Андрея Лебедева! Это ваш брат?',
+            cost: 1,
+            reqFlag: 'flag_maria_motive',
+            reqLabel: 'Нужно вскрыть: Шкафчик куратора',
+            unlockFlag: 'flag_maria_cornered',
+            answer: 'Взгляд Марии становится ледяным: «Андрей был лучшим геологом в стране. 18 ноября 2018 года Кравцов бросил его замерзать в буране ради этого проклятого алмаза. Но старое фото и пустой флакон ещё не делают меня убийцей, детективы.»'
+          },
+          {
+            id: 'q_maria_cctv',
+            title: 'Камера в 22:35 сняла вас у кабинета с термосом и латунным компасом!',
+            cost: 1,
+            reqFlag: 'flag_cctv_proof',
+            reqLabel: 'Нужно открыть: Архив камер охраны',
+            unlockFlag: 'flag_maria_cornered',
+            answer: 'Мария холодно улыбается: «Вы копаете глубже, чем я ожидала. Кравцов получил то, что заслужил шесть лет назад. Но если хотите закрыть это дело — вам придётся точно объяснить полиции, где сейчас настоящий алмаз.»'
+          }
+        ]
+      }
+    };
+
+    const PUZZLES = {
+      tablet: {
+        id: 'tablet',
+        slideId: 'puzzle_tablet',
+        secretSlideId: 'secret_tablet',
+        title: 'Планшет Виктора',
+        subtitle: 'Пароль — слово (6 букв)',
+        placeholder: 'Введите слово...',
+        expected: ['КОМПАС'],
+        flag: 'flag_compass_secret',
+        secretTitle: 'Секрет №1: Дневник Виктора (2018)',
+        secretBody: 'Планшет разблокирован! В зашифрованной папке — запись от 20 ноября 2018 года:\n\n«Я сказал спасателям, что Андрей сорвался в расщелину, но я просто оставил его в пурге со сломанной ногой и забрал голубой алмаз. Чтобы никто не отследил камень, я заказал синтетический муассанит для витрины, а настоящий бриллиант «Сердце Севера» тайно вмонтировал под двойное дно своего старинного латунного компаса. Никто не догадается искать миллионы в старой полярной железке.»'
+      },
+      safe: {
+        id: 'safe',
+        slideId: 'puzzle_safe',
+        secretSlideId: 'secret_safe',
+        title: 'Потайной сейф Ирины',
+        subtitle: 'Код — 4 цифры',
+        placeholder: 'Например: 1234',
+        expected: ['1848'],
+        flag: 'flag_insurance_scam',
+        secretTitle: 'Секрет №2: Расписка из сейфа Ирины',
+        secretBody: 'Замок сейфа щёлкает и открывается! Внутри просроченные счета шале и расписка от Олега Воронова:\n\n«Ирина, как договорились: ровно в 22:40 вырубаю главный рубильник на 3 минуты. Забираю камень из витрины и прячу в винном погребе за трубой. Как только получишь страховку 4 млн €, переводишь мои 200 000 € и расходимся. О. Воронов.»'
+      },
+      locker: {
+        id: 'locker',
+        slideId: 'puzzle_locker',
+        secretSlideId: 'secret_locker',
+        title: 'Шкафчик куратора',
+        subtitle: 'Код — 3 цифры',
+        placeholder: 'Например: 123',
+        expected: ['150'],
+        flag: 'flag_maria_motive',
+        secretTitle: 'Секрет №3: Тайник Марии Лебедевой',
+        secretBody: 'Кодовый замок открыт! На дне шкафчика Марии спрятаны две вещи:\n\n1. Флакон с остатками настойки АКОНИТА (сильнейший растительный яд без резкого запаха, легко растворяется в горячем чае).\n2. Потёртая фотография 2018 года: молодая Мария обнимает мужчину в полярной куртке. На обороте: «Брат Андрей Лебедев. Полярная экспедиция, ноябрь 2018. Я найду правду.»'
+      },
+      cctv: {
+        id: 'cctv',
+        slideId: 'puzzle_cctv',
+        secretSlideId: 'secret_cctv',
+        title: 'Архив камер охраны',
+        subtitle: 'Время ЧЧММ — 4 цифры',
+        placeholder: 'Например: 2230',
+        expected: ['2235'],
+        flag: 'flag_cctv_proof',
+        secretTitle: 'Секрет №4: Кадр камеры коридора (22:35)',
+        secretBody: 'ЗАПИСЬ КАМЕРЫ №04 (Коридор 2-го этажа) — ТАЙМКОД 22:35:12:\n\nНа кадре отчётливо видно, как Мария Лебедева выходит из кабинета Виктора Кравцова, приседает у порога (аккуратно вытягивая тонкую леску) и быстро спускается по лестнице. В её руках — стальной термос и старинный ЛАТУННЫЙ КОМПАС Виктора. В это же время камера №07 фиксирует Олега в подвале у электрощитовой.'
+      }
+    };
+
+    const SLIDE_CATALOG = [
+      { id: 'intro',          group: 'Общее',         title: 'Вводная дела', icon: '📖' },
+      { id: 'map',            group: 'Общее',         title: 'Карта шале', icon: '🗺️' },
+      { id: 'board',          group: 'Общее',         title: 'Доска подозреваемых', icon: '📌' },
+      { id: 'suspect_irina',  group: 'Подозреваемые', title: 'Ирина Кравцова', icon: '👩' },
+      { id: 'suspect_oleg',   group: 'Подозреваемые', title: 'Олег Воронов', icon: '🛡️' },
+      { id: 'suspect_dmitry', group: 'Подозреваемые', title: 'Дмитрий Савин', icon: '🕶️' },
+      { id: 'suspect_maria',  group: 'Подозреваемые', title: 'Мария Лебедева', icon: '❄️' },
+      { id: 'puzzle_tablet',  group: 'Головоломки',   title: 'Улика 1: Планшет', icon: '📜' },
+      { id: 'puzzle_safe',    group: 'Головоломки',   title: 'Улика 2: Сейф', icon: '🔐' },
+      { id: 'puzzle_locker',  group: 'Головоломки',   title: 'Улика 3: Чек', icon: '🧾' },
+      { id: 'puzzle_cctv',    group: 'Головоломки',   title: 'Улика 4: Камеры', icon: '📹' },
+      { id: 'secret_tablet',  group: 'Секреты',       title: 'Дневник 2018', reqFlag: 'flag_compass_secret', icon: '🔓' },
+      { id: 'secret_safe',    group: 'Секреты',       title: 'Расписка Олега', reqFlag: 'flag_insurance_scam', icon: '🔓' },
+      { id: 'secret_locker',  group: 'Секреты',       title: 'Аконит и фото', reqFlag: 'flag_maria_motive', icon: '🔓' },
+      { id: 'secret_cctv',    group: 'Секреты',       title: 'Кадр 22:35', reqFlag: 'flag_cctv_proof', icon: '🔓' }
+    ];
+
+    const ENDINGS = {
+      perfect: {
+        id: 'perfect',
+        badge: 'КОНЦОВКА 1 ИЗ 4 • ЛЕГЕНДЫ СЫСКА',
+        title: 'Идеальное раскрытие',
+        color: 'emerald',
+        summary: 'Вы распутали оба преступления, переплетённых в снежную ночь в шале «Сердце Севера».',
+        story: 'Полиция задерживает Марию Лебедеву — в подкладке её пальто находят старинный латунный компас Виктора с настоящим голубым бриллиантом внутри. После вскрытия дневника 2018 года дело о гибели её брата Андрея пересматривают, что смягчает приговор. Ирина Кравцова и Олег Воронов арестованы за попытку страхового мошенничества, а подделку изымают из винного погреба.'
+      },
+      corrupt: {
+        id: 'corrupt',
+        badge: 'КОНЦОВКА 2 ИЗ 4 • СЕРАЯ МОРАЛЬ',
+        title: 'Сделка с совестью',
+        color: 'amber',
+        summary: 'Убийца наказана, настоящий бриллиант найден, но правосудие оказалось избирательным.',
+        story: 'Мария Лебедева арестована, а настоящий бриллиант извлечён из латунного компаса. Вы промолчали о расписке в сейфе — страховая афера Ирины и Олега осталась в тени. Через неделю на счёт вашей команды поступает анонимный перевод на 500 000 €. Вы богаты, но часть правды осталась погребена под снегом.'
+      },
+      partial: {
+        id: 'partial',
+        badge: 'КОНЦОВКА 3 ИЗ 4 • ТРЕЩИНА В ДЕЛЕ',
+        title: 'Неполная правда',
+        color: 'sky',
+        summary: 'Вы верно указали на Марию Лебедеву, но упустили ключевые улики или местонахождение камня.',
+        story: 'Полиция задерживает Марию, однако без точного указания на латунный компас или веских улик (аконита и записи камеры 22:35) адвокат разваливает дело через несколько недель. Пока следователи разбираются с подделкой в погребе, настоящий бриллиант бесследно исчезает.'
+      },
+      fail: {
+        id: 'fail',
+        badge: 'КОНЦОВКА 4 ИЗ 4 • ОШИБКА СЛЕДСТВИЯ',
+        title: 'Ошибка следствия',
+        color: 'rose',
+        summary: 'Вы обвинили невиновного в убийстве — настоящая преступница переиграла детективов.',
+        story: 'Пока полиция допрашивает не того подозреваемого и распутывает страховую аферу с поддельным камнем в винном погребе, Мария Лебедева спокойно покидает шале, как только расчищают дорогу. В её кармане тихо тикает старинный латунный компас с настоящим «Сердцем Севера» внутри.'
+      }
+    };
+
+    /* =========================================================================
+       4. WEB AUDIO API SOUND ENGINE (LOCK CLICK, CHIME, MYSTERY CHORD)
+       ========================================================================= */
+    const SoundFX = {
+      ctx: null,
+      muted: false,
+      init() {
+        if (!this.ctx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+      },
+      play(type) {
+        if (this.muted) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+
+          if (type === 'success') {
+            // Mechanical lock click + mysterious Gravity Falls chime
+            const click = this.ctx.createOscillator();
+            const clickGain = this.ctx.createGain();
+            click.type = 'square';
+            click.frequency.setValueAtTime(160, now);
+            click.frequency.exponentialRampToValueAtTime(55, now + 0.05);
+            clickGain.gain.setValueAtTime(0.14, now);
+            clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+            click.connect(clickGain);
+            clickGain.connect(this.ctx.destination);
+            click.start(now);
+            click.stop(now + 0.07);
+
+            [587.33, 698.46, 880, 1174.66].forEach((freq, i) => {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'triangle';
+              osc.frequency.setValueAtTime(freq, now + 0.08 + i * 0.09);
+              gain.gain.setValueAtTime(0.001, now + 0.08 + i * 0.09);
+              gain.gain.exponentialRampToValueAtTime(0.11, now + 0.1 + i * 0.09);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6 + i * 0.09);
+              osc.connect(gain);
+              gain.connect(this.ctx.destination);
+              osc.start(now + 0.08 + i * 0.09);
+              osc.stop(now + 0.65 + i * 0.09);
+            });
+          } else if (type === 'error') {
+            [175, 138].forEach((freq, i) => {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'sawtooth';
+              osc.frequency.setValueAtTime(freq, now + i * 0.12);
+              gain.gain.setValueAtTime(0.07, now + i * 0.12);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.22);
+              osc.connect(gain);
+              gain.connect(this.ctx.destination);
+              osc.start(now + i * 0.12);
+              osc.stop(now + i * 0.12 + 0.24);
+            });
+          } else if (type === 'interrogation' || type === 'info') {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(type === 'interrogation' ? 440 : 523.25, now);
+            osc.frequency.exponentialRampToValueAtTime(type === 'interrogation' ? 329.63 : 659.25, now + 0.18);
+            gain.gain.setValueAtTime(0.08, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.3);
+          } else if (type === 'verdict') {
+            // Dramatic minor-mystery chord
+            [146.83, 220.0, 261.63, 329.63].forEach((freq) => {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'triangle';
+              osc.frequency.setValueAtTime(freq, now);
+              gain.gain.setValueAtTime(0.001, now);
+              gain.gain.exponentialRampToValueAtTime(0.09, now + 0.15);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 1.9);
+              osc.connect(gain);
+              gain.connect(this.ctx.destination);
+              osc.start(now);
+              osc.stop(now + 2.0);
+            });
+          }
+        } catch (e) {}
+      }
+    };
+
+    /* =========================================================================
+       5. FIREBASE REALTIME SYNC (STRICT 3 RULES)
+       ========================================================================= */
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'serdtse-severa-404b';
+    let db = null;
+    let auth = null;
+    let currentUser = null;
+    let isFirebaseReady = false;
+    let unsubscribeRoom = null;
+
+    async function initBackend() {
+      try {
+        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+          const firebaseConfig = JSON.parse(__firebase_config);
+          const fbApp = initializeApp(firebaseConfig);
+          db = getFirestore(fbApp);
+          auth = getAuth(fbApp);
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+          currentUser = auth.currentUser;
+          isFirebaseReady = Boolean(currentUser && db);
+        }
+      } catch (err) {
+        console.warn('Firebase fallback to local mode:', err);
+        isFirebaseReady = false;
+      }
+    }
+
+    function getRoomDocRef(code) {
+      return doc(db, 'artifacts', appId, 'public', 'data', 'rooms', code);
+    }
+
+    function generateRoomCode() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let code = '';
+      for (let i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
+      return code;
+    }
+
+    function createInitialRoomData(code) {
+      return {
+        roomCode: code,
+        createdAt: Date.now(),
+        activeSlide: 'intro',
+        selectedMapRoom: 'study',
+        timeLeft: 6,
+        flags: [],
+        interrogationsDone: [],
+        lastInterrogation: null,
+        players: [],
+        lastEvent: {
+          id: 'evt_' + Date.now(),
+          type: 'info',
+          title: 'Дневник дела открыт',
+          message: 'Подключайтесь с телефонов по коду комнаты ' + code,
+          by: 'Система',
+          timestamp: Date.now()
+        },
+        verdict: null
+      };
+    }
+
+    /* =========================================================================
+       6. CLIENT STATE & ROOM ACTIONS
+       ========================================================================= */
+    const state = {
+      screen: 'landing', // 'landing' | 'tv' | 'phone'
+      roomCode: '',
+      playerName: 'Детектив',
+      playerId: 'p_' + Math.random().toString(36).slice(2, 9),
+      room: null,
+      tvDrawerOpen: false,
+      phoneTab: 'tv', // 'tv' | 'codes' | 'interrogations' | 'verdict'
+      selectedSuspectId: 'irina',
+      codeInputs: { tablet: '', safe: '', locker: '', cctv: '' },
+      codeFeedback: {},
+      verdictDraft: { killer: '', diamond: '', step: 1 },
+      lastSeenEventId: null,
+      landingJoinOpen: false,
+      landingJoinCode: '',
+      landingJoinName: '',
+      landingError: '',
+      isLoading: false
+    };
+
+    async function createTVRoom() {
+      state.isLoading = true;
+      render();
+      SoundFX.init();
+      const code = generateRoomCode();
+      const initialData = createInitialRoomData(code);
+
+      if (isFirebaseReady && currentUser) {
+        try {
+          await setDoc(getRoomDocRef(code), initialData);
+          state.roomCode = code;
+          state.playerName = 'ТВ-Штаб';
+          state.screen = 'tv';
+          state.isLoading = false;
+          subscribeToRoom(code);
+        } catch (err) {
+          console.error('Create room error:', err);
+          state.isLoading = false;
+          state.roomCode = code;
+          state.room = initialData;
+          state.playerName = 'ТВ-Штаб';
+          state.screen = 'tv';
+          render();
+        }
+      } else {
+        state.roomCode = code;
+        state.room = initialData;
+        state.playerName = 'ТВ-Штаб';
+        state.screen = 'tv';
+        state.isLoading = false;
+        render();
+      }
+    }
+
+    async function joinPhoneRoom() {
+      const code = state.landingJoinCode.trim().toUpperCase();
+      const name = state.landingJoinName.trim() || 'Детектив';
+      if (code.length !== 4) {
+        state.landingError = 'Введите 4-значный код комнаты с экрана телевизора.';
+        render();
+        return;
+      }
+      if (!isFirebaseReady || !currentUser) {
+        state.landingError = 'Облачная синхронизация недоступна в офлайн-режиме. Откройте игру в режиме ТВ и нажмите «Управление с этого экрана».';
+        render();
+        return;
+      }
+
+      state.isLoading = true;
+      state.landingError = '';
+      render();
+      SoundFX.init();
+
+      try {
+        const ref = getRoomDocRef(code);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) {
+          state.isLoading = false;
+          state.landingError = `Комната «${code}» не найдена. Проверьте код на экране ТВ.`;
+          render();
+          return;
+        }
+        const data = snap.data();
+        const players = Array.isArray(data.players) ? [...data.players] : [];
+        if (!players.some(p => p.id === state.playerId)) {
+          players.push({ id: state.playerId, name, joinedAt: Date.now() });
+        }
+
+        await updateDoc(ref, {
+          players,
+          lastEvent: {
+            id: 'evt_' + Date.now(),
+            type: 'info',
+            title: 'Новый детектив в деле',
+            message: `${name} присоединился к расследованию`,
+            by: name,
+            timestamp: Date.now()
+          }
+        });
+
+        state.roomCode = code;
+        state.playerName = name;
+        state.screen = 'phone';
+        state.isLoading = false;
+        subscribeToRoom(code);
+      } catch (err) {
+        console.error('Join room error:', err);
+        state.isLoading = false;
+        state.landingError = 'Ошибка подключения к комнате. Попробуйте ещё раз.';
+        render();
+      }
+    }
+
+    function subscribeToRoom(code) {
+      if (unsubscribeRoom) { unsubscribeRoom(); unsubscribeRoom = null; }
+      if (!isFirebaseReady || !currentUser) return;
+
+      unsubscribeRoom = onSnapshot(
+        getRoomDocRef(code),
+        (snap) => {
+          if (snap.exists()) {
+            const newRoom = snap.data();
+            const prevId = state.lastSeenEventId;
+            state.room = newRoom;
+            if (newRoom.lastEvent && newRoom.lastEvent.id !== prevId) {
+              state.lastSeenEventId = newRoom.lastEvent.id;
+              if (prevId !== null && state.screen === 'tv') {
+                showTVToast(newRoom.lastEvent);
+                SoundFX.play(newRoom.lastEvent.type || 'info');
+              }
+            }
+            render();
+          }
+        },
+        (error) => {
+          console.error('Firestore onSnapshot error:', error);
+        }
+      );
+    }
+
+    async function patchRoom(updates) {
+      if (!state.room) return;
+      if (isFirebaseReady && currentUser && state.roomCode) {
+        try {
+          await updateDoc(getRoomDocRef(state.roomCode), updates);
+        } catch (err) {
+          console.error('Update room error:', err);
+        }
+      } else {
+        state.room = { ...state.room, ...updates };
+        if (updates.lastEvent && state.screen === 'tv') {
+          state.lastSeenEventId = updates.lastEvent.id;
+          showTVToast(updates.lastEvent);
+          SoundFX.play(updates.lastEvent.type || 'info');
+        }
+        render();
+      }
+    }
+
+    function setActiveSlide(slideId) {
+      patchRoom({ activeSlide: slideId });
+    }
+
+    function selectMapRoom(roomId) {
+      if (!MAP_ROOMS[roomId]) return;
+      patchRoom({
+        activeSlide: 'map',
+        selectedMapRoom: roomId,
+        lastEvent: {
+          id: 'evt_' + Date.now(),
+          type: 'info',
+          title: `Осмотр локации`,
+          message: `${state.playerName} изучает: ${MAP_ROOMS[roomId].name}`,
+          by: state.playerName,
+          timestamp: Date.now()
+        }
+      });
+    }
+
+    function submitPuzzleCode(puzzleId) {
+      const puzzle = PUZZLES[puzzleId];
+      if (!puzzle || !state.room) return;
+      const raw = (state.codeInputs[puzzleId] || '').trim().toUpperCase().replace(/[\s:\-]/g, '');
+      if (!raw) return;
+
+      if (puzzle.expected.includes(raw)) {
+        const flags = Array.isArray(state.room.flags) ? [...state.room.flags] : [];
+        if (!flags.includes(puzzle.flag)) flags.push(puzzle.flag);
+        state.codeFeedback[puzzleId] = { type: 'success', text: 'Код принят! Секретная страница открыта на ТВ.' };
+        patchRoom({
+          flags,
+          activeSlide: puzzle.secretSlideId,
+          lastEvent: {
+            id: 'evt_' + Date.now(),
+            type: 'success',
+            title: `Код принят: ${puzzle.title}`,
+            message: `${state.playerName} открыл(а) секретную улику!`,
+            by: state.playerName,
+            timestamp: Date.now()
+          }
+        });
+      } else {
+        state.codeFeedback[puzzleId] = { type: 'error', text: 'Неверный код. Перепроверьте улику на экране ТВ.' };
+        patchRoom({
+          lastEvent: {
+            id: 'evt_' + Date.now(),
+            type: 'error',
+            title: `Ошибка доступа: ${puzzle.title}`,
+            message: `${state.playerName} ввёл неверный код (${raw})`,
+            by: state.playerName,
+            timestamp: Date.now()
+          }
+        });
+      }
+      render();
+    }
+
+    function askQuestion(suspectId, questionId) {
+      const suspect = SUSPECTS[suspectId];
+      if (!suspect || !state.room) return;
+      const q = suspect.questions.find(item => item.id === questionId);
+      if (!q) return;
+
+      const flags = Array.isArray(state.room.flags) ? [...state.room.flags] : [];
+      const done = Array.isArray(state.room.interrogationsDone) ? [...state.room.interrogationsDone] : [];
+      const alreadyAsked = done.includes(q.id);
+      if (q.reqFlag && !flags.includes(q.reqFlag)) return;
+
+      let timeLeft = state.room.timeLeft;
+      if (!alreadyAsked && q.cost > 0) {
+        if (timeLeft <= 0) {
+          showModal('Ходы закончились', 'Время расследования (6 ходов) истекло. Перейдите во вкладку «Вердикт», чтобы вынести обвинение!');
+          return;
+        }
+        timeLeft = Math.max(0, timeLeft - q.cost);
+      }
+
+      if (!alreadyAsked) done.push(q.id);
+      if (q.unlockFlag && !flags.includes(q.unlockFlag)) flags.push(q.unlockFlag);
+
+      patchRoom({
+        timeLeft,
+        flags,
+        interrogationsDone: done,
+        lastInterrogation: {
+          suspectId: suspect.id,
+          suspectName: suspect.name,
+          suspectRole: suspect.role,
+          question: q.title,
+          answer: q.answer,
+          cost: q.cost,
+          unlockedFlag: q.unlockFlag || null,
+          askedBy: state.playerName,
+          timestamp: Date.now()
+        },
+        activeSlide: 'interrogation_view',
+        lastEvent: {
+          id: 'evt_' + Date.now(),
+          type: 'interrogation',
+          title: `Допрос: ${suspect.name}`,
+          message: q.cost > 0 && !alreadyAsked
+            ? `${state.playerName} задал каверзный вопрос (−1 ход)`
+            : `${state.playerName} опрашивает подозреваемого`,
+          by: state.playerName,
+          timestamp: Date.now()
+        }
+      });
+    }
+
+    function computeEnding(killer, diamond, moralChoice) {
+      const flags = state.room?.flags || [];
+      if (killer !== 'maria') return 'fail';
+      const hasHardProof = flags.includes('flag_maria_motive') || flags.includes('flag_cctv_proof');
+      if (diamond !== 'compass' || !hasHardProof) return 'partial';
+      if (moralChoice === 'bribe') return 'corrupt';
+      return 'perfect';
+    }
+
+    function submitVerdict(moralChoice = null) {
+      const { killer, diamond } = state.verdictDraft;
+      if (!killer || !diamond || !state.room) return;
+      const flags = state.room.flags || [];
+      const hasHardProof = flags.includes('flag_maria_motive') || flags.includes('flag_cctv_proof');
+
+      if (
+        moralChoice === null &&
+        killer === 'maria' &&
+        diamond === 'compass' &&
+        hasHardProof &&
+        flags.includes('flag_insurance_scam')
+      ) {
+        state.verdictDraft.step = 3;
+        render();
+        return;
+      }
+
+      const endingId = computeEnding(killer, diamond, moralChoice);
+      patchRoom({
+        activeSlide: 'ending',
+        verdict: {
+          killer,
+          diamond,
+          moralChoice,
+          endingId,
+          submittedBy: state.playerName,
+          timestamp: Date.now()
+        },
+        lastEvent: {
+          id: 'evt_' + Date.now(),
+          type: 'verdict',
+          title: 'ВЕРДИКТ ВЫНЕСЕН',
+          message: `Дело закрыто: «${ENDINGS[endingId].title}»`,
+          by: state.playerName,
+          timestamp: Date.now()
+        }
+      });
+    }
+
+    function resetGame() {
+      showModal(
+        'Начать расследование заново?',
+        'Все открытые коды, допросы и вердикт будут сброшены, но подключённые игроки останутся в комнате.',
+        () => {
+          const players = state.room?.players || [];
+          state.verdictDraft = { killer: '', diamond: '', step: 1 };
+          state.codeInputs = { tablet: '', safe: '', locker: '', cctv: '' };
+          state.codeFeedback = {};
+          patchRoom({
+            activeSlide: 'intro',
+            selectedMapRoom: 'study',
+            timeLeft: 6,
+            flags: [],
+            interrogationsDone: [],
+            lastInterrogation: null,
+            verdict: null,
+            players,
+            lastEvent: {
+              id: 'evt_' + Date.now(),
+              type: 'info',
+              title: 'Дело открыто заново',
+              message: 'Все улики сброшены. Удачи, детективы!',
+              by: state.playerName,
+              timestamp: Date.now()
+            }
+          });
+        },
+        true
+      );
+    }
+
+    /* =========================================================================
+       7. HELPERS, MODAL & TOASTS
+       ========================================================================= */
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function getSolvedCodesCount(room) {
+      if (!room || !Array.isArray(room.flags)) return 0;
+      return Object.values(PUZZLES).filter(p => room.flags.includes(p.flag)).length;
+    }
+
+    function getEvidenceCount(room) {
+      if (!room || !Array.isArray(room.flags)) return 0;
+      return EVIDENCE_LIST.filter(e => room.flags.includes(e.flag)).length;
+    }
+
+    function showModal(title, message, onConfirm = null, showCancel = false) {
+      const root = document.getElementById('modal-root');
+      root.innerHTML = `
+        <div class="journal-page rounded-2xl max-w-md w-full p-6 animate-in">
+          <h3 class="font-serif text-2xl font-bold text-[#241a10] mb-2">${escapeHtml(title)}</h3>
+          <p class="text-[#3f2e1d] text-sm leading-relaxed mb-6">${escapeHtml(message)}</p>
+          <div class="flex justify-end gap-3">
+            ${showCancel ? `<button id="modal-cancel" class="px-4 py-2.5 rounded-xl bg-[#d6be8a] hover:bg-[#c9ad72] border-2 border-[#241a10] text-[#241a10] text-sm font-bold transition">Отмена</button>` : ''}
+            <button id="modal-ok" class="px-5 py-2.5 rounded-xl bg-amberlamp-400 hover:bg-amberlamp-300 border-2 border-[#241a10] text-[#1a120a] text-sm font-extrabold transition">Понятно</button>
+          </div>
+        </div>
+      `;
+      root.classList.remove('hidden');
+      root.classList.add('flex');
+      const close = () => { root.classList.add('hidden'); root.classList.remove('flex'); };
+      document.getElementById('modal-ok').onclick = () => { close(); if (onConfirm) onConfirm(); };
+      const cancelBtn = document.getElementById('modal-cancel');
+      if (cancelBtn) cancelBtn.onclick = close;
+    }
+
+    function showTVToast(evt) {
+      const root = document.getElementById('toast-root');
+      const styles = {
+        success: 'bg-[#ecfdf5] border-[#065f46] text-[#064e3b]',
+        error: 'bg-[#fef2f2] border-[#991b1b] text-[#7f1d1d]',
+        interrogation: 'bg-[#fef3c7] border-[#92400e] text-[#451a03]',
+        verdict: 'bg-[#f8eed4] border-[#1e160e] text-[#241a10]',
+        info: 'bg-[#f8eed4] border-[#1e160e] text-[#241a10]'
+      };
+      const icons = { success: '🔓', error: '⚠️', interrogation: '🎙️', verdict: '⚖️', info: '🔎' };
+      const el = document.createElement('div');
+      el.className = `pointer-events-auto rounded-2xl border-[3px] px-5 py-3.5 shadow-[5px_5px_0_rgba(0,0,0,0.5)] animate-in flex items-start gap-3 ${styles[evt.type] || styles.info}`;
+      el.innerHTML = `
+        <span class="text-2xl leading-none mt-0.5">${icons[evt.type] || '📌'}</span>
+        <div class="min-w-0">
+          <div class="font-serif font-bold text-base leading-tight">${escapeHtml(evt.title)}</div>
+          <div class="text-sm opacity-90 mt-0.5">${escapeHtml(evt.message)}</div>
+        </div>
+      `;
+      root.appendChild(el);
+      setTimeout(() => {
+        el.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(10px)';
+        setTimeout(() => el.remove(), 350);
+      }, 4200);
+    }
+
+    /* =========================================================================
+       8. INTERACTIVE GRAVITY FALLS SVG CHALET MAP RENDERER
+       ========================================================================= */
+    function renderInteractiveMapSVG(room) {
+      const activeId = room.selectedMapRoom || 'study';
+      const flags = room.flags || [];
+
+      const hasTablet = flags.includes('flag_compass_secret');
+      const hasSafe   = flags.includes('flag_insurance_scam');
+      const hasLocker = flags.includes('flag_maria_motive');
+      const hasCctv   = flags.includes('flag_cctv_proof');
+      const hasOleg   = flags.includes('flag_oleg_confessed');
+
+      const roomStroke = (id) => activeId === id ? '#f5b942' : '#1e160e';
+      const roomWidth  = (id) => activeId === id ? '5' : '3';
+
+      return `
+        <svg viewBox="0 0 760 520" class="w-full h-auto block select-none rounded-2xl border-[3px] border-[#1e160e] bg-[#e5d2a7] shadow-inner">
+          <defs>
+            <!-- Police tape stripe pattern -->
+            <pattern id="policeTape" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="8" height="16" fill="#facc15"/>
+              <rect x="8" width="8" height="16" fill="#18181b"/>
+            </pattern>
+            <!-- Wood floor lines -->
+            <pattern id="woodPlanks" width="24" height="12" patternUnits="userSpaceOnUse">
+              <rect width="24" height="12" fill="#d9ba86"/>
+              <line x1="0" y1="12" x2="24" y2="12" stroke="#bfa06b" stroke-width="1"/>
+            </pattern>
+            <pattern id="stoneTile" width="22" height="22" patternUnits="userSpaceOnUse">
+              <rect width="22" height="22" fill="#b7c0c4"/>
+              <rect width="22" height="22" fill="none" stroke="#9aa5ab" stroke-width="1"/>
+            </pattern>
+          </defs>
+
+          <!-- Snowy Forest Ground Perimeter -->
+          <rect width="760" height="520" fill="#d8e9ef"/>
+
+          <!-- Stylized Gravity Falls Snowy Pine Trees around the chalet -->
+          <g stroke="#16211e" stroke-width="2.5" stroke-linejoin="round">
+            <!-- Top-left trees -->
+            <g transform="translate(36,44)"><polygon points="0,-24 -20,18 20,18" fill="#1e4d42"/><polygon points="0,-24 -9,-2 9,-2" fill="#f1f5f9"/></g>
+            <g transform="translate(86,28)"><polygon points="0,-20 -16,14 16,14" fill="#173d34"/><polygon points="0,-20 -7,-2 7,-2" fill="#f1f5f9"/></g>
+            <!-- Top-right trees -->
+            <g transform="translate(690,34)"><polygon points="0,-22 -18,16 18,16" fill="#1e4d42"/><polygon points="0,-22 -8,-2 8,-2" fill="#f1f5f9"/></g>
+            <g transform="translate(730,68)"><polygon points="0,-24 -20,18 20,18" fill="#173d34"/><polygon points="0,-24 -9,-2 9,-2" fill="#f1f5f9"/></g>
+            <!-- Bottom-left trees -->
+            <g transform="translate(34,470)"><polygon points="0,-24 -20,18 20,18" fill="#1e4d42"/><polygon points="0,-24 -9,-2 9,-2" fill="#f1f5f9"/></g>
+            <g transform="translate(724,468)"><polygon points="0,-24 -20,18 20,18" fill="#1e4d42"/><polygon points="0,-24 -9,-2 9,-2" fill="#f1f5f9"/></g>
+            <g transform="translate(680,486)"><polygon points="0,-18 -15,14 15,14" fill="#173d34"/></g>
+          </g>
+
+          <!-- Journal #3 Compass Rose (top-left) -->
+          <g transform="translate(66, 108)" opacity="0.85">
+            <circle cx="0" cy="0" r="20" fill="#f8eed4" stroke="#1e160e" stroke-width="2"/>
+            <polygon points="0,-16 4,-3 16,0 4,3 0,16 -4,3 -16,0 -4,-3" fill="#c62828"/>
+            <text x="0" y="-23" text-anchor="middle" font-family="serif" font-size="11" font-weight="bold" fill="#1e160e">С</text>
+          </g>
+
+          <!-- Chalet Outer Log Wall Shadow -->
+          <rect x="108" y="64" width="548" height="394" rx="14" fill="#4a2d18" stroke="#1e160e" stroke-width="4"/>
+
+          <!-- ================= ROOM 1: КАБИНЕТ С СЕЙФОМ (STUDY) ================= -->
+          <g class="map-room ${activeId === 'study' ? 'map-room-active' : ''}" data-action="select-map-room" data-room="study">
+            <rect x="118" y="74" width="234" height="172" rx="6" fill="url(#woodPlanks)" stroke="${roomStroke('study')}" stroke-width="${roomWidth('study')}"/>
+            <!-- Rug -->
+            <rect x="150" y="122" width="130" height="84" rx="4" fill="#991b1b" opacity="0.85" stroke="#1e160e" stroke-width="2"/>
+            <!-- Viktor's Desk + Mug -->
+            <rect x="134" y="92" width="76" height="32" rx="3" fill="#6b3e23" stroke="#1e160e" stroke-width="2"/>
+            <circle cx="195" cy="108" r="4" fill="#cbd5e1" stroke="#1e160e" stroke-width="1.5"/>
+            <!-- Wall Safe Icon -->
+            <rect x="308" y="84" width="32" height="24" rx="3" fill="#475569" stroke="#1e160e" stroke-width="2"/>
+            <circle cx="324" cy="96" r="5" fill="#f5b942" stroke="#1e160e" stroke-width="1.5"/>
+            <!-- Yellow Police Tape across corner -->
+            <polygon points="118,220 184,246 164,246 118,228" fill="url(#policeTape)" stroke="#1e160e" stroke-width="1.5"/>
+            <polygon points="274,74 352,116 352,130 256,74" fill="url(#policeTape)" stroke="#1e160e" stroke-width="1.5"/>
+            <!-- Label -->
+            <rect x="128" y="214" width="166" height="24" rx="5" fill="#fdf5e2" stroke="#1e160e" stroke-width="2"/>
+            <text x="211" y="230" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="800" fill="#1e160e">КАБИНЕТ С СЕЙФОМ</text>
+            <!-- Clue Badges -->
+            <g transform="translate(226, 152)">
+              <circle r="13" fill="${hasTablet ? '#10b981' : '#c62828'}" stroke="#1e160e" stroke-width="2" class="${hasTablet ? '' : 'pulse-marker'}"/>
+              <text y="4" text-anchor="middle" font-size="12" fill="#fff">${hasTablet ? '✓' : '1'}</text>
+            </g>
+            <g transform="translate(324, 132)">
+              <circle r="13" fill="${hasSafe ? '#10b981' : '#d97706'}" stroke="#1e160e" stroke-width="2"/>
+              <text y="4" text-anchor="middle" font-size="12" fill="#fff">${hasSafe ? '✓' : '2'}</text>
+            </g>
+          </g>
+
+          <!-- ================= ROOM 2: ГЛАВНЫЙ КАМИННЫЙ ЗАЛ (HALL) ================= -->
+          <g class="map-room ${activeId === 'hall' ? 'map-room-active' : ''}" data-action="select-map-room" data-room="hall">
+            <rect x="358" y="74" width="288" height="172" rx="6" fill="url(#woodPlanks)" stroke="${roomStroke('hall')}" stroke-width="${roomWidth('hall')}"/>
+            <!-- Stone Fireplace -->
+            <rect x="462" y="76" width="80" height="24" rx="3" fill="#64748b" stroke="#1e160e" stroke-width="2"/>
+            <path d="M488 98 Q502 82 516 98 Z" fill="#f97316" stroke="#1e160e" stroke-width="1.5"/>
+            <!-- Diamond Display Pedestal (Center) -->
+            <rect x="478" y="138" width="48" height="48" rx="6" fill="#bae6fd" stroke="#1e160e" stroke-width="2.5"/>
+            <polygon points="502,148 514,162 502,176 490,162" fill="#38bdf8" stroke="#1e160e" stroke-width="2"/>
+            <!-- Sofas -->
+            <rect x="380" y="132" width="26" height="62" rx="5" fill="#7c2d12" stroke="#1e160e" stroke-width="2"/>
+            <rect x="598" y="132" width="26" height="62" rx="5" fill="#7c2d12" stroke="#1e160e" stroke-width="2"/>
+            <!-- Suspect Pins: Irina & Dmitry -->
+            <g transform="translate(425, 114)">
+              <circle r="14" fill="#f5b942" stroke="#1e160e" stroke-width="2"/>
+              <text y="4" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e160e">И</text>
+            </g>
+            <g transform="translate(574, 114)">
+              <circle r="14" fill="#a855f7" stroke="#1e160e" stroke-width="2"/>
+              <text y="4" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Д</text>
+            </g>
+            <!-- Label -->
+            <rect x="410" y="214" width="184" height="24" rx="5" fill="#fdf5e2" stroke="#1e160e" stroke-width="2"/>
+            <text x="502" y="230" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="800" fill="#1e160e">ГЛАВНЫЙ КАМИННЫЙ ЗАЛ</text>
+          </g>
+
+          <!-- ================= ROOM 3: ВИННЫЙ ПОГРЕБ / КЛАДОВАЯ (CELLAR) ================= -->
+          <g class="map-room ${activeId === 'cellar' ? 'map-room-active' : ''}" data-action="select-map-room" data-room="cellar">
+            <rect x="118" y="252" width="166" height="196" rx="6" fill="url(#stoneTile)" stroke="${roomStroke('cellar')}" stroke-width="${roomWidth('cellar')}"/>
+            <!-- Wine Barrels -->
+            <circle cx="152" cy="292" r="18" fill="#854d0e" stroke="#1e160e" stroke-width="2"/>
+            <circle cx="152" cy="336" r="18" fill="#854d0e" stroke="#1e160e" stroke-width="2"/>
+            <circle cx="152" cy="380" r="18" fill="#854d0e" stroke="#1e160e" stroke-width="2"/>
+            <!-- Heating Pipes -->
+            <line x1="256" y1="262" x2="256" y2="412" stroke="#475569" stroke-width="8" stroke-linecap="round"/>
+            <line x1="256" y1="262" x2="256" y2="412" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+            ${hasOleg ? `
+              <g transform="translate(226, 336)">
+                <circle r="14" fill="#f59e0b" stroke="#1e160e" stroke-width="2"/>
+                <text y="5" text-anchor="middle" font-size="13">💎</text>
+              </g>
+            ` : ''}
+            <!-- Label -->
+            <rect x="128" y="416" width="146" height="24" rx="5" fill="#fdf5e2" stroke="#1e160e" stroke-width="2"/>
+            <text x="201" y="432" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#1e160e">ПОГРЕБ / КЛАДОВАЯ</text>
+          </g>
+
+          <!-- ================= ROOM 4: БАР И КУХНЯ (BAR) ================= -->
+          <g class="map-room ${activeId === 'bar' ? 'map-room-active' : ''}" data-action="select-map-room" data-room="bar">
+            <rect x="290" y="252" width="176" height="196" rx="6" fill="#e6cfa5" stroke="${roomStroke('bar')}" stroke-width="${roomWidth('bar')}"/>
+            <!-- Bar Counter -->
+            <path d="M312 282 H436 V306 H336 V362 H312 Z" fill="#713f12" stroke="#1e160e" stroke-width="2.5"/>
+            <!-- Bar Stools -->
+            <circle cx="358" cy="322" r="9" fill="#b45309" stroke="#1e160e" stroke-width="2"/>
+            <circle cx="390" cy="322" r="9" fill="#b45309" stroke="#1e160e" stroke-width="2"/>
+            <circle cx="422" cy="322" r="9" fill="#b45309" stroke="#1e160e" stroke-width="2"/>
+            <!-- Maria's Locker -->
+            <rect x="412" y="366" width="38" height="32" rx="3" fill="#475569" stroke="#1e160e" stroke-width="2"/>
+            <!-- Maria Pin -->
+            <g transform="translate(362, 376)">
+              <circle r="14" fill="#10b981" stroke="#1e160e" stroke-width="2"/>
+              <text y="4" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">М</text>
+            </g>
+            <!-- Clue Badge 3 -->
+            <g transform="translate(431, 358)">
+              <circle r="13" fill="${hasLocker ? '#10b981' : '#d97706'}" stroke="#1e160e" stroke-width="2"/>
+              <text y="4" text-anchor="middle" font-size="12" fill="#fff">${hasLocker ? '✓' : '3'}</text>
+            </g>
+            <!-- Label -->
+            <rect x="308" y="416" width="140" height="24" rx="5" fill="#fdf5e2" stroke="#1e160e" stroke-width="2"/>
+            <text x="378" y="432" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="800" fill="#1e160e">БАР И КУХНЯ</text>
+          </g>
+
+          <!-- ================= ROOM 5: КОМНАТА ОХРАНЫ (SECURITY) ================= -->
+          <g class="map-room ${activeId === 'security' ? 'map-room-active' : ''}" data-action="select-map-room" data-room="security">
+            <rect x="472" y="252" width="174" height="114" rx="6" fill="#9fb0b8" stroke="${roomStroke('security')}" stroke-width="${roomWidth('security')}"/>
+            <!-- Monitor Desk -->
+            <rect x="490" y="268" width="92" height="24" rx="3" fill="#1e293b" stroke="#1e160e" stroke-width="2"/>
+            <rect x="498" y="273" width="22" height="14" fill="#34d399"/>
+            <rect x="526" y="273" width="22" height="14" fill="#34d399"/>
+            <rect x="554" y="273" width="22" height="14" fill="#38bdf8"/>
+            <!-- Generator Box -->
+            <rect x="602" y="270" width="32" height="44" rx="3" fill="#ca8a04" stroke="#1e160e" stroke-width="2"/>
+            <text x="618" y="297" text-anchor="middle" font-size="14">⚡</text>
+            <!-- Oleg Pin -->
+            <g transform="translate(520, 316)">
+              <circle r="14" fill="#0284c7" stroke="#1e160e" stroke-width="2"/>
+              <text y="4" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">О</text>
+            </g>
+            <!-- Clue Badge 4 -->
+            <g transform="translate(576, 316)">
+              <circle r="13" fill="${hasCctv ? '#10b981' : '#d97706'}" stroke="#1e160e" stroke-width="2"/>
+              <text y="4" text-anchor="middle" font-size="12" fill="#fff">${hasCctv ? '✓' : '4'}</text>
+            </g>
+            <!-- Label -->
+            <rect x="488" y="336" width="142" height="22" rx="5" fill="#fdf5e2" stroke="#1e160e" stroke-width="2"/>
+            <text x="559" y="351" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#1e160e">КОМНАТА ОХРАНЫ</text>
+          </g>
+
+          <!-- ================= ROOM 6: ЗАСНЕЖЕННАЯ ТЕРРАСА (TERRACE) ================= -->
+          <g class="map-room ${activeId === 'terrace' ? 'map-room-active' : ''}" data-action="select-map-room" data-room="terrace">
+            <rect x="472" y="372" width="174" height="76" rx="6" fill="#e0f2fe" stroke="${roomStroke('terrace')}" stroke-width="${roomWidth('terrace')}"/>
+            <!-- Snowdrifts -->
+            <path d="M474 416 Q515 398 560 418 Q604 404 644 416 L644 446 L474 446 Z" fill="#bae6fd" opacity="0.8"/>
+            <text x="559" y="396" text-anchor="middle" font-size="16">❄️ ❄️ ❄️</text>
+            <!-- Label -->
+            <rect x="484" y="418" width="150" height="22" rx="5" fill="#fdf5e2" stroke="#1e160e" stroke-width="2"/>
+            <text x="559" y="433" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="800" fill="#1e160e">ЗАСНЕЖЕННАЯ ТЕРРАСА</text>
+          </g>
+
+          <!-- ================= DASHED MYSTERY ROUTES (JOURNAL #3 RED MARKER) ================= -->
+          <g fill="none" stroke="#c62828" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round" opacity="0.85">
+            <!-- Route: Bar -> Study (Tea delivery / 22:35) -->
+            <path d="M350 280 Q320 235 282 195"/>
+            <!-- Route: Security -> Hall (22:40 Blackout theft) -->
+            ${hasSafe || hasOleg ? `<path d="M555 256 Q560 212 528 182" stroke="#0284c7"/>` : ''}
+          </g>
+
+          <!-- Legend Strip at Bottom -->
+          <g transform="translate(118, 474)">
+            <rect width="528" height="32" rx="8" fill="#fdf5e2" stroke="#1e160e" stroke-width="2"/>
+            <text x="16" y="20" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" fill="#241a10">
+              И — Ирина   •   О — Олег   •   Д — Дмитрий   •   М — Мария   •   1-4 — Коды улик
+            </text>
+          </g>
+        </svg>
+      `;
+    }
+
+    /* =========================================================================
+       9. RENDERERS — LANDING SCREEN
+       ========================================================================= */
+    function renderLanding() {
+      return `
+        <div class="flex-1 flex flex-col items-center justify-center p-4 sm:p-6">
+          <div class="w-full max-w-4xl journal-page rounded-3xl p-5 sm:p-8 animate-in">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#241a10] text-amberlamp-300 text-xs font-mono uppercase tracking-widest">
+                🌲 Дневник №3 • Дело №404-Б
+              </span>
+              <span class="text-xs font-mono font-bold text-[#5c4226]">
+                ${isFirebaseReady ? '🟢 Облачная синхронизация ТВ + Телефон' : '🟡 Локальный режим (1 экран)'}
+              </span>
+            </div>
+
+            <!-- Gravity Falls Chalet Hero SVG -->
+            <div class="mb-5">${SVG_CHALET_HERO}</div>
+
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-3">
+              <div>
+                <h1 class="font-serif text-3xl sm:text-5xl font-extrabold text-[#1e150c] leading-tight">
+                  Тайна «Сердца Севера»
+                </h1>
+                <p class="font-hand text-2xl sm:text-3xl text-marker-red -mt-1">
+                  «Никому не доверяй в этом заснеженном шале!»
+                </p>
+              </div>
+            </div>
+
+            <p class="text-[#382818] text-base sm:text-lg leading-relaxed mb-6">
+              Метель отрезала деревянное шале от мира. Во время 3-минутного отключения света исчез голубой бриллиант на 4 млн €, а владелец найден мёртвым в запертом изнутри кабинете. Откройте досье на телевизоре и управляйте расследованием со своих смартфонов — без ведущего!
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <button data-action="create-tv" ${state.isLoading ? 'disabled' : ''}
+                class="group text-left p-5 sm:p-6 rounded-2xl bg-forest-900 hover:bg-forest-800 text-white ink-card transition flex flex-col justify-between min-h-[140px]">
+                <div class="flex items-center justify-between">
+                  <span class="text-3xl">📺</span>
+                  <span class="text-xs font-mono uppercase px-2.5 py-1 rounded-lg bg-amberlamp-400 text-[#1a120a] font-extrabold">Экран ТВ</span>
+                </div>
+                <div class="mt-3">
+                  <div class="font-serif text-xl font-bold text-amberlamp-300 group-hover:text-white transition">Открыть на телевизоре</div>
+                  <div class="text-sm text-slate-300 mt-1">Создаёт комнату с 4-значным кодом, картой шале и крупными уликами</div>
+                </div>
+              </button>
+
+              <button data-action="toggle-join"
+                class="group text-left p-5 sm:p-6 rounded-2xl bg-[#f9f1dc] hover:bg-white text-[#1e150c] ink-card transition flex flex-col justify-between min-h-[140px]">
+                <div class="flex items-center justify-between">
+                  <span class="text-3xl">📱</span>
+                  <span class="text-xs font-mono uppercase px-2.5 py-1 rounded-lg bg-[#1e150c] text-parchment-100 font-bold">Пульт детектива</span>
+                </div>
+                <div class="mt-3">
+                  <div class="font-serif text-xl font-bold">Подключиться с телефона</div>
+                  <div class="text-sm text-[#4f3b26] mt-1">Листайте страницы, выбирайте комнаты на карте, вводите коды и ведите допросы</div>
+                </div>
+              </button>
+            </div>
+
+            ${state.landingJoinOpen ? `
+              <div class="mt-5 p-5 rounded-2xl bg-forest-900 text-white ink-card animate-in">
+                <h2 class="font-serif text-xl font-bold text-amberlamp-300 mb-3">Вход в комнату расследования</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-mono uppercase text-slate-300 mb-1">Код комнаты (4 символа)</label>
+                    <input id="join-code-input" type="text" maxlength="4" value="${escapeHtml(state.landingJoinCode)}" placeholder="A7K2"
+                      class="w-full px-4 py-3 rounded-xl bg-forest-950 border-2 border-amberlamp-400/60 focus:border-amberlamp-300 focus:outline-none text-white font-mono text-2xl uppercase tracking-[0.25em] text-center" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-mono uppercase text-slate-300 mb-1">Имя детектива</label>
+                    <input id="join-name-input" type="text" maxlength="18" value="${escapeHtml(state.landingJoinName)}" placeholder="Например: Диппер"
+                      class="w-full px-4 py-3 rounded-xl bg-forest-950 border-2 border-slate-600 focus:border-amberlamp-300 focus:outline-none text-white text-base" />
+                  </div>
+                </div>
+                ${state.landingError ? `<p class="mt-3 text-sm text-rose-300 font-semibold">⚠️ ${escapeHtml(state.landingError)}</p>` : ''}
+                <button data-action="join-phone" ${state.isLoading ? 'disabled' : ''}
+                  class="mt-4 w-full py-3.5 rounded-xl bg-amberlamp-400 hover:bg-amberlamp-300 text-[#1a120a] font-extrabold text-base border-2 border-[#16110c] transition">
+                  ${state.isLoading ? 'Подключаемся...' : 'Войти в расследование →'}
+                </button>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    /* =========================================================================
+       10. RENDERERS — TV SLIDES (GRAVITY FALLS / JOURNAL #3)
+       ========================================================================= */
+    function renderTVSlide(room) {
+      const slide = room.activeSlide || 'intro';
+      const flags = room.flags || [];
+
+      // 1. INTRO SLIDE
+      if (slide === 'intro') {
+        return `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch animate-in">
+            <div class="lg:col-span-7 journal-page rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-3">
+                  <span class="text-xs font-mono uppercase tracking-widest px-2.5 py-1 rounded bg-[#241a10] text-amberlamp-300 font-bold">Сводка дела • 22:40</span>
+                  <span class="font-hand text-2xl text-marker-red font-bold">Секретно!</span>
+                </div>
+                <div class="mb-4">${SVG_CHALET_HERO}</div>
+                <p class="text-[#241a10] text-lg sm:text-xl leading-relaxed mb-4">
+                  В <strong>22:40</strong> в заснеженном шале «Сердце Севера» на <strong>3 минуты</strong> погас свет. Когда генератор заработал, обнаружились два преступления:
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div class="p-3.5 rounded-xl bg-[#fdf7e7] border-2 border-[#1e160e]">
+                    <div class="font-serif font-bold text-lg text-[#0f4c5c]">💎 Кража бриллианта</div>
+                    <p class="text-sm text-[#3a2a19] mt-1">Витрина пуста — исчез камень «Сердце Севера» (страховка 4 млн €).</p>
+                  </div>
+                  <div class="p-3.5 rounded-xl bg-[#fdf7e7] border-2 border-marker-red">
+                    <div class="font-serif font-bold text-lg text-marker-red">☠️ Запертый кабинет</div>
+                    <p class="text-sm text-[#3a2a19] mt-1">Владелец Виктор Кравцов мёртв в кабинете, запертом изнутри. Рядом термос.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 bg-forest-900/95 ink-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+              <div>
+                <div class="font-hand text-3xl text-amberlamp-300 mb-2">Правила Дневника</div>
+                <h3 class="font-serif text-2xl font-bold text-white mb-5">Как раскрыть дело</h3>
+                <ul class="space-y-4 text-slate-200 text-base sm:text-lg">
+                  <li class="flex gap-3">
+                    <span class="font-mono font-bold text-amberlamp-400">01.</span>
+                    <span><strong>Карта и 4 кода бесплатны:</strong> осмотр комнат, досье и решение загадок <span class="text-emerald-300 font-semibold">не тратят ходы</span>.</span>
+                  </li>
+                  <li class="flex gap-3">
+                    <span class="font-mono font-bold text-amberlamp-400">02.</span>
+                    <span><strong>Допросы (6 ходов):</strong> базовые вопросы бесплатны, а жёсткие вопросы с уликами тратят <span class="text-amberlamp-300 font-semibold">1 ход</span>.</span>
+                  </li>
+                  <li class="flex gap-3">
+                    <span class="font-mono font-bold text-amberlamp-400">03.</span>
+                    <span><strong>Ищите скрытую связь:</strong> в шале пересеклись старая месть и хитрая афера.</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="mt-6 p-4 rounded-2xl bg-forest-950 border-2 border-amberlamp-400/70 text-center">
+                <div class="text-xs font-mono uppercase tracking-widest text-amberlamp-300 mb-1">Код комнаты для телефонов</div>
+                <div class="font-mono text-4xl font-extrabold tracking-[0.25em] text-white">${escapeHtml(room.roomCode)}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // 2. INTERACTIVE CHALET MAP SLIDE
+      if (slide === 'map') {
+        const activeId = room.selectedMapRoom || 'study';
+        const info = MAP_ROOMS[activeId] || MAP_ROOMS.study;
+        const visibleClues = info.clues.filter(c => !c.reqFlag || flags.includes(c.reqFlag));
+
+        return `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start animate-in">
+            <!-- Left: Detailed Cartoon SVG Map -->
+            <div class="lg:col-span-7 journal-page rounded-3xl p-4 sm:p-5">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-3 px-1">
+                <div>
+                  <h2 class="font-serif text-2xl sm:text-3xl font-extrabold text-[#1e150c]">Карта шале «Сердце Севера»</h2>
+                </div>
+                <span class="font-hand text-2xl text-marker-red font-bold">Нажмите на комнату!</span>
+              </div>
+              ${renderInteractiveMapSVG(room)}
+            </div>
+
+            <!-- Right: Selected Room Inspection Card -->
+            <div class="lg:col-span-5 journal-page rounded-3xl p-6 flex flex-col justify-between min-h-[420px]">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-2">
+                  <span class="text-xs font-mono uppercase px-2.5 py-1 rounded bg-[#241a10] text-amberlamp-300 font-bold">${escapeHtml(info.floor)}</span>
+                  ${info.isCrimeScene ? `<span class="text-xs font-mono uppercase px-2.5 py-1 rounded bg-marker-red text-white font-bold">⚠️ Полицейская лента</span>` : ''}
+                </div>
+                <h3 class="font-serif text-3xl font-extrabold text-[#1e150c] mb-3">${escapeHtml(info.name)}</h3>
+                <p class="text-[#362616] text-base sm:text-lg leading-relaxed mb-5">${escapeHtml(info.summary)}</p>
+
+                <!-- Suspects in this room -->
+                ${info.suspects.length > 0 ? `
+                  <div class="mb-5">
+                    <div class="text-xs font-mono uppercase tracking-wider text-[#664b2c] font-bold mb-2">Кто замечен здесь:</div>
+                    <div class="flex flex-wrap gap-2">
+                      ${info.suspects.map(sid => `
+                        <button data-action="set-slide" data-slide="suspect_${sid}"
+                          class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#fdf7e7] hover:bg-white border-2 border-[#1e160e] text-sm font-bold text-[#1e150c] transition">
+                          <span class="w-6 h-6 rounded-md overflow-hidden border border-[#1e160e]">${SUSPECT_PORTRAITS[sid]}</span>
+                          <span>${escapeHtml(SUSPECTS[sid].name)}</span>
+                        </button>
+                      `).join('')}
+                    </div>
+                  </div>
+                ` : ''}
+
+                <!-- Clues & Journal Notes -->
+                <div>
+                  <div class="font-hand text-2xl text-marker-red font-bold mb-2">Заметки и улики в комнате:</div>
+                  <ul class="space-y-2.5">
+                    ${visibleClues.map(c => `
+                      <li class="p-3 rounded-xl ${c.reqFlag ? 'bg-emerald-100 border-2 border-emerald-800 text-emerald-950' : 'bg-[#fdf7e7] border-2 border-[#1e160e]/70 text-[#241a10]'} text-sm sm:text-base font-medium">
+                        ${c.reqFlag ? '🔓 ' : '🔎 '}${escapeHtml(c.label)}
+                      </li>
+                    `).join('')}
+                  </ul>
+                </div>
+              </div>
+
+              <div class="mt-5 pt-4 border-t-2 border-dashed border-[#8a6d43]">
+                <button data-action="set-slide" data-slide="${info.actionSlide}"
+                  class="w-full py-3 rounded-xl bg-amberlamp-400 hover:bg-amberlamp-300 border-2 border-[#1e160e] text-[#1a120a] font-extrabold text-base transition">
+                  🔍 ${escapeHtml(info.actionLabel)} →
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // 3. CORKBOARD WITH ALL 4 POLAROID SUSPECTS
+      if (slide === 'board') {
+        const rotations = ['-rotate-2', 'rotate-1', '-rotate-1', 'rotate-2'];
+        return `
+          <div class="corkboard rounded-3xl p-6 sm:p-8 animate-in relative">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
+              <div>
+                <h2 class="font-serif text-3xl sm:text-4xl font-extrabold text-amberlamp-300 drop-shadow">Доска подозреваемых</h2>
+                <p class="font-hand text-2xl text-[#fde68a]">Все четверо находились в шале во время бури...</p>
+              </div>
+              <span class="px-3 py-1 rounded-xl bg-black/40 border border-amberlamp-400/40 text-xs font-mono text-amberlamp-200">Нажмите на фото для досье</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              ${Object.values(SUSPECTS).map((s, idx) => `
+                <button data-action="set-slide" data-slide="suspect_${s.id}"
+                  class="polaroid rounded-md p-3 pb-5 text-left transition hover:scale-[1.03] ${rotations[idx]}">
+                  <div class="tape-strip"></div>
+                  <div class="aspect-square rounded-sm overflow-hidden border-2 border-[#1c1610] mb-3">
+                    ${SUSPECT_PORTRAITS[s.id]}
+                  </div>
+                  <div class="font-hand text-2xl font-bold text-[#1e150c] leading-none">${escapeHtml(s.name)}</div>
+                  <div class="text-xs font-semibold text-[#6b4d2e] mt-1">${escapeHtml(s.role)}</div>
+                  <div class="mt-2 pt-2 border-t border-dashed border-[#c7b38b] text-[11px] font-mono text-marker-red">
+                    📍 ${escapeHtml(s.location)}
+                  </div>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // 4. INDIVIDUAL SUSPECT DOSSIER
+      if (slide.startsWith('suspect_')) {
+        const key = slide.replace('suspect_', '');
+        const s = SUSPECTS[key];
+        if (s) {
+          const done = room.interrogationsDone || [];
+          const answered = s.questions.filter(q => done.includes(q.id));
+          return `
+            <div class="journal-page rounded-3xl p-6 sm:p-8 animate-in">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div class="lg:col-span-4 flex flex-col items-center">
+                  <div class="polaroid rounded-md p-3.5 pb-6 w-full max-w-[260px] -rotate-1">
+                    <div class="tape-strip"></div>
+                    <div class="aspect-square rounded-sm overflow-hidden border-2 border-[#1e160e] mb-3">
+                      ${SUSPECT_PORTRAITS[s.id]}
+                    </div>
+                    <div class="font-hand text-3xl font-bold text-center text-[#1e150c]">${escapeHtml(s.name)}</div>
+                    <div class="text-xs font-mono text-center text-[#6b4d2e] mt-1">${escapeHtml(s.age)} • ${escapeHtml(s.location)}</div>
+                  </div>
+                </div>
+
+                <div class="lg:col-span-8 space-y-5">
+                  <div>
+                    <span class="text-xs font-mono uppercase px-2.5 py-1 rounded bg-[#241a10] text-amberlamp-300 font-bold">Досье Дневника</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-extrabold text-[#1e150c] mt-2">${escapeHtml(s.name)}</h2>
+                    <div class="text-lg font-bold text-[#6e3f1d]">${escapeHtml(s.role)}</div>
+                  </div>
+
+                  <div class="p-4 rounded-2xl bg-[#fdf7e7] border-2 border-[#1e160e]">
+                    <div class="text-xs font-mono uppercase text-[#755736] font-bold mb-1">Наблюдения следствия</div>
+                    <p class="text-[#241a10] text-lg leading-relaxed">${escapeHtml(s.bio)}</p>
+                  </div>
+
+                  <div class="p-4 rounded-2xl bg-[#fdf7e7] border-2 border-[#1e160e]">
+                    <div class="font-hand text-2xl text-marker-red font-bold mb-1">Заявленное алиби на 22:40:</div>
+                    <p class="text-[#241a10] text-lg italic leading-relaxed">${escapeHtml(s.alibi)}</p>
+                  </div>
+
+                  ${answered.length > 0 ? `
+                    <div class="p-4 rounded-2xl bg-amber-100/90 border-2 border-[#92400e]">
+                      <div class="text-xs font-mono uppercase text-[#92400e] font-bold mb-2">Записанные показания (${answered.length})</div>
+                      <div class="space-y-3">
+                        ${answered.map(q => `
+                          <div class="text-sm sm:text-base">
+                            <div class="font-bold text-[#451a03]">• ${escapeHtml(q.title)}</div>
+                            <div class="text-[#241a10] mt-0.5">${escapeHtml(q.answer)}</div>
+                          </div>
+                        `).join('')}
+                      </div>
+                    </div>
+                  ` : `
+                    <div class="p-4 rounded-xl bg-[#e8d5ab] border-2 border-dashed border-[#6e5230] text-[#3f2c18] text-base font-medium">
+                      🎙️ Откройте вкладку <strong>«Допросы»</strong> на телефоне, чтобы задать вопросы этому подозреваемому.
+                    </div>
+                  `}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      // 5. PUZZLE 1: VIKTOR'S TABLET (ACROSTIC)
+      if (slide === 'puzzle_tablet') {
+        const solved = flags.includes('flag_compass_secret');
+        return `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center animate-in">
+            <div class="lg:col-span-5 bg-forest-900/95 ink-card rounded-3xl p-6 space-y-4">
+              <span class="inline-block text-xs font-mono uppercase px-2.5 py-1 rounded bg-amberlamp-400 text-[#1a120a] font-extrabold">Головоломка №1 • Планшет</span>
+              <h2 class="font-serif text-3xl font-bold text-white">Зашифрованная записка</h2>
+              ${PUZZLE_SVGS.tablet}
+              <p class="text-slate-200 text-base leading-relaxed">
+                Личный планшет Виктора требует текстовый пароль. Рядом на столе лежала страница из его дневника со странным стихом.
+              </p>
+              <div class="p-3.5 rounded-xl bg-forest-950 border-2 border-amberlamp-400/50 text-amberlamp-200 text-sm">
+                🔑 <strong>Задание:</strong> Найдите скрытое слово из <strong>6 букв</strong> и введите его на телефоне во вкладке <strong>«Коды»</strong>.
+              </div>
+              ${solved ? `<div class="p-3 rounded-xl bg-emerald-500/20 border-2 border-emerald-400 text-emerald-200 font-bold text-center">✓ Разгадано! Секрет №1 открыт</div>` : ''}
+            </div>
+
+            <div class="lg:col-span-7 journal-page rounded-3xl p-7 sm:p-10">
+              <div class="flex justify-between items-center border-b-2 border-[#8c6e44] pb-2 mb-5">
+                <span class="text-xs font-mono uppercase text-[#6e502d] font-bold">Страница из блокнота В. Кравцова</span>
+                <span class="font-hand text-2xl text-marker-red font-bold">Пароль!</span>
+              </div>
+              <div class="font-serif text-2xl sm:text-3xl leading-[1.7] text-[#1e150c] italic space-y-1.5">
+                <p><span class="font-extrabold text-marker-red not-italic">К</span>огда метель накроет перевал,</p>
+                <p><span class="font-extrabold text-marker-red not-italic">О</span>шибки прошлого вернутся в этот дом.</p>
+                <p><span class="font-extrabold text-marker-red not-italic">М</span>ой главный камень я от всех скрывал,</p>
+                <p><span class="font-extrabold text-marker-red not-italic">П</span>одделку выставил в витрине под стеклом.</p>
+                <p><span class="font-extrabold text-marker-red not-italic">А</span>ндрей мне снится, но пути назад уж нет —</p>
+                <p><span class="font-extrabold text-marker-red not-italic">С</span>екрет мой тикает, храня полярный свет.</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // 6. PUZZLE 2: IRINA'S SAFE
+      if (slide === 'puzzle_safe') {
+        const solved = flags.includes('flag_insurance_scam');
+        return `
+          <div class="journal-page rounded-3xl p-6 sm:p-8 space-y-6 animate-in">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <span class="text-xs font-mono uppercase px-2.5 py-1 rounded bg-[#241a10] text-amberlamp-300 font-bold">Головоломка №2 • Потайной сейф</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-extrabold text-[#1e150c] mt-1">Сейф за картиной в кабинете</h2>
+              </div>
+              ${solved ? `<span class="px-4 py-2 rounded-xl bg-emerald-700 text-white font-bold border-2 border-[#1e160e]">✓ Сейф вскрыт</span>` : ''}
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+              <div class="lg:col-span-4">${PUZZLE_SVGS.safe}</div>
+
+              <div class="lg:col-span-4 p-5 rounded-2xl bg-[#fdf7e7] border-2 border-[#1e160e] space-y-2">
+                <div class="text-xs font-mono uppercase text-[#7a5b35] font-bold">Страховой полис №EU-9041</div>
+                <div class="font-serif text-xl font-bold text-[#1e150c]">«Сердце Севера»</div>
+                <div class="text-sm text-[#3a2a19] border-t border-dashed border-[#bfa06b] pt-2 flex justify-between">
+                  <span>Получатель:</span><strong>Ирина Кравцова</strong>
+                </div>
+                <div class="text-base text-[#1e150c] flex justify-between pt-1">
+                  <span>Выплата:</span><strong class="font-mono text-xl text-marker-red">4 млн €</strong>
+                </div>
+              </div>
+
+              <div class="lg:col-span-4 p-5 rounded-2xl bg-forest-900 text-white border-[3px] border-[#1e160e] text-center">
+                <div class="text-xs font-mono uppercase tracking-widest text-amberlamp-300 mb-1">Латунная табличка</div>
+                <div class="font-serif text-xl font-bold">Экспедиция «Север-4»</div>
+                <div class="font-mono text-2xl font-extrabold text-amberlamp-300 my-2">18 ноября 2018</div>
+                <div class="text-xs text-slate-300">День находки алмаза</div>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-[#fef3c7] border-[3px] border-[#1e160e] flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                <div class="font-hand text-2xl text-marker-red font-bold">Напоминалка на дверце сейфа:</div>
+                <p class="font-serif text-lg sm:text-xl font-bold text-[#1e150c]">
+                  «Код (4 цифры): День экспедиции (2 цифры) + сумма страховки в млн € (1 цифра) + последняя цифра года экспедиции (1 цифра)»
+                </p>
+              </div>
+              <div class="shrink-0 px-4 py-2 rounded-xl bg-[#241a10] text-amberlamp-300 font-mono font-bold text-xl">_ _ _ _</div>
+            </div>
+          </div>
+        `;
+      }
+
+      // 7. PUZZLE 3: CURATOR'S LOCKER (RECEIPT)
+      if (slide === 'puzzle_locker') {
+        const solved = flags.includes('flag_maria_motive');
+        return `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center animate-in">
+            <div class="lg:col-span-6 journal-page rounded-3xl p-6 sm:p-7 space-y-4">
+              <span class="text-xs font-mono uppercase px-2.5 py-1 rounded bg-[#241a10] text-amberlamp-300 font-bold">Головоломка №3 • Шкафчик куратора</span>
+              <h2 class="font-serif text-3xl font-extrabold text-[#1e150c]">Чек из магазина «Полюс»</h2>
+              ${PUZZLE_SVGS.locker}
+              <p class="text-[#362616] text-base leading-relaxed">
+                У шкафчика Марии Лебедевой в подсобке за баром найден помятый чек с припиской красным маркером:
+              </p>
+              <div class="p-4 rounded-xl bg-[#fdf7e7] border-2 border-marker-red font-hand text-2xl sm:text-3xl text-marker-red font-bold leading-snug">
+                «Код от шкафчика = сколько я переплатила за термос (разница между оплатой и честной суммой со скидкой 10%)»
+              </div>
+              ${solved ? `<div class="p-3 rounded-xl bg-emerald-700 text-white font-bold text-center">✓ Шкафчик уже открыт!</div>` : ''}
+            </div>
+
+            <div class="lg:col-span-6 flex justify-center">
+              <div class="w-full max-w-md bg-[#fffdf7] text-[#1c1917] border-[3px] border-[#1e160e] shadow-[8px_8px_0_rgba(0,0,0,0.45)] p-6 sm:p-8 font-mono rotate-1 relative">
+                <div class="tape-strip"></div>
+                <div class="text-center border-b-2 border-dashed border-stone-400 pb-4 mb-4">
+                  <div class="text-xl font-extrabold tracking-widest">МАГАЗИН «ПОЛЮС»</div>
+                  <div class="text-xs text-stone-500 mt-1">Снаряжение для Севера • Чек №409</div>
+                </div>
+                <div class="space-y-3 text-base sm:text-lg">
+                  <div class="flex justify-between"><span>Перчатки зимние</span><strong>400 ₽</strong></div>
+                  <div class="flex justify-between"><span>Фонарь налобный</span><strong>300 ₽</strong></div>
+                  <div class="flex justify-between"><span>Термос стальной</span><strong>300 ₽</strong></div>
+                  <div class="border-t border-dashed border-stone-400 pt-3 flex justify-between text-emerald-800 font-bold">
+                    <span>Скидка клиента:</span><span>− 10%</span>
+                  </div>
+                  <div class="border-t-2 border-stone-900 pt-3 flex justify-between text-xl font-extrabold">
+                    <span>ИТОГО ОПЛАЧЕНО:</span><span class="text-marker-red">1 050 ₽</span>
+                  </div>
+                </div>
+                <div class="mt-5 font-hand text-2xl text-marker-red text-center font-bold">← Обсчитали на кассе!</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // 8. PUZZLE 4: CCTV ARCHIVE
+      if (slide === 'puzzle_cctv') {
+        const solved = flags.includes('flag_cctv_proof');
+        return `
+          <div class="crt-monitor rounded-3xl p-6 sm:p-8 font-mono animate-in">
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-500/30 pb-4 mb-6">
+              <div class="flex items-center gap-3">
+                <span class="w-3.5 h-3.5 rounded-full bg-rose-500 animate-pulse"></span>
+                <span class="text-emerald-300 font-bold text-lg tracking-wider">ТЕРМИНАЛ ОХРАНЫ • КАМЕРА №04</span>
+              </div>
+              ${solved ? `<span class="px-3 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400 text-emerald-300 text-xs font-bold">✓ АРХИВ ОТКРЫТ</span>` : `<span class="text-xs text-emerald-400/80">КОРИДОР 2-ГО ЭТАЖА</span>`}
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+              <div class="lg:col-span-4">${PUZZLE_SVGS.cctv}</div>
+              <div class="lg:col-span-8 space-y-4">
+                <div class="p-4 rounded-2xl bg-black/50 border border-emerald-500/40 text-emerald-300 text-base sm:text-lg leading-relaxed">
+                  > [22:00:00] ПИТАНИЕ: НОРМА<br/>
+                  > <span class="text-rose-400 font-bold">[22:40:00] ОТКЛЮЧЕНИЕ ПИТАНИЯ (РУБИЛЬНИК)</span><br/>
+                  > [22:43:00] ЗАПУСК ГЕНЕРАТОРА (+3 МИН)
+                </div>
+                <div class="p-4 rounded-2xl bg-amber-950/50 border border-amberlamp-400/50 font-sans text-amber-100 text-base sm:text-lg italic">
+                  Рация Олега Воронова: «Я чётко слышал, как щёлкнул замок кабинета Кравцова ровно за <strong class="text-white not-italic underline">5 минут</strong> до того, как вырубило свет.»
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-400/50 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div class="text-emerald-200 text-base">
+                📹 <strong>ЗАПРОС:</strong> Введите время выхода убийцы в формате <strong>ЧЧММ</strong> (4 цифры) во вкладке «Коды» на телефоне.
+              </div>
+              <span class="px-4 py-1.5 rounded-xl bg-black/60 border border-emerald-400/50 text-emerald-300 font-bold tracking-[0.25em] shrink-0">_ _ : _ _</span>
+            </div>
+          </div>
+        `;
+      }
+
+      // 9. SECRET FILE SLIDES
+      if (slide.startsWith('secret_')) {
+        const key = slide.replace('secret_', '');
+        const p = PUZZLES[key];
+        if (p) {
+          if (!flags.includes(p.flag)) {
+            return `
+              <div class="journal-page rounded-3xl p-10 text-center max-w-xl mx-auto animate-in">
+                <div class="text-5xl mb-3">🔒</div>
+                <h2 class="font-serif text-3xl font-extrabold text-[#1e150c] mb-2">Страница зашифрована</h2>
+                <p class="text-[#4a3520] text-lg">Введите верный код для головоломки «${escapeHtml(p.title)}» на телефоне.</p>
+              </div>
+            `;
+          }
+          return `
+            <div class="journal-page rounded-3xl p-7 sm:p-10 animate-in">
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <span class="px-3 py-1 rounded-full bg-emerald-800 text-emerald-100 text-xs font-mono uppercase font-bold">🔓 Секретная улика открыта</span>
+                <span class="font-hand text-2xl text-marker-red font-bold">Важно!</span>
+              </div>
+              <h2 class="font-serif text-3xl sm:text-4xl font-extrabold text-[#1e150c] mb-5">${escapeHtml(p.secretTitle)}</h2>
+              <div class="p-6 rounded-2xl bg-[#fdf8ea] border-2 border-[#1e160e] text-[#1e150c] text-lg sm:text-xl leading-relaxed whitespace-pre-line">
+                ${escapeHtml(p.secretBody)}
+              </div>
+              <div class="mt-5 font-hand text-2xl text-emerald-900 font-bold">
+                ★ Теперь в разделе «Допросы» на телефонах открылись новые каверзные вопросы!
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      // 10. LIVE INTERROGATION VIEW
+      if (slide === 'interrogation_view' && room.lastInterrogation) {
+        const rec = room.lastInterrogation;
+        return `
+          <div class="journal-page rounded-3xl p-6 sm:p-9 animate-in">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b-2 border-[#8c6e44]">
+              <div class="flex items-center gap-4">
+                <div class="w-20 h-20 rounded-xl overflow-hidden border-[3px] border-[#1e160e] shrink-0 bg-white">
+                  ${SUSPECT_PORTRAITS[rec.suspectId] || ''}
+                </div>
+                <div>
+                  <div class="text-xs font-mono uppercase text-[#6e502d] font-bold">Протокол допроса • Ведёт ${escapeHtml(rec.askedBy)}</div>
+                  <h2 class="font-serif text-3xl font-extrabold text-[#1e150c]">${escapeHtml(rec.suspectName)}</h2>
+                </div>
+              </div>
+              ${rec.unlockedFlag ? `<span class="px-3.5 py-1.5 rounded-xl bg-emerald-800 text-emerald-100 text-xs font-mono font-bold">★ ПОЛУЧЕНА НОВАЯ УЛИКА</span>` : ''}
+            </div>
+
+            <div class="mb-5">
+              <div class="font-hand text-2xl text-marker-red font-bold">Вопрос детектива:</div>
+              <div class="text-lg sm:text-xl font-bold text-[#1e150c]">«${escapeHtml(rec.question)}»</div>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-[#fdf8ea] border-[3px] border-[#1e160e]">
+              <div class="text-xs font-mono uppercase text-[#755736] font-bold mb-2">Ответ подозреваемого:</div>
+              <p class="font-serif text-xl sm:text-2xl text-[#1e150c] leading-relaxed">${escapeHtml(rec.answer)}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      // 11. ENDING SLIDE
+      if (slide === 'ending' && room.verdict) {
+        const end = ENDINGS[room.verdict.endingId] || ENDINGS.fail;
+        const evCount = getEvidenceCount(room);
+        const solvedCodes = getSolvedCodesCount(room);
+
+        return `
+          <div class="journal-page rounded-3xl p-6 sm:p-9 space-y-6 animate-in">
+            <div class="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <div class="text-xs font-mono uppercase tracking-widest text-[#6e502d] font-bold mb-1">${escapeHtml(end.badge)}</div>
+                <h2 class="font-serif text-4xl sm:text-5xl font-extrabold text-[#1e150c]">${escapeHtml(end.title)}</h2>
+                <p class="font-hand text-2xl sm:text-3xl text-marker-red font-bold mt-1">${escapeHtml(end.summary)}</p>
+              </div>
+              <button data-action="reset-game" class="px-5 py-3 rounded-xl bg-amberlamp-400 hover:bg-amberlamp-300 border-2 border-[#1e160e] text-[#1a120a] font-extrabold text-sm transition">
+                🔄 Сыграть заново
+              </button>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-[#fdf8ea] border-2 border-[#1e160e] text-[#1e150c] text-lg sm:text-xl leading-relaxed">
+              ${escapeHtml(end.story)}
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div class="p-4 rounded-2xl bg-[#f5e7c4] border-2 border-[#1e160e]">
+                <div class="text-xs font-mono uppercase text-marker-red font-bold mb-1">Твист №1 • Убийца</div>
+                <div class="font-serif font-bold text-lg text-[#1e150c]">Мария Лебедева</div>
+                <p class="text-sm text-[#3a2a19] mt-1">Сестра геолога Андрея, брошенного в 2018 году. Отравила термос аконитом и заперла дверь леской со льдом в 22:35.</p>
+              </div>
+              <div class="p-4 rounded-2xl bg-[#f5e7c4] border-2 border-[#1e160e]">
+                <div class="text-xs font-mono uppercase text-[#0f4c5c] font-bold mb-1">Твист №2 • Бриллиант</div>
+                <div class="font-serif font-bold text-lg text-[#1e150c]">Латунный компас Виктора</div>
+                <p class="text-sm text-[#3a2a19] mt-1">В витрине лежала синтетическая подделка. Настоящий камень Виктор прятал под двойным дном своего компаса.</p>
+              </div>
+              <div class="p-4 rounded-2xl bg-[#f5e7c4] border-2 border-[#1e160e]">
+                <div class="text-xs font-mono uppercase text-[#92400e] font-bold mb-1">Твист №3 • Второе дело</div>
+                <div class="font-serif font-bold text-lg text-[#1e150c]">Афера Ирины и Олега</div>
+                <p class="text-sm text-[#3a2a19] mt-1">Ирина наняла Олега вырубить свет в 22:40 и спрятать камень в погребе ради страховки 4 млн €, но они не убивали Виктора.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div class="p-3 rounded-xl bg-forest-900 text-white border-2 border-[#1e160e] text-center">
+                <div class="text-xs font-mono text-slate-300">КОДЫ</div>
+                <div class="text-2xl font-mono font-bold text-emerald-300">${solvedCodes} / 4</div>
+              </div>
+              <div class="p-3 rounded-xl bg-forest-900 text-white border-2 border-[#1e160e] text-center">
+                <div class="text-xs font-mono text-slate-300">ВСЕ УЛИКИ</div>
+                <div class="text-2xl font-mono font-bold text-amberlamp-300">${evCount} / 8</div>
+              </div>
+              <div class="p-3 rounded-xl bg-forest-900 text-white border-2 border-[#1e160e] text-center">
+                <div class="text-xs font-mono text-slate-300">ОСТАЛОСЬ ХОДОВ</div>
+                <div class="text-2xl font-mono font-bold text-sky-300">${room.timeLeft} / 6</div>
+              </div>
+              <div class="p-3 rounded-xl bg-forest-900 text-white border-2 border-[#1e160e] text-center">
+                <div class="text-xs font-mono text-slate-300">ДЕТЕКТИВЫ</div>
+                <div class="text-2xl font-mono font-bold text-white">${Math.max(1, (room.players || []).length)}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      return `<div class="text-center text-slate-300 py-20">Выберите экран на телефоне</div>`;
+    }
+
+    /* =========================================================================
+       11. RENDERERS — TV SHELL
+       ========================================================================= */
+    function renderTVMode() {
+      const room = state.room;
+      if (!room) return '';
+      const solvedCodes = getSolvedCodesCount(room);
+      const players = room.players || [];
+
+      return `
+        <div class="min-h-screen flex flex-col">
+          <header class="bg-forest-950/95 border-b-[3px] border-[#1e160e] px-4 sm:px-7 py-3 flex flex-wrap items-center justify-between gap-3 sticky top-0 z-30 backdrop-blur-md">
+            <div class="flex items-center gap-4">
+              <div>
+                <div class="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-amberlamp-400">ДНЕВНИК №3 • ДЕЛО №404-Б</div>
+                <div class="font-serif text-lg sm:text-2xl font-extrabold text-white leading-none">СЕРДЦЕ СЕВЕРА</div>
+              </div>
+              <div class="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-forest-900 border-2 border-amberlamp-400/60">
+                <span class="text-xs font-mono text-slate-300">КОД:</span>
+                <span class="font-mono text-lg font-extrabold tracking-[0.2em] text-amberlamp-300">${escapeHtml(room.roomCode)}</span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+              ${players.length > 0 ? `
+                <div class="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-forest-900 border border-slate-700 text-xs text-slate-200">
+                  <span>🕵️</span>
+                  <span>${players.map(p => escapeHtml(p.name)).join(', ')}</span>
+                </div>
+              ` : ''}
+
+              <div class="px-3 py-1.5 rounded-xl bg-forest-900 border border-emerald-500/40 text-xs sm:text-sm font-mono flex items-center gap-1.5">
+                <span class="text-slate-300">Коды:</span>
+                <span class="font-bold text-emerald-300">${solvedCodes}/4</span>
+              </div>
+
+              <div class="px-3 py-1.5 rounded-xl bg-forest-900 border ${room.timeLeft <= 1 ? 'border-rose-500 text-rose-300' : 'border-amberlamp-400/40 text-amberlamp-300'} text-xs sm:text-sm font-mono flex items-center gap-1.5">
+                <span class="text-slate-300">Ходы:</span>
+                <span class="font-bold">${room.timeLeft}/6</span>
+              </div>
+
+              <button data-action="toggle-mute" title="Звук" class="p-2 rounded-xl bg-forest-800 hover:bg-forest-700 border border-slate-600 text-sm transition">
+                ${SoundFX.muted ? '🔇' : '🔊'}
+              </button>
+
+              <button data-action="toggle-tv-drawer"
+                class="px-3 py-1.5 rounded-xl ${state.tvDrawerOpen ? 'bg-amberlamp-400 text-[#1a120a] font-extrabold' : 'bg-forest-800 hover:bg-forest-700 text-slate-200 border border-slate-600'} text-xs sm:text-sm transition">
+                🎮 ${state.tvDrawerOpen ? 'Скрыть пульт' : 'Управление с этого экрана'}
+              </button>
+            </div>
+          </header>
+
+          <div class="sm:hidden bg-forest-900 border-b border-slate-800 px-4 py-1.5 flex items-center justify-between text-xs font-mono">
+            <span class="text-slate-300">КОД КОМНАТЫ:</span>
+            <span class="text-amberlamp-300 font-bold text-base tracking-[0.2em]">${escapeHtml(room.roomCode)}</span>
+          </div>
+
+          <div class="flex-1 flex relative overflow-hidden">
+            <main class="flex-1 p-4 sm:p-7 max-w-7xl mx-auto w-full flex flex-col justify-center">
+              ${renderTVSlide(room)}
+            </main>
+
+            ${state.tvDrawerOpen ? `
+              <aside class="fixed inset-y-0 right-0 top-[62px] w-full max-w-md bg-forest-950/98 border-l-[3px] border-amberlamp-400/50 shadow-2xl z-30 flex flex-col animate-in">
+                ${renderControllerBody(true)}
+              </aside>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    /* =========================================================================
+       12. RENDERERS — PHONE CONTROLLER (SLIDES, MAP ROOMS, CODES, INTERROGATIONS, VERDICT)
+       ========================================================================= */
+    function renderControllerBody(isDrawer = false) {
+      const room = state.room;
+      if (!room) return '';
+      const flags = room.flags || [];
+      const tab = state.phoneTab;
+
+      let tabContent = '';
+
+      // TAB 1: TV & MAP REMOTE
+      if (tab === 'tv') {
+        const groups = ['Общее', 'Подозреваемые', 'Головоломки', 'Секреты'];
+        tabContent = `
+          <div class="space-y-5">
+            ${room.verdict ? `
+              <button data-action="set-slide" data-slide="ending" class="w-full p-3.5 rounded-xl bg-amberlamp-400/20 border-2 border-amberlamp-400 text-left flex items-center justify-between">
+                <span class="font-bold text-amberlamp-300">⚖️ Показать концовку на ТВ</span>
+                <span class="text-xs font-mono text-amberlamp-200">ОТКРЫТО</span>
+              </button>
+            ` : ''}
+
+            <!-- Quick Map Room Selector -->
+            <div class="p-3.5 rounded-2xl bg-forest-900 border-2 border-amberlamp-400/40">
+              <div class="text-xs font-mono uppercase tracking-wider text-amberlamp-300 mb-2 font-bold">🗺️ Осмотреть комнату на карте ТВ:</div>
+              <div class="grid grid-cols-2 gap-2">
+                ${Object.values(MAP_ROOMS).map(r => `
+                  <button data-action="select-map-room" data-room="${r.id}"
+                    class="p-2.5 rounded-xl text-left text-xs font-semibold border transition ${
+                      room.activeSlide === 'map' && room.selectedMapRoom === r.id
+                        ? 'bg-amberlamp-400 text-[#1a120a] border-[#16110c] font-bold'
+                        : 'bg-forest-950 text-slate-200 border-slate-700 hover:border-amberlamp-400/60'
+                    }">
+                    ${r.isCrimeScene ? '⚠️ ' : '📍 '}${escapeHtml(r.name)}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+
+            ${groups.map(groupName => {
+              const items = SLIDE_CATALOG.filter(item => item.group === groupName);
+              return `
+                <div>
+                  <div class="text-xs font-mono uppercase tracking-widest text-slate-400 mb-2">${groupName}</div>
+                  <div class="grid grid-cols-2 gap-2">
+                    ${items.map(item => {
+                      const locked = item.reqFlag && !flags.includes(item.reqFlag);
+                      const isActive = room.activeSlide === item.id;
+                      return `
+                        <button ${locked ? 'disabled' : `data-action="set-slide" data-slide="${item.id}"`}
+                          class="p-3 rounded-xl text-left border transition flex items-center gap-2 min-h-[50px] ${
+                            locked
+                              ? 'bg-forest-950/60 border-slate-800 text-slate-600 cursor-not-allowed'
+                              : isActive
+                                ? 'bg-amberlamp-400/20 border-amberlamp-400 text-white'
+                                : 'bg-forest-900 hover:bg-forest-800 border-slate-700 text-slate-200'
+                          }">
+                          <span class="text-base shrink-0">${locked ? '🔒' : item.icon}</span>
+                          <span class="text-xs sm:text-sm font-medium leading-tight">${escapeHtml(item.title)}</span>
+                        </button>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      // TAB 2: PUZZLE CODES
+      if (tab === 'codes') {
+        tabContent = `
+          <div class="space-y-4">
+            <p class="text-xs text-slate-300">Откройте слайд головоломки на ТВ, разгадайте вместе и введите ответ сюда. Ввод кодов <strong class="text-emerald-300">не тратит ходы</strong>.</p>
+            ${Object.values(PUZZLES).map(p => {
+              const solved = flags.includes(p.flag);
+              const fb = state.codeFeedback[p.id];
+              return `
+                <div class="p-4 rounded-2xl bg-forest-900 border ${solved ? 'border-emerald-400/60' : 'border-slate-700'}">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <div>
+                      <div class="font-bold text-white text-base">${escapeHtml(p.title)}</div>
+                      <div class="text-xs text-slate-400 font-mono">${escapeHtml(p.subtitle)}</div>
+                    </div>
+                    <button data-action="set-slide" data-slide="${solved ? p.secretSlideId : p.slideId}"
+                      class="px-2.5 py-1.5 rounded-lg bg-forest-950 hover:bg-forest-800 border border-slate-600 text-xs text-amberlamp-300 font-mono shrink-0">
+                      📺 ${solved ? 'Секрет' : 'На ТВ'}
+                    </button>
+                  </div>
+
+                  ${solved ? `
+                    <div class="mt-2 p-2.5 rounded-xl bg-emerald-500/15 text-emerald-300 text-sm font-semibold">
+                      🔓 Разблокировано! Секретная страница открыта.
+                    </div>
+                  ` : `
+                    <div class="flex gap-2 mt-3">
+                      <input type="text" data-code-input="${p.id}" value="${escapeHtml(state.codeInputs[p.id] || '')}" placeholder="${escapeHtml(p.placeholder)}"
+                        class="flex-1 px-3.5 py-3 rounded-xl bg-forest-950 border border-slate-600 focus:border-amberlamp-400 focus:outline-none text-white font-mono text-base uppercase" />
+                      <button data-action="submit-code" data-puzzle="${p.id}"
+                        class="px-4 py-3 rounded-xl bg-amberlamp-400 hover:bg-amberlamp-300 text-[#1a120a] font-extrabold text-sm transition shrink-0">
+                        ОК
+                      </button>
+                    </div>
+                    ${fb ? `<div class="mt-2 text-xs font-semibold ${fb.type === 'error' ? 'text-rose-400' : 'text-emerald-300'}">${escapeHtml(fb.text)}</div>` : ''}
+                  `}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      // TAB 3: INTERROGATIONS
+      if (tab === 'interrogations') {
+        const s = SUSPECTS[state.selectedSuspectId] || SUSPECTS.irina;
+        const done = room.interrogationsDone || [];
+        tabContent = `
+          <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-2">
+              ${Object.values(SUSPECTS).map(item => `
+                <button data-action="select-suspect" data-suspect="${item.id}"
+                  class="p-2.5 rounded-xl border text-left flex items-center gap-2.5 transition ${
+                    state.selectedSuspectId === item.id
+                      ? 'bg-amberlamp-400/20 border-amberlamp-400 text-white'
+                      : 'bg-forest-900 border-slate-700 text-slate-300'
+                  }">
+                  <div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-slate-600">${SUSPECT_PORTRAITS[item.id]}</div>
+                  <div class="min-w-0">
+                    <div class="text-xs font-bold truncate">${escapeHtml(item.name.split(' ')[0])}</div>
+                    <div class="text-[10px] text-slate-400 truncate">${escapeHtml(item.role.split(',')[0])}</div>
+                  </div>
+                </button>
+              `).join('')}
+            </div>
+
+            <div class="p-4 rounded-2xl bg-forest-900 border border-slate-700 space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <div>
+                  <div class="font-serif text-lg font-bold text-white">${escapeHtml(s.name)}</div>
+                  <div class="text-xs text-amberlamp-300">${escapeHtml(s.role)}</div>
+                </div>
+                <button data-action="set-slide" data-slide="suspect_${s.id}" class="px-2.5 py-1.5 rounded-lg bg-forest-950 border border-slate-600 text-xs text-slate-200 font-mono">
+                  📺 Досье
+                </button>
+              </div>
+
+              <div class="space-y-2.5 pt-1">
+                ${s.questions.map(q => {
+                  const isLocked = q.reqFlag && !flags.includes(q.reqFlag);
+                  const isDone = done.includes(q.id);
+                  const noTime = !isDone && q.cost > 0 && room.timeLeft <= 0;
+
+                  return `
+                    <div class="rounded-xl border p-3.5 ${
+                      isLocked
+                        ? 'bg-forest-950/60 border-slate-800 opacity-70'
+                        : isDone
+                          ? 'bg-forest-950 border-emerald-500/50'
+                          : 'bg-forest-950 border-slate-700'
+                    }">
+                      <div class="flex items-center justify-between gap-2 mb-1.5">
+                        <span class="text-[11px] font-mono uppercase px-2 py-0.5 rounded ${
+                          q.cost === 0
+                            ? 'bg-slate-800 text-slate-300'
+                            : isDone
+                              ? 'bg-emerald-500/20 text-emerald-300'
+                              : 'bg-amber-500/20 text-amber-300'
+                        }">
+                          ${isDone ? '✓ Задан' : q.cost === 0 ? 'Базовый • 0 ходов' : 'Каверзный • −1 ход'}
+                        </span>
+                        ${isLocked ? `<span class="text-[11px] text-rose-400 font-mono">🔒 Закрыто</span>` : ''}
+                      </div>
+
+                      <div class="text-sm font-medium text-white mb-2">${escapeHtml(q.title)}</div>
+
+                      ${isLocked ? `
+                        <div class="text-xs text-slate-400">${escapeHtml(q.reqLabel || 'Нужна дополнительная улика')}</div>
+                      ` : `
+                        <button data-action="ask-question" data-suspect="${s.id}" data-question="${q.id}" ${noTime ? 'disabled' : ''}
+                          class="w-full py-2.5 rounded-lg text-xs font-extrabold transition ${
+                            noTime
+                              ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                              : isDone
+                                ? 'bg-forest-800 hover:bg-forest-700 text-amberlamp-300'
+                                : 'bg-amberlamp-400 hover:bg-amberlamp-300 text-[#1a120a]'
+                          }">
+                          ${noTime ? 'Ходы закончились — идите в Вердикт' : isDone ? '📺 Показать ответ на ТВ' : '🎙️ Задать вопрос (вывести на ТВ)'}
+                        </button>
+                      `}
+
+                      ${isDone ? `<p class="mt-2.5 pt-2.5 border-t border-slate-800 text-xs text-slate-300 leading-relaxed">${escapeHtml(q.answer)}</p>` : ''}
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // TAB 4: VERDICT
+      if (tab === 'verdict') {
+        if (room.verdict) {
+          const end = ENDINGS[room.verdict.endingId];
+          tabContent = `
+            <div class="p-5 rounded-2xl bg-forest-900 border-2 border-amberlamp-400/60 text-center space-y-4">
+              <div class="text-4xl">⚖️</div>
+              <div class="font-serif text-2xl font-bold text-amberlamp-300">${escapeHtml(end.title)}</div>
+              <p class="text-sm text-slate-300">${escapeHtml(end.summary)}</p>
+              <button data-action="set-slide" data-slide="ending" class="w-full py-3 rounded-xl bg-amberlamp-400 hover:bg-amberlamp-300 text-[#1a120a] font-extrabold text-sm">
+                📺 Показать концовку на ТВ
+              </button>
+              <button data-action="reset-game" class="w-full py-3 rounded-xl bg-forest-800 hover:bg-forest-700 text-slate-200 font-semibold text-sm">
+                🔄 Начать расследование заново
+              </button>
+            </div>
+          `;
+        } else if (state.verdictDraft.step === 3) {
+          tabContent = `
+            <div class="p-5 rounded-2xl bg-forest-900 border-2 border-amberlamp-400 space-y-4 animate-in">
+              <div class="text-xs font-mono uppercase tracking-widest text-amberlamp-400">Шаг 3 из 3 • Моральный выбор</div>
+              <h3 class="font-serif text-xl font-bold text-white">Шёпот Ирины Кравцовой</h3>
+              <p class="text-sm text-slate-200 leading-relaxed italic">
+                «Детективы, вы поймали убийцу и нашли настоящий бриллиант! Полиция ещё не знает о нашей с Олегом страховой афере. Промолчите про расписку из сейфа — и я переведу вашей команде <strong class="text-amberlamp-300 not-italic">500 000 €</strong>.»
+              </p>
+              <div class="space-y-2.5 pt-2">
+                <button data-action="submit-moral" data-moral="expose" class="w-full py-3.5 px-4 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-[#071117] font-extrabold text-sm transition">
+                  ⚖️ Сдать Ирину и Олега полиции
+                </button>
+                <button data-action="submit-moral" data-moral="bribe" class="w-full py-3.5 px-4 rounded-xl bg-amberlamp-400 hover:bg-amberlamp-300 text-[#1a120a] font-extrabold text-sm transition">
+                  💰 Взять 500 000 € и скрыть аферу
+                </button>
+              </div>
+            </div>
+          `;
+        } else {
+          const killerOpts = [
+            { id: 'irina', label: 'Ирина Кравцова' },
+            { id: 'oleg', label: 'Олег Воронов' },
+            { id: 'dmitry', label: 'Дмитрий Савин' },
+            { id: 'maria', label: 'Мария Лебедева' }
+          ];
+          const diamondOpts = [
+            { id: 'boiler', label: 'В винном погребе за трубой' },
+            { id: 'purse', label: 'В сумочке Ирины' },
+            { id: 'compass', label: 'В латунном компасе Виктора' },
+            { id: 'dmitry', label: 'У Дмитрия Савина' }
+          ];
+          const canSubmit = state.verdictDraft.killer && state.verdictDraft.diamond;
+
+          tabContent = `
+            <div class="space-y-4">
+              ${room.timeLeft === 0 ? `
+                <div class="p-3 rounded-xl bg-rose-500/20 border border-rose-400 text-rose-200 text-xs font-semibold">
+                  ⏰ Ходы допросов закончились! Обсудите улики и выносите вердикт.
+                </div>
+              ` : ''}
+
+              <div class="p-4 rounded-2xl bg-forest-900 border border-slate-700 space-y-2">
+                <div class="text-xs font-mono uppercase text-amberlamp-400">Вопрос 1 из 2</div>
+                <div class="font-bold text-white text-base">Кто убил Виктора Кравцова?</div>
+                <div class="grid grid-cols-1 gap-2 pt-1">
+                  ${killerOpts.map(o => `
+                    <button data-action="pick-killer" data-val="${o.id}"
+                      class="p-3 rounded-xl border text-left text-sm font-medium transition ${
+                        state.verdictDraft.killer === o.id
+                          ? 'bg-amberlamp-400/20 border-amberlamp-400 text-amberlamp-200 font-bold'
+                          : 'bg-forest-950 border-slate-700 text-slate-300'
+                      }">
+                      ${state.verdictDraft.killer === o.id ? '● ' : '○ '}${o.label}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-forest-900 border border-slate-700 space-y-2">
+                <div class="text-xs font-mono uppercase text-emerald-400">Вопрос 2 из 2</div>
+                <div class="font-bold text-white text-base">Где спрятан настоящий бриллиант «Сердце Севера»?</div>
+                <div class="grid grid-cols-1 gap-2 pt-1">
+                  ${diamondOpts.map(o => `
+                    <button data-action="pick-diamond" data-val="${o.id}"
+                      class="p-3 rounded-xl border text-left text-sm font-medium transition ${
+                        state.verdictDraft.diamond === o.id
+                          ? 'bg-emerald-500/20 border-emerald-400 text-emerald-200 font-bold'
+                          : 'bg-forest-950 border-slate-700 text-slate-300'
+                      }">
+                      ${state.verdictDraft.diamond === o.id ? '● ' : '○ '}${o.label}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <button data-action="submit-verdict" ${!canSubmit ? 'disabled' : ''}
+                class="w-full py-4 rounded-2xl font-extrabold text-base transition ${
+                  canSubmit
+                    ? 'bg-amberlamp-400 hover:bg-amberlamp-300 text-[#1a120a]'
+                    : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                }">
+                ⚖️ Вынести финальный вердикт
+              </button>
+            </div>
+          `;
+        }
+      }
+
+      return `
+        <div class="flex-1 overflow-y-auto p-4 ${isDrawer ? 'pb-6' : 'pb-24'}">
+          ${tabContent}
+        </div>
+        <nav class="${isDrawer ? 'border-t border-slate-800 bg-forest-900' : 'fixed bottom-0 inset-x-0 border-t border-slate-800 bg-forest-950/95 backdrop-blur-md z-30'} grid grid-cols-4 gap-1 p-1.5">
+          ${[
+            { id: 'tv', label: 'ТВ и Карта', icon: '🗺️' },
+            { id: 'codes', label: 'Коды', icon: '🔑' },
+            { id: 'interrogations', label: 'Допросы', icon: '🎙️' },
+            { id: 'verdict', label: 'Вердикт', icon: '⚖️' }
+          ].map(t => `
+            <button data-action="switch-tab" data-tab="${t.id}"
+              class="py-2.5 px-1 rounded-xl flex flex-col items-center justify-center gap-0.5 transition ${
+                tab === t.id
+                  ? 'bg-amberlamp-400/20 text-amberlamp-300 font-bold'
+                  : 'text-slate-400 hover:text-slate-200'
+              }">
+              <span class="text-lg leading-none">${t.icon}</span>
+              <span class="text-[11px]">${t.label}</span>
+            </button>
+          `).join('')}
+        </nav>
+      `;
+    }
+
+    function renderPhoneMode() {
+      const room = state.room;
+      if (!room) return '';
+      const solvedCodes = getSolvedCodesCount(room);
+
+      return `
+        <div class="min-h-screen flex flex-col bg-forest-950">
+          <header class="bg-forest-900 border-b-2 border-[#1e160e] px-4 py-3 flex items-center justify-between sticky top-0 z-30">
+            <div>
+              <div class="text-[10px] font-mono uppercase tracking-widest text-amberlamp-400">Пульт • ${escapeHtml(state.playerName)}</div>
+              <div class="font-mono text-sm font-bold text-white">Комната: <span class="text-amberlamp-300 tracking-widest">${escapeHtml(room.roomCode)}</span></div>
+            </div>
+            <div class="flex items-center gap-2 text-xs font-mono">
+              <span class="px-2.5 py-1 rounded-lg bg-forest-950 border border-emerald-500/40 text-emerald-300">🔑 ${solvedCodes}/4</span>
+              <span class="px-2.5 py-1 rounded-lg bg-forest-950 border ${room.timeLeft <= 1 ? 'border-rose-500 text-rose-300' : 'border-amberlamp-400/40 text-amberlamp-300'}">⏱ ${room.timeLeft}/6</span>
+            </div>
+          </header>
+          ${renderControllerBody(false)}
+        </div>
+      `;
+    }
+
+    /* =========================================================================
+       13. MASTER RENDER, EVENTS & FALLING SNOW ANIMATION
+       ========================================================================= */
+    function render() {
+      const app = document.getElementById('app');
+      if (state.screen === 'landing') app.innerHTML = renderLanding();
+      else if (state.screen === 'tv') app.innerHTML = renderTVMode();
+      else if (state.screen === 'phone') app.innerHTML = renderPhoneMode();
+      bindDynamicInputs();
+    }
+
+    function bindDynamicInputs() {
+      const codeIn = document.getElementById('join-code-input');
+      if (codeIn) codeIn.oninput = (e) => { state.landingJoinCode = e.target.value.toUpperCase(); };
+      const nameIn = document.getElementById('join-name-input');
+      if (nameIn) nameIn.oninput = (e) => { state.landingJoinName = e.target.value; };
+
+      document.querySelectorAll('[data-code-input]').forEach(input => {
+        const pid = input.getAttribute('data-code-input');
+        input.oninput = (e) => { state.codeInputs[pid] = e.target.value; };
+        input.onkeydown = (e) => { if (e.key === 'Enter') submitPuzzleCode(pid); };
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-action');
+      switch (action) {
+        case 'create-tv': createTVRoom(); break;
+        case 'toggle-join': state.landingJoinOpen = !state.landingJoinOpen; state.landingError = ''; render(); break;
+        case 'join-phone': joinPhoneRoom(); break;
+        case 'toggle-mute': SoundFX.muted = !SoundFX.muted; render(); break;
+        case 'toggle-tv-drawer': state.tvDrawerOpen = !state.tvDrawerOpen; render(); break;
+        case 'switch-tab': state.phoneTab = btn.getAttribute('data-tab'); render(); break;
+        case 'set-slide': setActiveSlide(btn.getAttribute('data-slide')); break;
+        case 'select-map-room': selectMapRoom(btn.getAttribute('data-room')); break;
+        case 'submit-code': submitPuzzleCode(btn.getAttribute('data-puzzle')); break;
+        case 'select-suspect': state.selectedSuspectId = btn.getAttribute('data-suspect'); render(); break;
+        case 'ask-question': askQuestion(btn.getAttribute('data-suspect'), btn.getAttribute('data-question')); break;
+        case 'pick-killer': state.verdictDraft.killer = btn.getAttribute('data-val'); render(); break;
+        case 'pick-diamond': state.verdictDraft.diamond = btn.getAttribute('data-val'); render(); break;
+        case 'submit-verdict': submitVerdict(null); break;
+        case 'submit-moral': submitVerdict(btn.getAttribute('data-moral')); break;
+        case 'reset-game': resetGame(); break;
+      }
+    });
+
+    // Responsive Falling Snow Particle Loop
+    function initSnow() {
+      const canvas = document.getElementById('snow-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let flakes = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        flakes = Array.from({ length: 55 }, () => ({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 2.4 + 1.1,
+          vy: Math.random() * 0.75 + 0.35,
+          vx: Math.random() * 0.45 - 0.15
+        }));
+      }
+
+      function tick() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(235, 246, 255, 0.85)';
+        ctx.beginPath();
+        for (const f of flakes) {
+          ctx.moveTo(f.x, f.y);
+          ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+          f.y += f.vy;
+          f.x += f.vx;
+          if (f.y > canvas.height + 4) { f.y = -4; f.x = Math.random() * canvas.width; }
+          if (f.x > canvas.width + 4) f.x = -4;
+          if (f.x < -4) f.x = canvas.width + 4;
+        }
+        ctx.fill();
+        requestAnimationFrame(tick);
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+      tick();
+    }
+
+    window.addEventListener('load', async () => {
+      initSnow();
+      await initBackend();
+      render();
+    });
+  </script>
+</body>
+</html>
